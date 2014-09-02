@@ -1,0 +1,23 @@
+
+.tenup-company-photo {
+	text-align: center;
+}
+
+.tenup-company-photo img {
+	width: 100%;
+	height: auto;
+	margin: 0 auto;
+	max-width: 540px;
+	margin: 1.5em 0 1em 0;
+}
+
+.helen-photo {
+	float: left;
+	margin: 0 1.5em 1.5em 0;
+}
+
+.quote {
+	font-style: italic;
+	font-size: 200%;
+	line-height: 1;
+}

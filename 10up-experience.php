@@ -37,6 +37,13 @@ function add_about_menu( $wp_admin_bar ) {
 
 add_action( 'admin_bar_menu', 'tenup\add_about_menu', 11 );
 
+function enqueue_scripts() {
+	if ( ! empty( $_GET['page'] ) && '10up-about' === $_GET['page'] ) {
+		wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
+	}
+}
+add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
+
 /**
  * Output about screen
  */
@@ -44,7 +51,11 @@ function about_screen() {
 	?>
 	<div class="wrap">
 
-		<h2>10up is a full-service digital agency specializing in building amazing digital experiences that make publishing simple and fun.</h2>
+		<div class="quote">10up is a full-service digital agency specializing in building amazing digital experiences that make publishing simple and fun.</div>
+
+		<div class="tenup-company-photo">
+			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/2014-company-photo.png' ) ); ?>">
+		</div>
 
 		<p>With 60+ full-time employees, team 10up is composed of strategists, designers, developers, and systems specialists united in their mission to create dynamic web solutions that bring brands to life in the digital space. From intuitive user experiences to stunning designs to social media integration, 10up is uniquely qualified to build websites and plugins that look great, function flawlessly, and engage your target audiences, all while delivering an exceptional content management experience for your site administrators and publishers.</p>
 
@@ -58,6 +69,10 @@ function about_screen() {
 		</ul>
 
 		<h1>What We Believe</h1>
+
+		<div class="helen-photo">
+			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/helen.png' ) ); ?>">
+		</div>
 
 		<p><strong>Community Involvement.</strong> All members of team 10up are active in WordPress conferences as speakers, organizers, and attendees. Combined, our team has developed over 30 highly rated WordPress plugins, including a handful of WordPress.com VIP-approved plugins.</p>
 

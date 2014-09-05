@@ -16,7 +16,8 @@ function add_about_menu( $wp_admin_bar ) {
 		// Add "About WordPress" link
 		$wp_admin_bar->add_menu( array(
 			'id' => '10up',
-			'title' => '<span class="10up-icon">10up</span>',
+			'title' => '<span class="tenup-icon">10up</span>',
+			'href' => self_admin_url( 'admin.php?page=10up-about' ),
 			'meta' => array(
 				'title' => '10up',
 			),
@@ -38,9 +39,7 @@ function add_about_menu( $wp_admin_bar ) {
 add_action( 'admin_bar_menu', 'tenup\add_about_menu', 11 );
 
 function enqueue_scripts() {
-	if ( ! empty( $_GET['page'] ) && '10up-about' === $_GET['page'] ) {
-		wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
-	}
+	wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
 }
 add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
 
@@ -49,7 +48,7 @@ add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
  */
 function about_screen() {
 	?>
-	<div class="wrap">
+	<div class="wrap tenup-about">
 
 		<div class="quote">10up is a full-service digital agency specializing in building amazing digital experiences that make publishing simple and fun.</div>
 
@@ -94,4 +93,21 @@ function about_screen() {
 function register_admin_pages() {
 	add_submenu_page( null, 'About 10up', 'About 10up', 'manage_options', '10up-about', 'tenup\about_screen' );
 }
-add_action('admin_menu', 'tenup\register_admin_pages');
+add_action( 'admin_menu', 'tenup\register_admin_pages' );
+
+/**
+ * Start plugin customizations
+ */
+function plugin_customizations() {
+
+	/**
+	 * Stream
+	 */
+	if ( is_plugin_active( 'stream/stream.php' ) ) {
+
+		add_action( 'admin_init', function() {
+			remove_menu_page( 'wp_stream' );
+		}, 11 );
+	}
+}
+add_action( 'admin_init', 'tenup\plugin_customizations' );

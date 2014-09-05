@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="tenup" horiz-adv-x="1000" >
+<font-face font-family="tenup" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="10up-icon" unicode="&#xe800;" d="m494 697c-192 0-348-155-348-347 0-53 13-103 34-148l3-4 215 215-67 67h293v-293l-67 67-216-216c46-22 98-35 153-35 191 0 347 155 347 347 0 192-155 347-347 347z" horiz-adv-x="1000" />
+</font>
+</defs>
+</svg>

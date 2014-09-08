@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 10up Experience MU plugin
  */
@@ -13,7 +12,6 @@ namespace tenup;
  */
 function add_about_menu( $wp_admin_bar ) {
 	if ( is_user_logged_in() ) {
-		// Add "About WordPress" link
 		$wp_admin_bar->add_menu( array(
 			'id' => '10up',
 			'title' => '<span class="tenup-icon">10up</span>',
@@ -111,3 +109,43 @@ function plugin_customizations() {
 	}
 }
 add_action( 'admin_init', 'tenup\plugin_customizations' );
+
+/**
+ * Add 10up suggested tab to plugins install screen
+ *
+ * @param array $tabs
+ * @return mixed
+ */
+function tenup_plugin_install_link( $tabs ) {
+	$tabs['tenup'] = '10up Suggested';
+	return $tabs;
+}
+add_action( 'install_plugins_tabs', 'tenup\tenup_plugin_install_link' );
+
+/**
+ * Filter the arguments passed to plugins_api() for 10up suggested page
+ *
+ * @param array $args
+ * @return array
+ */
+function filter_install_plugin_args( $args ) {
+	$args = array(
+		'page' => 1,
+		'per_page' => 60,
+		'fields' => array(
+			'last_updated' => true,
+			'downloaded' => true,
+			'icons' => true
+		),
+		'locale' => 'en_US',
+		'author' => '10up',
+	);
+
+	return $args;
+}
+add_filter( 'install_plugins_table_api_args_tenup', 'tenup\filter_install_plugin_args' );
+
+/**
+ * Setup 10up suggested plugin display table
+ */
+add_action( 'install_plugins_tenup', 'display_plugins_table' );

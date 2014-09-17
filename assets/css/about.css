@@ -1,0 +1,9 @@
+.tenup-badge {
+	background: url(../img/logo.png) no-repeat top left;
+	height: 110px;
+	width: 110px;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	right: 0;
+}

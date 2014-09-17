@@ -14,8 +14,8 @@ function add_about_menu( $wp_admin_bar ) {
 	if ( is_user_logged_in() ) {
 		$wp_admin_bar->add_menu( array(
 			'id' => '10up',
-			'title' => '<span class="tenup-icon">10up</span>',
-			'href' => self_admin_url( 'admin.php?page=10up-about' ),
+			'title' => '<span class="tenup-icon"></span>',
+			'href' => admin_url( 'admin.php?page=10up-about' ),
 			'meta' => array(
 				'title' => '10up',
 			),
@@ -24,8 +24,8 @@ function add_about_menu( $wp_admin_bar ) {
 		$wp_admin_bar->add_menu( array(
 			'id' => '10up-about',
 			'parent' => '10up',
-			'title' => 'About',
-			'href' => self_admin_url( 'admin.php?page=10up-about' ),
+			'title' => 'About 10up',
+			'href' => admin_url( 'admin.php?page=10up-about' ),
 			'meta' => array(
 				'title' => 'About 10up',
 			),
@@ -37,7 +37,13 @@ function add_about_menu( $wp_admin_bar ) {
 add_action( 'admin_bar_menu', 'tenup\add_about_menu', 11 );
 
 function enqueue_scripts() {
-	wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
+	global $pagenow;
+
+	wp_enqueue_style( '10up-admin', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
+
+	if ( 'admin.php' === $pagenow && ! empty( $_GET['page'] ) && '10up-about' === $_GET['page'] ) {
+		wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/about.css' ) );
+	}
 }
 add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
 
@@ -45,41 +51,105 @@ add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
  * Output about screen
  */
 function about_screen() {
-	?>
-	<div class="wrap tenup-about">
+	?><div class="wrap about-wrap">
 
-		<div class="quote">10up is a full-service digital agency specializing in building amazing digital experiences that make publishing simple and fun.</div>
+		<h1>About 10up</h1>
 
-		<div class="tenup-company-photo">
-			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/2014-company-photo.png' ) ); ?>">
+		<div class="about-text">We make web publishing easy. Maybe even fun.</div>
+
+		<div class="tenup-badge"></div>
+
+		<h2 class="nav-tab-wrapper">
+			<a href="about.php" class="nav-tab nav-tab-active">About</a>
+			<a href="credits.php" class="nav-tab">Team</a>
+		</h2>
+
+		<div class="changelog">
+			<div class="about-overview">
+				<embed src="//v.wordpress.com/bUdzKMro" type="application/x-shockwave-flash" width="640" height="360" allowscriptaccess="always" allowfullscreen="true" wmode="transparent">
+			</div>
+
+			<hr>
+
+			<div class="feature-section col two-col">
+				<div class="col-1">
+					<h3>Manage your media with style</h3>
+					<p>Explore your uploads in a beautiful, endless grid. A new details preview makes viewing and editing any amount of media in sequence a snap.</p>
+				</div>
+				<div class="col-2 last-feature">
+					<img src="//s.w.org/images/core/4.0/media.jpg">
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="feature-section col two-col">
+				<div class="col-1">
+					<div class="about-video about-video-embed">
+						<div style="width: 500px; height: 352px; " class="wp-video"><!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->
+							<div id="mep_0" class="mejs-container svg wp-video-shortcode mejs-video" style="width: 463px; height: 325px;"><div class="mejs-inner"><div class="mejs-mediaelement"><video class="wp-video-shortcode" id="video-0-1" width="463" height="325" loop="1" autoplay="1" preload="metadata" src="//s.w.org/images/core/4.0/embed.mp4?_=1" style="width: 100%; height: 100%;"><source type="video/mp4" src="//s.w.org/images/core/4.0/embed.mp4?_=1"><source type="video/webm" src="//s.w.org/images/core/4.0/embed.webm?_=1"><source type="video/ogg" src="//s.w.org/images/core/4.0/embed.ogv?_=1"><a href="//s.w.org/images/core/4.0/embed.mp4">//s.w.org/images/core/4.0/embed.mp4</a></video></div><div class="mejs-layers"><div class="mejs-poster mejs-layer" style="display: none; width: 100%; height: 100%;"></div><div class="mejs-overlay mejs-layer" style="width: 100%; height: 100%; display: none;"><div class="mejs-overlay-loading"><span></span></div></div><div class="mejs-overlay mejs-layer" style="display: none; width: 100%; height: 100%;"><div class="mejs-overlay-error"></div></div><div class="mejs-overlay mejs-layer mejs-overlay-play" style="width: 100%; height: 296px; display: none;"><div class="mejs-overlay-button" style="margin-top: -35px;"></div></div></div><div class="mejs-controls" style="display: block; visibility: hidden;"><div class="mejs-button mejs-playpause-button mejs-pause"><button type="button" aria-controls="mep_0" title="Play/Pause" aria-label="Play/Pause"></button></div><div class="mejs-time mejs-currenttime-container"><span class="mejs-currenttime">00:12</span></div><div class="mejs-time-rail" style="width: 313px;"><span class="mejs-time-total" style="width: 303px;"><span class="mejs-time-buffering" style="display: none;"></span><span class="mejs-time-loaded" style="width: 303px;"></span><span class="mejs-time-current" style="width: 279px;"></span><span class="mejs-time-handle" style="left: 272px;"></span><span class="mejs-time-float"><span class="mejs-time-float-current">00:00</span><span class="mejs-time-float-corner"></span></span></span></div><div class="mejs-time mejs-duration-container"><span class="mejs-duration">00:13</span></div><div class="mejs-button mejs-volume-button mejs-mute"><button type="button" aria-controls="mep_0" title="Mute Toggle" aria-label="Mute Toggle"></button><div class="mejs-volume-slider" style="display: none;"><div class="mejs-volume-total"></div><div class="mejs-volume-current" style="height: 80px; top: 28px;"></div><div class="mejs-volume-handle" style="top: 25px;"></div></div></div><div class="mejs-button mejs-fullscreen-button"><button type="button" aria-controls="mep_0" title="Fullscreen" aria-label="Fullscreen"></button></div></div><div class="mejs-clear"></div></div></div></div>			</div>
+				</div>
+				<div class="col-2 last-feature">
+					<h3>Working with embeds has never been easier</h3>
+					<p>Paste in a YouTube URL on a new line, and watch it magically become an embedded video. Now try it with a tweet. Oh yeah — embedding has become a visual experience. The editor shows a true preview of your embedded content, saving you time and giving you confidence.</p>
+					<p>We’ve expanded the services supported by default, too — you can embed videos from CollegeHumor, playlists from YouTube, and talks from TED. <a href="http://codex.wordpress.org/Embeds">Check out all of the embeds</a> that WordPress supports.</p>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="feature-section col two-col">
+				<div class="col-1">
+					<h3>Focus on your content</h3>
+					<p>Writing and editing is smoother and more immersive with an editor that expands to fit your content as you write, and keeps the formatting tools available at all times.</p>
+				</div>
+				<div class="col-2 last-feature">
+					<div class="about-video about-video-focus">
+						<div style="width: 500px; height: 281px; " class="wp-video"><div id="mep_1" class="mejs-container svg wp-video-shortcode mejs-video" style="width: 463px; height: 260px;"><div class="mejs-inner"><div class="mejs-mediaelement"><video class="wp-video-shortcode" id="video-0-2" width="463" height="260" loop="1" autoplay="1" preload="metadata" src="//s.w.org/images/core/4.0/focus.mp4?_=2" style="width: 100%; height: 100%;"><source type="video/mp4" src="//s.w.org/images/core/4.0/focus.mp4?_=2"><source type="video/webm" src="//s.w.org/images/core/4.0/focus.webm?_=2"><source type="video/ogg" src="//s.w.org/images/core/4.0/focus.ogv?_=2"><a href="//s.w.org/images/core/4.0/focus.mp4">//s.w.org/images/core/4.0/focus.mp4</a></video></div><div class="mejs-layers"><div class="mejs-poster mejs-layer" style="display: none; width: 100%; height: 100%;"></div><div class="mejs-overlay mejs-layer" style="width: 100%; height: 100%; display: none;"><div class="mejs-overlay-loading"><span></span></div></div><div class="mejs-overlay mejs-layer" style="display: none; width: 100%; height: 100%;"><div class="mejs-overlay-error"></div></div><div class="mejs-overlay mejs-layer mejs-overlay-play" style="width: 100%; height: 230px; display: none;"><div class="mejs-overlay-button" style="margin-top: -35px;"></div></div></div><div class="mejs-controls" style="display: block; visibility: hidden;"><div class="mejs-button mejs-playpause-button mejs-pause"><button type="button" aria-controls="mep_1" title="Play/Pause" aria-label="Play/Pause"></button></div><div class="mejs-time mejs-currenttime-container"><span class="mejs-currenttime">00:01</span></div><div class="mejs-time-rail" style="width: 313px;"><span class="mejs-time-total" style="width: 303px;"><span class="mejs-time-buffering" style="display: none;"></span><span class="mejs-time-loaded" style="width: 303px;"></span><span class="mejs-time-current" style="width: 29px;"></span><span class="mejs-time-handle" style="left: 22px;"></span><span class="mejs-time-float"><span class="mejs-time-float-current">00:00</span><span class="mejs-time-float-corner"></span></span></span></div><div class="mejs-time mejs-duration-container"><span class="mejs-duration">00:10</span></div><div class="mejs-button mejs-volume-button mejs-mute"><button type="button" aria-controls="mep_1" title="Mute Toggle" aria-label="Mute Toggle"></button><div class="mejs-volume-slider" style="display: none;"><div class="mejs-volume-total"></div><div class="mejs-volume-current" style="height: 80px; top: 28px;"></div><div class="mejs-volume-handle" style="top: 25px;"></div></div></div><div class="mejs-button mejs-fullscreen-button"><button type="button" aria-controls="mep_1" title="Fullscreen" aria-label="Fullscreen"></button></div></div><div class="mejs-clear"></div></div></div></div>			</div>
+				</div>
+			</div>
+
+			<hr>
+
+			<div class="feature-section col two-col">
+				<div class="col-1">
+					<img src="//s.w.org/images/core/4.0/plugins.png">
+				</div>
+				<div class="col-2 last-feature">
+					<h3 class="higher">Finding the right plugin</h3>
+					<p>There are more than 30,000 free and open source plugins in the WordPress plugin directory. WordPress 4.0 makes it easier to find the right one for your needs, with new metrics, improved search, and a more visual browsing experience.</p>
+					<a href="http://local.wordpress-trunk.dev/wp-admin/plugin-install.php" class="button button-large button-primary">Browse plugins</a>
+				</div>
+			</div>
 		</div>
 
-		<p>With 60+ full-time employees, team 10up is composed of strategists, designers, developers, and systems specialists united in their mission to create dynamic web solutions that bring brands to life in the digital space. From intuitive user experiences to stunning designs to social media integration, 10up is uniquely qualified to build websites and plugins that look great, function flawlessly, and engage your target audiences, all while delivering an exceptional content management experience for your site administrators and publishers.</p>
+		<hr>
 
-		<p>10up Founder and President Jake Goldman is a widely-recognized leader in the development and support of websites powered by WordPress. From speaking at conferences to sharing his expertise in media, to advising both enterprise clients as well as non-profit organizations with cost-conscious web projects, Jake is a thought leader who also practices the craft of web development on a regular basis.</p>
+		<div class="changelog under-the-hood">
+			<h3>Under the Hood</h3>
 
-		<h1>What We Do</h1>
-		<ul>
-			<li><strong>Strategy</strong> - Project planning, branding, and growth strategies to implement big ideas.</li>
-			<li><strong>Design</strong> - Full range of services: IA, UI/UX, and our unique in-browser design process.</li>
-			<li><strong>Engineering</strong> - World-class WordPress theme, plugin, and systems build & support.</li>
-		</ul>
+			<div class="feature-section col three-col">
+				<div>
+					<h4>Customizer API</h4>
+					<p>Contexts, panels, and a wider array of controls are now supported in the customizer.</p>
+				</div>
+				<div>
+					<h4>Query Ordering</h4>
+					<p>Developers have more flexibility creating <code>ORDER&nbsp;BY</code> clauses through <code>WP_Query</code>.</p>
+				</div>
+				<div class="last-feature">
+					<h4>External Libraries</h4>
+					<p>Updated libraries: TinyMCE&nbsp;4.1.3, jQuery&nbsp;1.11.1, MediaElement&nbsp;2.15.</p>
+				</div>
+			</div>
 
-		<h1>What We Believe</h1>
+			<hr>
 
-		<div class="helen-photo">
-			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/helen.png' ) ); ?>">
+			<div class="return-to-dashboard">
+				<a href="http://local.wordpress-trunk.dev/wp-admin/">Go to Dashboard → Home</a>
+			</div>
+
 		</div>
-
-		<p><strong>Community Involvement.</strong> All members of team 10up are active in WordPress conferences as speakers, organizers, and attendees. Combined, our team has developed over 30 highly rated WordPress plugins, including a handful of WordPress.com VIP-approved plugins.</p>
-
-		<p>Several members of team 10up are core contributors or project leaders in the WordPress community. 10up Director of Platform Helen Hou-Sandí, Director of Platform Experience at 10up and release lead for the 4.0 version of WordPress, coming later in 2014.</p>
-
-		<p>More than 40% of team 10up contribute core WordPress code; more than 70% are involved in planning, speaking at, and attending conferences and local technology meetups. Experience Helen Hou-Sandí is a major contributor and the release lead for WordPress 4.0 due later this summer; Nearly 75% of all staff also contribute to WordPress in various ways.</p>
-
-		<p><strong>Collaborative Relationships.</strong> At 10up, we work collaboratively with our clients to build solutions aligned with their unique goals. There is no single blueprint or process that works for every client or project, so we approach every project with a fresh perspective and a commitment to discovering the best solution.</p>
-
-		<p><strong>Trusted Partnerships.</strong> While 10up is a full-service agency, we love partnering with like-minded premium agencies and in-house teams including content strategists, design consultancies, marketing and public relations firms, and even other engineering agencies. Our previous and ongoing collaborators include Upstatement, Filament Group, Global Moxie, Edelman, and in-house teams at Aol, Time Inc., Conde Nast, and many others.</p>
 
 	</div>
 	<?php
@@ -117,8 +187,15 @@ add_action( 'admin_init', 'tenup\plugin_customizations' );
  * @return mixed
  */
 function tenup_plugin_install_link( $tabs ) {
-	$tabs['tenup'] = '10up Suggested';
-	return $tabs;
+	$new_tabs = array(
+		'tenup' => '10up Suggested'
+	);
+
+	foreach ( $tabs as $key => $value ) {
+		$new_tabs[$key] = $value;
+	}
+
+	return $new_tabs;
 }
 add_action( 'install_plugins_tabs', 'tenup\tenup_plugin_install_link' );
 
@@ -138,7 +215,7 @@ function filter_install_plugin_args( $args ) {
 			'icons' => true
 		),
 		'locale' => 'en_US',
-		'author' => '10up',
+		'user' => '10up',
 	);
 
 	return $args;
@@ -149,3 +226,19 @@ add_filter( 'install_plugins_table_api_args_tenup', 'tenup\filter_install_plugin
  * Setup 10up suggested plugin display table
  */
 add_action( 'install_plugins_tenup', 'display_plugins_table' );
+
+
+function plugin_install_warning() {
+	?>
+	<div class="tenup-plugin-install-warning updated">
+		<p>
+			<?php printf( __( "We recommend you only install plugins from the <a href=''%s'>10up Suggested</a> tab.", 'tenup' ), admin_url( 'network/plugin-install.php?tab=tenup' ) ); ?>
+		</p>
+	</div>
+	<?php
+}
+add_action( 'install_plugins_pre_featured', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_popular', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_favorites', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_beta', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_search', 'tenup\plugin_install_warning' );

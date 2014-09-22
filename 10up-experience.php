@@ -36,19 +36,22 @@ function add_about_menu( $wp_admin_bar ) {
 
 add_action( 'admin_bar_menu', 'tenup\add_about_menu', 11 );
 
+/**
+ * Setup scripts for customized admin experience
+ */
 function enqueue_scripts() {
 	global $pagenow;
 
 	wp_enqueue_style( '10up-admin', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
 
-	if ( 'admin.php' === $pagenow && ! empty( $_GET['page'] ) && '10up-about' === $_GET['page'] ) {
+	if ( 'admin.php' === $pagenow && ! empty( $_GET['page'] ) && ( '10up-about' === $_GET['page'] || '10up-team' === $_GET['page'] ) ) {
 		wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/about.css' ) );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
 
 /**
- * Output about screen
+ * Output about screens
  */
 function about_screen() {
 	?>
@@ -61,12 +64,18 @@ function about_screen() {
 		<div class="tenup-badge"></div>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="about.php" class="nav-tab nav-tab-active"><?php esc_html_e( 'About', 'tenup' ); ?></a>
-			<a href="credits.php" class="nav-tab"><?php esc_html_e( 'Team', 'tenup' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-about' ) ); ?>" class="nav-tab <?php if ( '10up-about' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'About', 'tenup' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="nav-tab <?php if ( '10up-team' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Team', 'tenup' ); ?></a>
 		</h2>
 
+		<?php if ( '10up-about' === $_GET['page'] ) : ?>
+			About
+		<?php else : ?>
+			Team
+		<?php endif; ?>
+
 	</div>
-	<?php
+<?php
 }
 
 /**
@@ -74,6 +83,7 @@ function about_screen() {
  */
 function register_admin_pages() {
 	add_submenu_page( null, 'About 10up', 'About 10up', 'manage_options', '10up-about', 'tenup\about_screen' );
+	add_submenu_page( null, 'Team 10up', 'Team 10up', 'manage_options', '10up-team', 'tenup\about_screen' );
 }
 add_action( 'admin_menu', 'tenup\register_admin_pages' );
 
@@ -141,7 +151,9 @@ add_filter( 'install_plugins_table_api_args_tenup', 'tenup\filter_install_plugin
  */
 add_action( 'install_plugins_tenup', 'display_plugins_table' );
 
-
+/**
+ * Warn user when installing non-10up suggested plugins
+ */
 function plugin_install_warning() {
 	?>
 	<div class="tenup-plugin-install-warning updated">

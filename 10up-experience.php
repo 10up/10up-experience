@@ -39,7 +39,7 @@ add_action( 'admin_bar_menu', 'tenup\add_about_menu', 11 );
 /**
  * Setup scripts for customized admin experience
  */
-function enqueue_scripts() {
+function admin_enqueue_scripts() {
 	global $pagenow;
 
 	wp_enqueue_style( '10up-admin', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
@@ -48,7 +48,12 @@ function enqueue_scripts() {
 		wp_enqueue_style( '10up-about', content_url( 'mu-plugins/10up-experience/assets/css/about.css' ) );
 	}
 }
-add_action( 'admin_enqueue_scripts', 'tenup\enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'tenup\admin_enqueue_scripts' );
+
+function enqueue_scripts() {
+	wp_enqueue_style( '10up-admin', content_url( 'mu-plugins/10up-experience/assets/css/admin.css' ) );
+}
+add_action( 'wp_enqueue_scripts', 'tenup\enqueue_scripts' );
 
 /**
  * Output about screens

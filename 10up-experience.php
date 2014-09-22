@@ -54,15 +54,15 @@ function about_screen() {
 	?>
 	<div class="wrap about-wrap">
 
-		<h1>About 10up</h1>
+		<h1><?php esc_html_e( 'About 10up', 'tenup' ); ?></h1>
 
-		<div class="about-text">We make web publishing easy. Maybe even fun.</div>
+		<div class="about-text"><?php esc_html_e( 'We make web publishing easy. Maybe even fun.', 'tenup' ); ?></div>
 
 		<div class="tenup-badge"></div>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="about.php" class="nav-tab nav-tab-active">About</a>
-			<a href="credits.php" class="nav-tab">Team</a>
+			<a href="about.php" class="nav-tab nav-tab-active"><?php esc_html_e( 'About', 'tenup' ); ?></a>
+			<a href="credits.php" class="nav-tab"><?php esc_html_e( 'Team', 'tenup' ); ?></a>
 		</h2>
 
 	</div>

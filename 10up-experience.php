@@ -173,3 +173,4 @@ add_action( 'install_plugins_pre_popular', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_favorites', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_beta', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_search', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_dashboard', 'tenup\plugin_install_warning' );

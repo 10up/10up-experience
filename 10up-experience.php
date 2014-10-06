@@ -14,7 +14,7 @@ function add_about_menu( $wp_admin_bar ) {
 	if ( is_user_logged_in() ) {
 		$wp_admin_bar->add_menu( array(
 			'id' => '10up',
-			'title' => '<span class="tenup-icon"></span>',
+			'title' => '<span class="ab-icon tenup-icon"></span>',
 			'href' => admin_url( 'admin.php?page=10up-about' ),
 			'meta' => array(
 				'title' => '10up',

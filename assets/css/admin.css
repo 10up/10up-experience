@@ -45,3 +45,7 @@
 	border-left: 4px solid #ffba00;
 }
 
+#wpadminbar #wp-admin-bar-10up .ab-item {
+	padding: 0 6px 0 7px;
+}
+

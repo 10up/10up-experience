@@ -16,3 +16,8 @@
 .about-wrap .center {
 	text-align: center;
 }
+
+.about-wrap .section ul {
+	list-style: disc;
+	margin-left: 25px;
+}

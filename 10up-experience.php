@@ -101,10 +101,9 @@ function main_screen() {
 			<?php if ( '10up-about' === $_GET['page'] ) : ?>
 				<?php about_screen(); ?>
 			<?php elseif ( '10up-support' === $_GET['page'] ) : ?>
-				<div class="section">
+				<div class="section section-support">
 					<?php get_template_part( 'tenup', 'support' ); ?>
 				</div>
-				<hr>
 			<?php else : ?>
 				<?php team_screen(); ?>
 			<?php endif; ?>

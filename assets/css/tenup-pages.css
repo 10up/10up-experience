@@ -1,16 +1,62 @@
 .tenup-badge {
-	background: url(../img/logo.png) no-repeat top left;
-	height: 110px;
+	background: url('../img/logo.png') no-repeat top left;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-ms-background-size: cover;
+	-o-background-size: cover;
 	width: 110px;
+	height: 126px;
 	display: inline-block;
 	position: absolute;
 	top: 0;
 	right: 0;
 }
 
+@media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (   min--moz-device-pixel-ratio: 2),
+  only screen and (     -o-min-device-pixel-ratio: 2/1),
+  only screen and (        min-device-pixel-ratio: 2),
+  only screen and (                min-resolution: 192dppx),
+  only screen and (                min-resolution: 2dppx) {
+	.tenup-badge {
+		background: url('../img/logo@2x.png') no-repeat top left;
+		background-size: 110px 126px;
+		-webkit-background-size: 110px 126px;
+		-moz-background-size: 110px 126px;
+		-ms-background-size: 110px 126px;
+		-o-background-size: 110px 126px;
+	}
+}
+
+.section-wrapper {
+	padding: 40px 0;
+	background-color: #F6F7FB;
+}
+
+.about-wrap img {
+	max-width: 100%;
+}
+
+.about-wrap .nav-tab-active {
+	background-color: #F6F7FB;
+	border-bottom-color: #F6F7FB;
+}
+
 .about-wrap .section {
-	margin-top: 40px;
+	margin: 0 auto;
 	padding-bottom: 20px;
+	overflow: hidden;
+}
+
+.about-wrap .section-about {
+	max-width: 720px;
+	padding: 0 40px;
+}
+
+.about-wrap .section-team {
+	margin: 0 40px;
 }
 
 .about-wrap .center {
@@ -20,4 +66,113 @@
 .about-wrap .section ul {
 	list-style: disc;
 	margin-left: 25px;
+}
+
+.employee-link {
+	display: block;
+	width: 100%;
+	float: left;
+	color: #fefefe;
+	text-transform: uppercase;
+	overflow: hidden;
+	text-decoration: none;
+	text-align: center;
+}
+
+.employee-link:hover {
+	color: #fff;
+	text-decoration: none;
+}
+
+.employee-link span {
+	display: block;
+	background: #41A2A3;
+	padding: 20px 0;
+	max-width: 100%;
+}
+
+.employee-link span em {
+	display: block;
+	font-style: normal;
+	font-weight: 300;
+	font-size: .8em;
+	text-transform: none;
+	padding: .6em 0 0;
+}
+
+.section-team-header {
+	height: 250px;
+	background: url('../img/team/team.jpg') center top no-repeat #54cdcd;
+	background-size: cover;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-ms-background-size: cover;
+	-o-background-size: cover;
+	text-align: center;
+	position: relative;
+	line-height: 250px;
+}
+
+.section-team-header h2 {
+	vertical-align: middle;
+	background: #000;
+	display: inline-block;
+	margin: 0;
+	color: #fff;
+	-webkit-border-radius: 100%;
+	-moz-border-radius: 100%;
+	border-radius: 100%;
+	width: 80px;
+	height: 80px;
+	text-align: center;
+	padding: 25px;
+	line-height: 1.6;
+	font-family: serif;
+	font-style: italic;
+}
+@media screen and (max-width: 480px) {
+	.about-wrap h2.nav-tab-wrapper {
+		padding-right: 0;
+	}
+	.about-wrap h2 .nav-tab {
+		width: 100%;
+		margin-top: 0;
+		margin-right: 0;
+		box-sizing: border-box;
+	}
+	.about-wrap h1 {
+		padding-right: 55px;
+	}
+	.tenup-badge {
+		width: 55px;
+		height: 63px;
+	}
+	.section-wrapper {
+		padding: 20px 0;
+	}
+	.about-wrap .section-about {
+		padding: 0 20px;
+	}
+	.about-wrap .section-team {
+		margin: 0 20px;
+	}
+	.section-team-header {
+		height: 200px;
+		line-height: 200px;
+	}
+	.section-team-header h2 {
+		width: 50px;
+		height: 50px;
+		line-height: 1.2;
+	}
+}
+@media screen and (min-width: 768px) {
+	.employee-link {
+		width: 50%;
+	}
+}
+@media screen and (min-width: 1110px) {
+	.employee-link {
+		width: 25%;
+	}
 }

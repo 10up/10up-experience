@@ -90,24 +90,26 @@ function main_screen() {
 		<div class="tenup-badge"></div>
 
 		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-about' ) ); ?>" class="nav-tab <?php if ( '10up-about' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'About', 'tenup' ); ?></a>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="nav-tab <?php if ( '10up-team' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Team', 'tenup' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-about' ) ); ?>" class="nav-tab <?php if ( '10up-about' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'About Us', 'tenup' ); ?></a>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="nav-tab <?php if ( '10up-team' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Our Team', 'tenup' ); ?></a>
 			<?php if ( defined( 'TENUP_SUPPORT' ) && 3 === TENUP_SUPPORT ) : ?>
 				<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-support' ) ); ?>" class="nav-tab <?php if ( '10up-support' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Support', 'tenup' ); ?></a>
 			<?php endif; ?>
 		</h2>
 
-		<?php if ( '10up-about' === $_GET['page'] ) : ?>
-			<?php about_screen(); ?>
-		<?php elseif ( '10up-support' === $_GET['page'] ) : ?>
-			<div class="section">
-				<?php get_template_part( 'tenup', 'support' ); ?>
-			</div>
-			<hr>
-		<?php else : ?>
-			<?php team_screen(); ?>
-		<?php endif; ?>
-
+		<div class="section-wrapper">
+			<?php if ( '10up-about' === $_GET['page'] ) : ?>
+				<?php about_screen(); ?>
+			<?php elseif ( '10up-support' === $_GET['page'] ) : ?>
+				<div class="section">
+					<?php get_template_part( 'tenup', 'support' ); ?>
+				</div>
+				<hr>
+			<?php else : ?>
+				<?php team_screen(); ?>
+			<?php endif; ?>
+		</div>
+		<hr>
 	</div>
 <?php
 }
@@ -117,13 +119,28 @@ function main_screen() {
  */
 function about_screen() {
 	?>
-	<div class="section center">
-		<h3><?php esc_html_e( "We make content management easy.", 'tenup' ); ?><br><strong><?php esc_html_e( "Maybe even fun.", 'tenup' ); ?></strong></h3>
-		<p><?php esc_html_e( "We make content management simple with our premiere web design & development consulting services, by contributing to open platforms like WordPress, and by providing tools and products that make web publishing a cinch.", 'tenup' ); ?></p>
+	<div class="section section-about">
+		<h2>We make web publishing and content management easy – maybe even fun.</h2>
 
-		<p><?php esc_html_e( "At 10up, we don’t just “make” things – we engineer them. We’re a group of people built to solve problems; made to create; wired to delight. From beautiful pixels to beautiful code, we constantly improve the things around us, applying our passions to our clients’ projects and goals. Sometimes instead of resting, always instead of just getting it done.", 'tenup' ); ?></p>
+		<p>We make content management simple with our premiere web design &amp; development consulting services, by contributing to open platforms like WordPress, and by providing tools and products that make web publishing a cinch.</p>
+
+		<p>We’re a group of people built to solve problems; made to create; wired to delight. From beautiful pixels to beautiful code, we constantly improve the things around us, applying our passions to our clients’ projects and goals. Sometimes instead of resting, always instead of just getting it done.</p>
+
+		<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/10up-image-1.jpg' ) ); ?>" alt="">
+
+		<h3>Building Without Boundaries</h3>
+		<p>The best talent isn’t found in a single zip code, and an international clientele requires a global perspective. From New York City to Salt Spring Island, our distributed model empowers us to bring in the best strategists, designers, and engineers, wherever they may be found. As of September 2014, 10up has over 80 full time staff; veterans of commercial agencies, universities, start ups, non profits, and international technology brands, our team has an uncommon breadth.</p>
+
+		<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/10up-image-2.jpg' ) ); ?>" alt="">
+
+		<h3>Full Service Reach</h3>
+
+		<p><strong>Strategy:</strong> Should I build an app or a responsive website? Am I maximizing my ad revenue? Why don’t my visitors click “sign up”? How many 10uppers does it take to screw in a website? We don’t just build: we figure out the plan.</p>
+
+		<p><strong>Design:</strong> Inspiring design brings the functional and the beautiful; a delightful blend of art and engineering. We focus on the audience whimsy and relationship between brand and consumer, delivering design that works.</p>
+
+		<p><strong>Engineering:</strong> Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.</p>
 	</div>
-	<hr>
 	<?php
 }
 
@@ -132,10 +149,35 @@ function about_screen() {
  */
 function team_screen() {
 	?>
-	<div class="section">
-		Team screen
+	<div class="section section-team">
+		<div class="section-team-header">
+			<h2>Our team</h2>
+		</div>
+
+		<p>Influencing communities around the world, our team leads meetups, speaks at local events, and visits clients wherever they may be. A modest studio in Portland, Oregon hosts speakers, out of town guests, and the occasional workshop.</p>
+
+		<p>Independence from traditional “brick and mortar” offices, freedom from commutes, and flexible schedules across nearly a dozen time zones means our team works when and where they’re most inspired, available when our clients need them.</p>
+
+		<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">
+			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jake.jpg' ) ); ?>" alt="">
+			<span>Jake&nbsp;Goldman<em>President &amp; Founder</em></span>
+		</a>
+
+		<a href="http://10up.com/about/#employee-john-eckman" class="employee-link" target="_blank">
+			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/john.jpg' ) ); ?>" alt="">
+			<span>John&nbsp;Eckman<em>Chief Executive Officer</em></span>
+		</a>
+
+		<a href="http://10up.com/about/#employee-jess-jurick" class="employee-link" target="_blank">
+			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jess.jpg' ) ); ?>" alt="">
+			<span>Jess&nbsp;Jurick<em>Vice President, Consulting Services</em></span>
+		</a>
+
+		<a href="http://10up.com/about/#employee-vasken-hauri" class="employee-link" target="_blank">
+			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/vasken.jpg' ) ); ?>" alt="">
+			<span>Vasken&nbsp;Hauri<em>Vice President, Engineering</em></span>
+		</a>
 	</div>
-	<hr>
 	<?php
 }
 

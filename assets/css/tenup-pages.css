@@ -101,9 +101,15 @@
 	padding: .6em 0 0;
 }
 
+.section-team-leadership {
+	overflow: hidden;
+	margin: 20px 0;
+}
+
 .section-team-header {
+	margin-top: 20px;
 	height: 250px;
-	background: url('../img/team/team.jpg') center top no-repeat #54cdcd;
+	background: url('../img/team/team.jpg') center bottom no-repeat #54cdcd;
 	background-size: cover;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
@@ -112,24 +118,26 @@
 	text-align: center;
 	position: relative;
 	line-height: 250px;
+	clear: both;
+	display: block;
 }
 
 .section-team-header h2 {
 	vertical-align: middle;
-	background: #000;
 	display: inline-block;
 	margin: 0;
+	/*background: #000;*/
 	color: #fff;
-	-webkit-border-radius: 100%;
+	/*-webkit-border-radius: 100%;
 	-moz-border-radius: 100%;
 	border-radius: 100%;
 	width: 80px;
-	height: 80px;
+	height: 80px;*/
 	text-align: center;
 	padding: 25px;
-	line-height: 1.6;
+	/*line-height: 1.6;
 	font-family: serif;
-	font-style: italic;
+	font-style: italic;*/
 }
 @media screen and (max-width: 480px) {
 	.about-wrap h2.nav-tab-wrapper {
@@ -161,11 +169,6 @@
 	.section-team-header {
 		height: 200px;
 		line-height: 200px;
-	}
-	.section-team-header h2 {
-		width: 50px;
-		height: 50px;
-		line-height: 1.2;
 	}
 }
 @media screen and (min-width: 768px) {

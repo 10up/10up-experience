@@ -149,32 +149,38 @@ function about_screen() {
 function team_screen() {
 	?>
 	<div class="section section-team">
-		<div class="section-team-header">
-			<h2>Our team</h2>
+
+		<h2>Meet our leadership team</h2>
+		<p>Paragraph about leadership. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis iure vero dolorum illo inventore et modi saepe sapiente fuga laborum sit delectus nisi aut, facilis ad numquam ratione ullam dolor.</p>
+
+		<div class="section-team-leadership">
+			<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">
+				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jake.jpg' ) ); ?>" alt="">
+				<span>Jake&nbsp;Goldman<em>President &amp; Founder</em></span>
+			</a>
+
+			<a href="http://10up.com/about/#employee-john-eckman" class="employee-link" target="_blank">
+				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/john.jpg' ) ); ?>" alt="">
+				<span>John&nbsp;Eckman<em>Chief Executive Officer</em></span>
+			</a>
+
+			<a href="http://10up.com/about/#employee-jess-jurick" class="employee-link" target="_blank">
+				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jess.jpg' ) ); ?>" alt="">
+				<span>Jess&nbsp;Jurick<em>Vice President, Consulting Services</em></span>
+			</a>
+
+			<a href="http://10up.com/about/#employee-vasken-hauri" class="employee-link" target="_blank">
+				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/vasken.jpg' ) ); ?>" alt="">
+				<span>Vasken&nbsp;Hauri<em>Vice President, Engineering</em></span>
+			</a>
 		</div>
 
 		<p>Influencing communities around the world, our team leads meetups, speaks at local events, and visits clients wherever they may be. A modest studio in Portland, Oregon hosts speakers, out of town guests, and the occasional workshop.</p>
 
 		<p>Independence from traditional “brick and mortar” offices, freedom from commutes, and flexible schedules across nearly a dozen time zones means our team works when and where they’re most inspired, available when our clients need them.</p>
 
-		<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">
-			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jake.jpg' ) ); ?>" alt="">
-			<span>Jake&nbsp;Goldman<em>President &amp; Founder</em></span>
-		</a>
-
-		<a href="http://10up.com/about/#employee-john-eckman" class="employee-link" target="_blank">
-			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/john.jpg' ) ); ?>" alt="">
-			<span>John&nbsp;Eckman<em>Chief Executive Officer</em></span>
-		</a>
-
-		<a href="http://10up.com/about/#employee-jess-jurick" class="employee-link" target="_blank">
-			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jess.jpg' ) ); ?>" alt="">
-			<span>Jess&nbsp;Jurick<em>Vice President, Consulting Services</em></span>
-		</a>
-
-		<a href="http://10up.com/about/#employee-vasken-hauri" class="employee-link" target="_blank">
-			<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/vasken.jpg' ) ); ?>" alt="">
-			<span>Vasken&nbsp;Hauri<em>Vice President, Engineering</em></span>
+		<a href="#" class="section-team-header">
+			<h2>Meet the rest of our team</h2>
 		</a>
 	</div>
 	<?php

@@ -179,7 +179,7 @@ function team_screen() {
 
 		<p>Independence from traditional “brick and mortar” offices, freedom from commutes, and flexible schedules across nearly a dozen time zones means our team works when and where they’re most inspired, available when our clients need them.</p>
 
-		<a href="#" class="section-team-header">
+		<a href="http://10up.com/about/" class="section-team-header" target="_blank">
 			<h2>Meet the rest of our team</h2>
 		</a>
 	</div>

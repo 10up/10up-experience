@@ -119,26 +119,26 @@ function main_screen() {
 function about_screen() {
 	?>
 	<div class="section section-about">
-		<h2>We make web publishing and content management easy – maybe even fun.</h2>
+		<h2><?php esc_html_e( "We make web publishing and content management easy – maybe even fun.", 'tenup' ); ?></h2>
 
-		<p>We make content management simple with our premiere web design &amp; development consulting services, by contributing to open platforms like WordPress, and by providing tools and products that make web publishing a cinch.</p>
+		<p><?php esc_html_e( "We make content management simple with our premiere web design &amp; development consulting services, by contributing to open platforms like WordPress, and by providing tools and products that make web publishing a cinch.", 'tenup' ); ?></p>
 
-		<p>We’re a group of people built to solve problems; made to create; wired to delight. From beautiful pixels to beautiful code, we constantly improve the things around us, applying our passions to our clients’ projects and goals. Sometimes instead of resting, always instead of just getting it done.</p>
+		<p><?php esc_html_e( "We’re a group of people built to solve problems; made to create; wired to delight. From beautiful pixels to beautiful code, we constantly improve the things around us, applying our passions to our clients’ projects and goals. Sometimes instead of resting, always instead of just getting it done.", 'tenup' ); ?></p>
 
 		<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/10up-image-1.jpg' ) ); ?>" alt="">
 
-		<h3>Building Without Boundaries</h3>
-		<p>The best talent isn’t found in a single zip code, and an international clientele requires a global perspective. From New York City to Salt Spring Island, our distributed model empowers us to bring in the best strategists, designers, and engineers, wherever they may be found. As of September 2014, 10up has over 80 full time staff; veterans of commercial agencies, universities, start ups, non profits, and international technology brands, our team has an uncommon breadth.</p>
+		<h3><?php esc_html_e( "Building Without Boundaries", 'tenup' ); ?></h3>
+		<p><?php esc_html_e( "The best talent isn’t found in a single zip code, and an international clientele requires a global perspective. From New York City to Salt Spring Island, our distributed model empowers us to bring in the best strategists, designers, and engineers, wherever they may be found. As of September 2014, 10up has over 80 full time staff; veterans of commercial agencies, universities, start ups, non profits, and international technology brands, our team has an uncommon breadth.", 'tenup' ); ?></p>
 
 		<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/10up-image-2.jpg' ) ); ?>" alt="">
 
-		<h3>Full Service Reach</h3>
+		<h3><?php esc_html_e( "Full Service Reach", 'tenup' ); ?></h3>
 
-		<p><strong>Strategy:</strong> Should I build an app or a responsive website? Am I maximizing my ad revenue? Why don’t my visitors click “sign up”? How many 10uppers does it take to screw in a website? We don’t just build: we figure out the plan.</p>
+		<p><strong><?php esc_html_e( "Strategy:", 'tenup' ); ?></strong> <?php esc_html_e( "Should I build an app or a responsive website? Am I maximizing my ad revenue? Why don’t my visitors click “sign up”? How many 10uppers does it take to screw in a website? We don’t just build: we figure out the plan.", 'tenup' ); ?></p>
 
-		<p><strong>Design:</strong> Inspiring design brings the functional and the beautiful; a delightful blend of art and engineering. We focus on the audience whimsy and relationship between brand and consumer, delivering design that works.</p>
+		<p><strong><?php esc_html_e( "Design:", 'tenup' ); ?></strong> <?php esc_html_e( "Inspiring design brings the functional and the beautiful; a delightful blend of art and engineering. We focus on the audience whimsy and relationship between brand and consumer, delivering design that works.", 'tenup' ); ?></p>
 
-		<p><strong>Engineering:</strong> Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.</p>
+		<p><strong><?php esc_html_e( "Engineering:", 'tenup' ); ?></strong> <?php esc_html_e( "Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.", 'tenup' ); ?></p>
 	</div>
 	<?php
 }
@@ -150,36 +150,36 @@ function team_screen() {
 	?>
 	<div class="section section-team">
 
-		<h2>Meet our executives</h2>
+		<h2><?php esc_html_e( "Meet our executives", 'tenup' ); ?></h2>
 
 		<div class="section-team-leadership">
 			<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">
 				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jake.jpg' ) ); ?>" alt="">
-				<span>Jake&nbsp;Goldman<em>President &amp; Founder</em></span>
+				<span>Jake&nbsp;Goldman<em><?php esc_html_e( "President &amp; Founder", 'tenup' ); ?></em></span>
 			</a>
 
 			<a href="http://10up.com/about/#employee-john-eckman" class="employee-link" target="_blank">
 				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/john.jpg' ) ); ?>" alt="">
-				<span>John&nbsp;Eckman<em>Chief Executive Officer</em></span>
+				<span>John&nbsp;Eckman<em><?php esc_html_e( "Chief Executive Officer", 'tenup' ); ?></em></span>
 			</a>
 
 			<a href="http://10up.com/about/#employee-jess-jurick" class="employee-link" target="_blank">
 				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jess.jpg' ) ); ?>" alt="">
-				<span>Jess&nbsp;Jurick<em>Vice President, Consulting Services</em></span>
+				<span>Jess&nbsp;Jurick<em><?php esc_html_e( "Vice President, Consulting Services", 'tenup' ); ?></em></span>
 			</a>
 
 			<a href="http://10up.com/about/#employee-vasken-hauri" class="employee-link" target="_blank">
 				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/vasken.jpg' ) ); ?>" alt="">
-				<span>Vasken&nbsp;Hauri<em>Vice President, Engineering</em></span>
+				<span>Vasken&nbsp;Hauri<em><?php esc_html_e( "Vice President, Engineering", 'tenup' ); ?></em></span>
 			</a>
 		</div>
 
-		<p>Influencing communities around the world, our team leads meetups, speaks at local events, and visits clients wherever they may be. A modest studio in Portland, Oregon hosts speakers, out of town guests, and the occasional workshop.</p>
+		<p><?php esc_html_e( "Influencing communities around the world, our team leads meetups, speaks at local events, and visits clients wherever they may be. A modest studio in Portland, Oregon hosts speakers, out of town guests, and the occasional workshop.", 'tenup' ); ?></p>
 
-		<p>Independence from traditional “brick and mortar” offices, freedom from commutes, and flexible schedules across nearly a dozen time zones means our team works when and where they’re most inspired, available when our clients need them.</p>
+		<p><?php esc_html_e( "Independence from traditional “brick and mortar” offices, freedom from commutes, and flexible schedules across nearly a dozen time zones means our team works when and where they’re most inspired, available when our clients need them.", 'tenup' ); ?></p>
 
 		<a href="http://10up.com/about/" class="section-team-header" target="_blank">
-			<h2>Meet the rest of our team</h2>
+			<h2><?php esc_html_e( "Meet the rest of our team", 'tenup' ); ?></h2>
 		</a>
 	</div>
 	<?php

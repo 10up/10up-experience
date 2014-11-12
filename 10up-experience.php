@@ -150,8 +150,7 @@ function team_screen() {
 	?>
 	<div class="section section-team">
 
-		<h2>Meet our leadership team</h2>
-		<p>Paragraph about leadership. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis iure vero dolorum illo inventore et modi saepe sapiente fuga laborum sit delectus nisi aut, facilis ad numquam ratione ullam dolor.</p>
+		<h2>Meet our executives</h2>
 
 		<div class="section-team-leadership">
 			<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">

@@ -270,7 +270,7 @@ function plugin_install_warning() {
 	?>
 	<div class="tenup-plugin-install-warning updated">
 		<p>
-			<?php printf( __( "We recommend you only install <a href=''%s'>10up Suggested</a> plugins.", 'tenup' ), esc_url( admin_url( 'network/plugin-install.php?tab=tenup' ) ) ); ?>
+			<?php printf( __( "We recommend you only install <a href='%s'>10up Suggested</a> plugins.", 'tenup' ), esc_url( admin_url( 'network/plugin-install.php?tab=tenup' ) ) ); ?>
 		</p>
 	</div>
 	<?php

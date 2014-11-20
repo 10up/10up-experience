@@ -11,7 +11,7 @@ namespace tenup;
  * @param object $wp_admin_bar
  */
 function add_about_menu( $wp_admin_bar ) {
-	if ( is_user_logged_in() ) {
+	if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) {
 		$wp_admin_bar->add_menu( array(
 			'id' => '10up',
 			'title' => '<span class="ab-icon tenup-icon"></span>',
@@ -189,11 +189,11 @@ function team_screen() {
  * Register admin pages with output callbacks
  */
 function register_admin_pages() {
-	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'manage_options', '10up-about', 'tenup\main_screen' );
-	add_submenu_page( null, esc_html__( 'Team 10up', 'tenup' ), esc_html__( 'Team 10up', 'tenup' ), 'manage_options', '10up-team', 'tenup\main_screen' );
+	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', 'tenup\main_screen' );
+	add_submenu_page( null, esc_html__( 'Team 10up', 'tenup' ), esc_html__( 'Team 10up', 'tenup' ), 'edit_posts', '10up-team', 'tenup\main_screen' );
 
 	if ( defined( 'TENUP_SUPPORT' ) && 3 === TENUP_SUPPORT ) {
-		add_submenu_page( null, esc_html__( 'Support', 'tenup' ), esc_html__( 'Support', 'tenup' ), 'manage_options', '10up-support', 'tenup\main_screen' );
+		add_submenu_page( null, esc_html__( 'Support', 'tenup' ), esc_html__( 'Support', 'tenup' ), 'edit_posts', '10up-support', 'tenup\main_screen' );
 	}
 }
 add_action( 'admin_menu', 'tenup\register_admin_pages' );

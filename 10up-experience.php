@@ -282,9 +282,19 @@ add_action( 'install_plugins_pre_search', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_dashboard', 'tenup\plugin_install_warning' );
 
 /**
+ * Filter admin footer text "Thank you for creating..."
+ *
+ * @return string
+ */
+function filter_admin_footer_text() {
+	$new_text = sprintf( __( 'Thank you for creating with <a href="https://wordpress.org">WordPress</a> and <a href="http://10up.com">10up</a>.', 'tenup' ) );
+	return $new_text;
+}
+add_filter( 'admin_footer_text', 'tenup\filter_admin_footer_text' );
+
+/**
  * Disable plugin/theme editor
  */
-
 if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 	define( 'DISALLOW_FILE_EDIT', true );
 }

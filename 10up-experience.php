@@ -140,7 +140,7 @@ function about_screen() {
 
 		<p><strong><?php esc_html_e( "Engineering:", 'tenup' ); ?></strong> <?php esc_html_e( "Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.", 'tenup' ); ?></p>
 
-		<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="button button-large button-primary"><?php esc_html_e( "Learn more about 10up", 'tenup' ); ?></a></p>
+		<p class="center"><a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="button button-large button-primary"><?php esc_html_e( "Learn more about 10up", 'tenup' ); ?></a></p>
 	</div>
 	<?php
 }

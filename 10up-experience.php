@@ -280,3 +280,11 @@ add_action( 'install_plugins_pre_favorites', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_beta', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_search', 'tenup\plugin_install_warning' );
 add_action( 'install_plugins_pre_dashboard', 'tenup\plugin_install_warning' );
+
+/**
+ * Disable plugin/theme editor
+ */
+
+if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+	define( 'DISALLOW_FILE_EDIT', true );
+}

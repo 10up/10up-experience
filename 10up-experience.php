@@ -87,7 +87,7 @@ function main_screen() {
 
 		<div class="about-text"><?php esc_html_e( 'We make web publishing easy. Maybe even fun.', 'tenup' ); ?></div>
 
-		<div class="tenup-badge"></div>
+		<a class="tenup-badge" href="http://10up.com" target="_blank"><span aria-label="<?php esc_html_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
 
 		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-about' ) ); ?>" class="nav-tab <?php if ( '10up-about' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'About Us', 'tenup' ); ?></a>
@@ -139,6 +139,8 @@ function about_screen() {
 		<p><strong><?php esc_html_e( "Design:", 'tenup' ); ?></strong> <?php esc_html_e( "Inspiring design brings the functional and the beautiful; a delightful blend of art and engineering. We focus on the audience whimsy and relationship between brand and consumer, delivering design that works.", 'tenup' ); ?></p>
 
 		<p><strong><?php esc_html_e( "Engineering:", 'tenup' ); ?></strong> <?php esc_html_e( "Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.", 'tenup' ); ?></p>
+
+		<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="button button-large button-primary"><?php esc_html_e( "Learn more about 10up", 'tenup' ); ?></a></p>
 	</div>
 	<?php
 }

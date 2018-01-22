@@ -300,3 +300,12 @@ add_filter( 'admin_footer_text', 'tenup\filter_admin_footer_text' );
 if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 	define( 'DISALLOW_FILE_EDIT', true );
 }
+
+function restrict_rest_api( $auth ) {
+	if ( ! is_user_logged_in() ) {
+		return new \WP_Error( 'rest_api_restricted', __( 'Authentication Required', 'tenup' ), array( "status" => 403 ) );
+	}
+
+	return $auth;
+}
+add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' );

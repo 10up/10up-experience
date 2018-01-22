@@ -248,10 +248,10 @@ function filter_install_plugin_args( $args ) {
 		'per_page' => 60,
 		'fields' => array(
 			'last_updated' => true,
-			'downloaded' => true,
+			'active_installs' => true,
 			'icons' => true
 		),
-		'locale' => 'en_US',
+		'locale' => get_user_locale(),
 		'user' => '10up',
 	);
 

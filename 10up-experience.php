@@ -301,11 +301,64 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 	define( 'DISALLOW_FILE_EDIT', true );
 }
 
+/**
+ * Return a 403 status and corresponding error for unauthed REST API access.
+ * @param  WP_Error|null|bool $auth WP_Error if authentication error, null if authentication
+ *                                  method wasn't used, true if authentication succeeded.
+ * @return WP_Error|null|bool
+ */
 function restrict_rest_api( $auth ) {
-	if ( ! is_user_logged_in() ) {
+	$restrict = get_option( 'tenup_restrict_rest_api', true );
+
+	if ( filter_var( $restrict, FILTER_VALIDATE_BOOLEAN ) && ! is_user_logged_in() ) {
 		return new \WP_Error( 'rest_api_restricted', __( 'Authentication Required', 'tenup' ), array( "status" => 403 ) );
 	}
 
 	return $auth;
 }
 add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' );
+
+/**
+ * Register restrict REST API setting.
+ *
+ * @return void
+ */
+function restrict_rest_api_setting() {
+	$settings_args = array(
+		'type' => 'boolean',
+		'sanitize_callback' => __NAMESPACE__ . '\sanitize_checkbox_bool',
+	);
+
+	register_setting( 'reading', 'tenup_restrict_rest_api',  $settings_args );
+	add_settings_field( 'tenup_restrict_rest_api', __( 'Restrict REST API', 'tenup' ), __NAMESPACE__ . '\restrict_rest_api_ui', 'reading' );
+}
+add_action( 'admin_init', __NAMESPACE__ . '\restrict_rest_api_setting' );
+
+/**
+ * Display UI for restrict REST API setting.
+ *
+ * @return void
+ */
+function restrict_rest_api_ui() {
+	$restrict = get_option( 'tenup_restrict_rest_api', true );
+?>
+<fieldset>
+	<legend class="screen-reader-text"><?php _e( 'Restrict REST API', 'tenup' ); ?></legend>
+	<label for="restrict-rest-api"><input id="restrict-rest-api" name="tenup_restrict_rest_api" type="checkbox" value="y"<?php checked( $restrict ); ?> /> <?php _e( 'Restrict REST API access to logged-in users only.', 'tenup' ); ?>
+</fieldset>
+<?php
+}
+
+/**
+ * Sanitize a checkbox boolean setting.
+ *
+ * @param  string $value
+ * @return string
+ */
+function sanitize_checkbox_bool( $value ) {
+	if ( ! empty( $value ) ) {
+		return true;
+	}
+
+	return false;
+}

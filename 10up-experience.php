@@ -324,6 +324,11 @@ add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' )
  * @return void
  */
 function restrict_rest_api_setting() {
+	// If the restriction has been lifted on the code level, don't display a UI option
+	if ( ! has_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' ) ) {
+		return false;
+	}
+
 	$settings_args = array(
 		'type' => 'boolean',
 		'sanitize_callback' => __NAMESPACE__ . '\sanitize_checkbox_bool',

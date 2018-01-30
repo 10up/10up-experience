@@ -335,7 +335,7 @@ function restrict_rest_api_setting() {
 	);
 
 	register_setting( 'reading', 'tenup_restrict_rest_api',  $settings_args );
-	add_settings_field( 'tenup_restrict_rest_api', __( 'Restrict REST API', 'tenup' ), __NAMESPACE__ . '\restrict_rest_api_ui', 'reading' );
+	add_settings_field( 'tenup_restrict_rest_api', __( 'REST API Access', 'tenup' ), __NAMESPACE__ . '\restrict_rest_api_ui', 'reading' );
 }
 add_action( 'admin_init', __NAMESPACE__ . '\restrict_rest_api_setting' );
 
@@ -348,8 +348,9 @@ function restrict_rest_api_ui() {
 	$restrict = get_option( 'tenup_restrict_rest_api', true );
 ?>
 <fieldset>
-	<legend class="screen-reader-text"><?php _e( 'Restrict REST API', 'tenup' ); ?></legend>
-	<label for="restrict-rest-api"><input id="restrict-rest-api" name="tenup_restrict_rest_api" type="checkbox" value="y"<?php checked( $restrict ); ?> /> <?php _e( 'Restrict REST API access to logged-in users only.', 'tenup' ); ?>
+	<legend class="screen-reader-text"><?php _e( 'REST API Access', 'tenup' ); ?></legend>
+	<p><label for="restrict-rest-api-y"><input id="restrict-rest-api-y" name="tenup_restrict_rest_api" type="radio" value="1"<?php checked( $restrict ); ?> /> <?php _e( 'Restrict REST API access to authenticated users', 'tenup' ); ?></label></p>
+	<p><label for="restrict-rest-api-n"><input id="restrict-rest-api-n" name="tenup_restrict_rest_api" type="radio" value="0"<?php checked( $restrict, false ); ?> /> <?php _e( 'Allow public access to the REST API', 'tenup' ); ?></label></p>
 </fieldset>
 <?php
 }

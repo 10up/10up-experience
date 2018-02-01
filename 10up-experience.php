@@ -303,18 +303,24 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 
 /**
  * Return a 403 status and corresponding error for unauthed REST API access.
- * @param  WP_Error|null|bool $auth WP_Error if authentication error, null if authentication
- *                                  method wasn't used, true if authentication succeeded.
+ * @param  WP_Error|null|bool $result Error from another authentication handler,
+ *                                    null if we should handle it, or another value
+ *                                    if not.
  * @return WP_Error|null|bool
  */
-function restrict_rest_api( $auth ) {
+function restrict_rest_api( $result ) {
+	// Respect other handlers
+	if ( null !== $result ) {
+		return $result;
+	}
+
 	$restrict = get_option( 'tenup_restrict_rest_api', true );
 
 	if ( filter_var( $restrict, FILTER_VALIDATE_BOOLEAN ) && ! is_user_logged_in() ) {
 		return new \WP_Error( 'rest_api_restricted', __( 'Authentication Required', 'tenup' ), array( "status" => 403 ) );
 	}
 
-	return $auth;
+	return $result;
 }
 add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' );
 

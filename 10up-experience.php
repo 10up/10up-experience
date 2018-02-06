@@ -1,6 +1,12 @@
 <?php
 /**
- * 10up Experience MU plugin
+ * Plugin Name: 10up Experience
+ * Description: Bringing a little more of the joy of 10up into your WordPress dashboard experience.
+ * Version:     1.0
+ * Author:      10up
+ * Author URI:  https://10up.com
+ * License:     GPLv2 or later
+ * Text Domain: tenup
  */
 
 namespace tenup;

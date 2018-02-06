@@ -8,16 +8,16 @@ namespace tenup;
 function admin_enqueue_scripts() {
 	global $pagenow;
 
-	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', __FILE__ ) );
+	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
 
 	if ( 'admin.php' === $pagenow && ! empty( $_GET['page'] ) && ( '10up-about' === $_GET['page'] || '10up-team' === $_GET['page'] || '10up-support' === $_GET['page'] ) ) {
-		wp_enqueue_style( '10up-about', plugins_url( '/assets/css/tenup-pages.css', __FILE__ ) );
+		wp_enqueue_style( '10up-about', plugins_url( '/assets/css/tenup-pages.css', dirname( __FILE__ ) ) );
 	}
 }
 add_action( 'admin_enqueue_scripts', 'tenup\admin_enqueue_scripts' );
 
 function enqueue_scripts() {
-	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', __FILE__ ) );
+	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
 }
 add_action( 'wp_enqueue_scripts', 'tenup\enqueue_scripts' );
 

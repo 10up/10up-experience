@@ -63,12 +63,12 @@ function about_screen() {
 
 		<p><?php esc_html_e( "We’re a group of people built to solve problems; made to create; wired to delight. From beautiful pixels to beautiful code, we constantly improve the things around us, applying our passions to our clients’ projects and goals. Sometimes instead of resting, always instead of just getting it done.", 'tenup' ); ?></p>
 
-		<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/10up-image-1.jpg' ) ); ?>" alt="">
+		<img src="<?php echo esc_url( plugins_url( '/assets/img/10up-image-1.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
 
 		<h3><?php esc_html_e( "Building Without Boundaries", 'tenup' ); ?></h3>
 		<p><?php esc_html_e( "The best talent isn’t found in a single zip code, and an international clientele requires a global perspective. From New York City to Salt Spring Island, our distributed model empowers us to bring in the best strategists, designers, and engineers, wherever they may be found. As of September 2014, 10up has over 80 full time staff; veterans of commercial agencies, universities, start ups, non profits, and international technology brands, our team has an uncommon breadth.", 'tenup' ); ?></p>
 
-		<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/10up-image-2.jpg' ) ); ?>" alt="">
+		<img src="<?php echo esc_url( plugins_url( '/assets/img/10up-image-2.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
 
 		<h3><?php esc_html_e( "Full Service Reach", 'tenup' ); ?></h3>
 
@@ -94,22 +94,22 @@ function team_screen() {
 
 		<div class="section-team-leadership">
 			<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jake.jpg' ) ); ?>" alt="">
+				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/jake.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
 				<span>Jake&nbsp;Goldman<em><?php esc_html_e( "President &amp; Founder", 'tenup' ); ?></em></span>
 			</a>
 
 			<a href="http://10up.com/about/#employee-john-eckman" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/john.jpg' ) ); ?>" alt="">
+				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/john.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
 				<span>John&nbsp;Eckman<em><?php esc_html_e( "Chief Executive Officer", 'tenup' ); ?></em></span>
 			</a>
 
 			<a href="http://10up.com/about/#employee-jess-jurick" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/jess.jpg' ) ); ?>" alt="">
+				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/jess.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
 				<span>Jess&nbsp;Jurick<em><?php esc_html_e( "Vice President, Consulting Services", 'tenup' ); ?></em></span>
 			</a>
 
 			<a href="http://10up.com/about/#employee-vasken-hauri" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( content_url( 'mu-plugins/10up-experience/assets/img/team/vasken.jpg' ) ); ?>" alt="">
+				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/vasken.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
 				<span>Vasken&nbsp;Hauri<em><?php esc_html_e( "Vice President, Engineering", 'tenup' ); ?></em></span>
 			</a>
 		</div>

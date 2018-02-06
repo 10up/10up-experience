@@ -1,0 +1,85 @@
+<?php
+namespace tenup;
+
+/**
+ * Start plugin customizations
+ */
+function plugin_customizations() {
+
+	/**
+	 * Stream
+	 */
+	if ( is_plugin_active( 'stream/stream.php' ) ) {
+
+		add_action( 'admin_init', function() {
+			remove_menu_page( 'wp_stream' );
+		}, 11 );
+	}
+}
+add_action( 'admin_init', 'tenup\plugin_customizations' );
+
+/**
+ * Add 10up suggested tab to plugins install screen
+ *
+ * @param array $tabs
+ * @return mixed
+ */
+function tenup_plugin_install_link( $tabs ) {
+	$new_tabs = array(
+		'tenup' => esc_html__( '10up Suggested', 'tenup' ),
+	);
+
+	foreach ( $tabs as $key => $value ) {
+		$new_tabs[$key] = $value;
+	}
+
+	return $new_tabs;
+}
+add_action( 'install_plugins_tabs', 'tenup\tenup_plugin_install_link' );
+
+/**
+ * Filter the arguments passed to plugins_api() for 10up suggested page
+ *
+ * @param array $args
+ * @return array
+ */
+function filter_install_plugin_args( $args ) {
+	$args = array(
+		'page' => 1,
+		'per_page' => 60,
+		'fields' => array(
+			'last_updated' => true,
+			'active_installs' => true,
+			'icons' => true
+		),
+		'locale' => get_user_locale(),
+		'user' => '10up',
+	);
+
+	return $args;
+}
+add_filter( 'install_plugins_table_api_args_tenup', 'tenup\filter_install_plugin_args' );
+
+/**
+ * Setup 10up suggested plugin display table
+ */
+add_action( 'install_plugins_tenup', 'display_plugins_table' );
+
+/**
+ * Warn user when installing non-10up suggested plugins
+ */
+function plugin_install_warning() {
+	?>
+	<div class="tenup-plugin-install-warning updated">
+		<p>
+			<?php printf( __( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ), esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) ) ); ?>
+		</p>
+	</div>
+	<?php
+}
+add_action( 'install_plugins_pre_featured', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_popular', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_favorites', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_beta', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_search', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_dashboard', 'tenup\plugin_install_warning' );

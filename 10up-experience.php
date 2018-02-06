@@ -322,7 +322,8 @@ function restrict_rest_api( $result ) {
 
 	return $result;
 }
-add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' );
+// Make sure this runs somewhat late but before core's cookie auth at 100
+add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api', 99 );
 
 /**
  * Register restrict REST API setting.

@@ -15,6 +15,36 @@ function register_admin_pages() {
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
 
 /**
+ * Ensure our admin pages get a proper title.
+ *
+ * Because of the empty page parent, the title doesn't get output as expected.
+ *
+ * @param  string $admin_title The page title, with extra context added.
+ * @param  string $title       The original page title.
+ * @return string              The altered page title.
+ */
+function admin_title_fix( $admin_title, $title ) {
+	$screen = get_current_screen();
+
+	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
+
+	if ( 0 !== strpos( $screen->base, 'admin_page_10up-') ) {
+		return $admin_title;
+	}
+
+	if ( 'admin_page_10up-about' === $screen->base ) {
+		$admin_title = esc_html__( 'About 10up', 'tenup' ) . $admin_title;
+	} elseif ( 'admin_page_10up-team' === $screen->base ) {
+		$admin_title = esc_html__( 'Team 10up', 'tenup' ) . $admin_title;
+	} elseif ( 'admin_page_10up-support' === $screen->base ) {
+		$admin_title = esc_html__( 'Support', 'tenup' ) . $admin_title;
+	}
+
+	return $admin_title;
+}
+add_filter( 'admin_title', __NAMESPACE__ . '\admin_title_fix', 10, 2 );
+
+/**
  * Output about screens
  */
 function main_screen() {

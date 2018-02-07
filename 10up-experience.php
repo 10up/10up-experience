@@ -7,6 +7,7 @@
  * Author URI:  https://10up.com
  * License:     GPLv2 or later
  * Text Domain: tenup
+ * Domain Path: /languages/
  */
 
 require_once __DIR__ . '/includes/admin.php';

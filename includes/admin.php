@@ -2,6 +2,13 @@
 namespace tenup;
 
 /**
+ * Disable plugin/theme editor
+ */
+if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+	define( 'DISALLOW_FILE_EDIT', true );
+}
+
+/**
  * Setup scripts for customized admin experience
  */
 function admin_enqueue_scripts() {
@@ -30,10 +37,3 @@ function filter_admin_footer_text() {
 	return $new_text;
 }
 add_filter( 'admin_footer_text', __NAMESPACE__ . '\filter_admin_footer_text' );
-
-/**
- * Disable plugin/theme editor
- */
-if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
-	define( 'DISALLOW_FILE_EDIT', true );
-}

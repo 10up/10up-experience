@@ -83,3 +83,24 @@ add_action( 'install_plugins_pre_favorites', __NAMESPACE__ . '\plugin_install_wa
 add_action( 'install_plugins_pre_beta', __NAMESPACE__ . '\plugin_install_warning' );
 add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\plugin_install_warning' );
 add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\plugin_install_warning' );
+
+/**
+ * Inject a small script for an AYS on plugin deactivation.
+ *
+ * @return void
+ */
+function plugin_deactivation_warning() {
+	$message = __( 'Warning: This plugin provides additional enterprise-grade protective measures such as REST API security and disabling file editing in the dashboard.\n\nAre you sure you want to deactivate?', 'tenup' );
+?>
+<script type="text/javascript">
+jQuery( document ).ready( function( $ ) {
+	$( '.wp-list-table.plugins tr[data-slug="10up-experience"] .deactivate' ).on( 'click', function( e ) {
+		if ( ! window.confirm( '<?php esc_html_e( $message ); ?>' ) ) {
+			e.preventDefault();
+		}
+	});
+});
+</script>
+<?php
+}
+add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warning' );

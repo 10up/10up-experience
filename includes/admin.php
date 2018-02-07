@@ -1,16 +1,15 @@
 <?php
 namespace tenup;
 
-
 /**
  * Setup scripts for customized admin experience
  */
 function admin_enqueue_scripts() {
-	global $pagenow;
+	$screen = get_current_screen();
 
 	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
 
-	if ( 'admin.php' === $pagenow && ! empty( $_GET['page'] ) && ( '10up-about' === $_GET['page'] || '10up-team' === $_GET['page'] || '10up-support' === $_GET['page'] ) ) {
+	if ( 0 === strpos( $screen->base, 'admin_page_10up-') ) {
 		wp_enqueue_style( '10up-about', plugins_url( '/assets/css/tenup-pages.css', dirname( __FILE__ ) ) );
 	}
 }

@@ -5,14 +5,14 @@ namespace tenup;
  * Register admin pages with output callbacks
  */
 function register_admin_pages() {
-	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', 'tenup\main_screen' );
-	add_submenu_page( null, esc_html__( 'Team 10up', 'tenup' ), esc_html__( 'Team 10up', 'tenup' ), 'edit_posts', '10up-team', 'tenup\main_screen' );
+	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', __NAMESPACE__ . '\main_screen' );
+	add_submenu_page( null, esc_html__( 'Team 10up', 'tenup' ), esc_html__( 'Team 10up', 'tenup' ), 'edit_posts', '10up-team', __NAMESPACE__ . '\main_screen' );
 
 	if ( defined( 'TENUP_SUPPORT' ) && 3 === TENUP_SUPPORT ) {
-		add_submenu_page( null, esc_html__( 'Support', 'tenup' ), esc_html__( 'Support', 'tenup' ), 'edit_posts', '10up-support', 'tenup\main_screen' );
+		add_submenu_page( null, esc_html__( 'Support', 'tenup' ), esc_html__( 'Support', 'tenup' ), 'edit_posts', '10up-support', __NAMESPACE__ . '\main_screen' );
 	}
 }
-add_action( 'admin_menu', 'tenup\register_admin_pages' );
+add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
 
 /**
  * Output about screens

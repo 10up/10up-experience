@@ -16,7 +16,7 @@ function plugin_customizations() {
 		}, 11 );
 	}
 }
-add_action( 'admin_init', 'tenup\plugin_customizations' );
+add_action( 'admin_init', __NAMESPACE__ . '\plugin_customizations' );
 
 /**
  * Add 10up suggested tab to plugins install screen
@@ -35,7 +35,7 @@ function tenup_plugin_install_link( $tabs ) {
 
 	return $new_tabs;
 }
-add_action( 'install_plugins_tabs', 'tenup\tenup_plugin_install_link' );
+add_action( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link' );
 
 /**
  * Filter the arguments passed to plugins_api() for 10up suggested page
@@ -58,7 +58,7 @@ function filter_install_plugin_args( $args ) {
 
 	return $args;
 }
-add_filter( 'install_plugins_table_api_args_tenup', 'tenup\filter_install_plugin_args' );
+add_filter( 'install_plugins_table_api_args_tenup', __NAMESPACE__ . '\filter_install_plugin_args' );
 
 /**
  * Setup 10up suggested plugin display table
@@ -77,9 +77,9 @@ function plugin_install_warning() {
 	</div>
 	<?php
 }
-add_action( 'install_plugins_pre_featured', 'tenup\plugin_install_warning' );
-add_action( 'install_plugins_pre_popular', 'tenup\plugin_install_warning' );
-add_action( 'install_plugins_pre_favorites', 'tenup\plugin_install_warning' );
-add_action( 'install_plugins_pre_beta', 'tenup\plugin_install_warning' );
-add_action( 'install_plugins_pre_search', 'tenup\plugin_install_warning' );
-add_action( 'install_plugins_pre_dashboard', 'tenup\plugin_install_warning' );
+add_action( 'install_plugins_pre_featured', __NAMESPACE__ . '\plugin_install_warning' );
+add_action( 'install_plugins_pre_popular', __NAMESPACE__ . '\plugin_install_warning' );
+add_action( 'install_plugins_pre_favorites', __NAMESPACE__ . '\plugin_install_warning' );
+add_action( 'install_plugins_pre_beta', __NAMESPACE__ . '\plugin_install_warning' );
+add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\plugin_install_warning' );
+add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\plugin_install_warning' );

@@ -26,16 +26,6 @@ function add_about_menu( $wp_admin_bar ) {
 				'title' => esc_html__( 'About 10up', 'tenup' ),
 			),
 		) );
-
-		$wp_admin_bar->add_menu( array(
-			'id' => '10up-team',
-			'parent' => '10up',
-			'title' => esc_html__( 'Team', 'tenup' ),
-			'href' => esc_url( admin_url( 'admin.php?page=10up-team' ) ),
-			'meta' => array(
-				'title' => esc_html__( 'Team', 'tenup' ),
-			),
-		) );
 	}
 
 }

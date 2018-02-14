@@ -30,7 +30,7 @@ function tenup_plugin_install_link( $tabs ) {
 	);
 
 	foreach ( $tabs as $key => $value ) {
-		$new_tabs[$key] = $value;
+		$new_tabs[ $key ] = $value;
 	}
 
 	return $new_tabs;
@@ -45,15 +45,15 @@ add_action( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link'
  */
 function filter_install_plugin_args( $args ) {
 	$args = array(
-		'page' => 1,
+		'page'     => 1,
 		'per_page' => 60,
-		'fields' => array(
-			'last_updated' => true,
+		'fields'   => array(
+			'last_updated'    => true,
 			'active_installs' => true,
-			'icons' => true
+			'icons'           => true,
 		),
-		'locale' => get_user_locale(),
-		'user' => '10up',
+		'locale'   => get_user_locale(),
+		'user'     => '10up',
 	);
 
 	return $args;
@@ -72,7 +72,13 @@ function plugin_install_warning() {
 	?>
 	<div class="tenup-plugin-install-warning updated">
 		<p>
-			<?php printf( __( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ), esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) ) ); ?>
+			<?php
+				printf(
+					// translators: %s is a link to the 10up Suggested plugins screen
+					__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ),
+					esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) )
+				);
+			?>
 		</p>
 	</div>
 	<?php

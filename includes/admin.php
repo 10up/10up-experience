@@ -16,7 +16,7 @@ function admin_enqueue_scripts() {
 
 	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
 
-	if ( 0 === strpos( $screen->base, 'admin_page_10up-') ) {
+	if ( 0 === strpos( $screen->base, 'admin_page_10up-' ) ) {
 		wp_enqueue_style( '10up-about', plugins_url( '/assets/css/tenup-pages.css', dirname( __FILE__ ) ) );
 	}
 }

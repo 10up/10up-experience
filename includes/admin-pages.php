@@ -6,7 +6,6 @@ namespace tenup;
  */
 function register_admin_pages() {
 	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', __NAMESPACE__ . '\main_screen' );
-	add_submenu_page( null, esc_html__( 'Team 10up', 'tenup' ), esc_html__( 'Team 10up', 'tenup' ), 'edit_posts', '10up-team', __NAMESPACE__ . '\main_screen' );
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
 
@@ -28,10 +27,9 @@ function admin_title_fix( $admin_title, $title ) {
 		return $admin_title;
 	}
 
+	// There were previously multiple 10up pages - leave this basic structure here in case we return to that later.
 	if ( 'admin_page_10up-about' === $screen->base ) {
 		$admin_title = esc_html__( 'About 10up', 'tenup' ) . $admin_title;
-	} elseif ( 'admin_page_10up-team' === $screen->base ) {
-		$admin_title = esc_html__( 'Team 10up', 'tenup' ) . $admin_title;
 	}
 
 	return $admin_title;
@@ -43,101 +41,59 @@ add_filter( 'admin_title', __NAMESPACE__ . '\admin_title_fix', 10, 2 );
  */
 function main_screen() {
 	?>
-	<div class="wrap about-wrap">
+	<div class="wrap about-wrap full-width-layout">
 
-		<h1><?php esc_html_e( 'Welcome to 10up', 'tenup' ); ?></h1>
+		<h1><?php esc_html_e( 'About 10up', 'tenup' ); ?></h1>
 
-		<div class="about-text"><?php esc_html_e( 'We make web publishing easy. Maybe even fun.', 'tenup' ); ?></div>
+		<div class="about-text">
+			<?php printf(
+				// translators: %s is a link to 10up.com
+				__( 'We’re a full-service digital agency making a better web with finely crafted websites, apps, and tools that drive business results. <a href="%s" target="_blank">Learn more →</a>', 'tenup' ),
+				esc_url( 'https://10up.com' )
+			); ?>
+			</div>
 
 		<a class="tenup-badge" href="http://10up.com" target="_blank"><span aria-label="<?php esc_html_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
 
-		<h2 class="nav-tab-wrapper">
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-about' ) ); ?>" class="nav-tab <?php if ( '10up-about' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'About Us', 'tenup' ); ?></a>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="nav-tab <?php if ( '10up-team' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Our Team', 'tenup' ); ?></a>
-		</h2>
+		<div class="feature-section one-col">
+			<h2><?php esc_html_e( "Thanks for working with team 10up!", 'tenup' ); ?></h2>
 
-		<div class="section-wrapper">
-			<?php if ( '10up-about' === $_GET['page'] ) : ?>
-				<?php about_screen(); ?>
-			<?php else : ?>
-				<?php team_screen(); ?>
-			<?php endif; ?>
+			<p><?php esc_html_e( 'You have the 10up Experience plugin installed, which typically means 10up built or is supporting your site. The Experience plugin configures WordPress to better protect and inform our clients, including security precautions like blocking unauthenticated access to your content over the REST API, safety measures like preventing code-level changes from being made inside the admin, and some other resources, including a list of vetted plugins we recommend for common use cases and information about us.', 'tenup' ); ?></p>
+		</div>
+
+		<div class="feature-section one-col">
+			<h3><?php esc_html_e( "Making a Better Web", 'tenup' ); ?></h3>
+
+				<p><?php esc_html_e( "We make the internet better with consultative creative and engineering services, innovative tools, and dependable products that take the pain out of content creation and management, in service of digital experiences that advance business and marketing objectives. We’re a group of people built to solve problems, made to create, wired to delight.", 'tenup' ); ?></p>
+
+				<p><?php esc_html_e( "A customer-centric service model that covers every base, unrivaled leadership and investment in open platforms and tools for digital makers and content creators, and a forward-looking remote work culture make for a refreshing agency experience.", 'tenup' ); ?></p>
+		</div>
+
+		<div class="full-width-img">
+			<img src="<?php echo esc_url( plugins_url( '/assets/img/10up-image-1.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
+		</div>
+
+		<div class="feature-section one-col">
+			<h3><?php esc_html_e( "Building Without Boundaries", 'tenup' ); ?></h3>
+			<p><?php esc_html_e( "The best talent isn’t found in a single zip code, and an international clientele requires a global perspective. From New York City, to the wilds of Idaho, to a dozen countries across Europe, our model empowers us to bring in the best strategists, designers, and engineers, wherever they may live. Veterans of commercial agencies, universities, start ups, nonprofits, and international technology brands, our team has an uncommon breadth.", 'tenup' ); ?></p>
+		</div>
+
+		<div class="full-width-img">
+			<img src="<?php echo esc_url( plugins_url( '/assets/img/10up-image-2.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
+		</div>
+
+		<div class="feature-section one-col">
+			<h3><?php esc_html_e( "Full Service Reach", 'tenup' ); ?></h3>
+
+			<p><strong><?php esc_html_e( "Strategy:", 'tenup' ); ?></strong> <?php esc_html_e( "Should I build an app or a responsive website? Am I maximizing my ad revenue? Why don’t my visitors click “sign up”? How many 10uppers does it take to screw in a website? We don’t just build: we figure out the plan.", 'tenup' ); ?></p>
+
+			<p><strong><?php esc_html_e( "Design:", 'tenup' ); ?></strong> <?php esc_html_e( "Inspiring design brings the functional and the beautiful; a delightful blend of art and engineering. We focus on the audience whimsy and relationship between brand and consumer, delivering design that works.", 'tenup' ); ?></p>
+
+			<p><strong><?php esc_html_e( "Engineering:", 'tenup' ); ?></strong> <?php esc_html_e( "Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.", 'tenup' ); ?></p>
+
+			<p class="center"><a href="https://10up.com" class="button button-hero button-primary" target="_blank"><?php esc_html_e( "Learn more about 10up", 'tenup' ); ?></a></p>
 		</div>
 		<hr>
 	</div>
 <?php
-}
-
-/**
- * Output HTML for about screen
- */
-function about_screen() {
-	?>
-	<div class="section section-about">
-		<h2><?php esc_html_e( "We make web publishing and content management easy – maybe even fun.", 'tenup' ); ?></h2>
-
-		<p><?php esc_html_e( "We make content management simple with our premiere web design &amp; development consulting services, by contributing to open platforms like WordPress, and by providing tools and products that make web publishing a cinch.", 'tenup' ); ?></p>
-
-		<p><?php esc_html_e( "We’re a group of people built to solve problems; made to create; wired to delight. From beautiful pixels to beautiful code, we constantly improve the things around us, applying our passions to our clients’ projects and goals. Sometimes instead of resting, always instead of just getting it done.", 'tenup' ); ?></p>
-
-		<img src="<?php echo esc_url( plugins_url( '/assets/img/10up-image-1.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
-
-		<h3><?php esc_html_e( "Building Without Boundaries", 'tenup' ); ?></h3>
-		<p><?php esc_html_e( "The best talent isn’t found in a single zip code, and an international clientele requires a global perspective. From New York City to Salt Spring Island, our distributed model empowers us to bring in the best strategists, designers, and engineers, wherever they may be found. As of September 2014, 10up has over 80 full time staff; veterans of commercial agencies, universities, start ups, non profits, and international technology brands, our team has an uncommon breadth.", 'tenup' ); ?></p>
-
-		<img src="<?php echo esc_url( plugins_url( '/assets/img/10up-image-2.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
-
-		<h3><?php esc_html_e( "Full Service Reach", 'tenup' ); ?></h3>
-
-		<p><strong><?php esc_html_e( "Strategy:", 'tenup' ); ?></strong> <?php esc_html_e( "Should I build an app or a responsive website? Am I maximizing my ad revenue? Why don’t my visitors click “sign up”? How many 10uppers does it take to screw in a website? We don’t just build: we figure out the plan.", 'tenup' ); ?></p>
-
-		<p><strong><?php esc_html_e( "Design:", 'tenup' ); ?></strong> <?php esc_html_e( "Inspiring design brings the functional and the beautiful; a delightful blend of art and engineering. We focus on the audience whimsy and relationship between brand and consumer, delivering design that works.", 'tenup' ); ?></p>
-
-		<p><strong><?php esc_html_e( "Engineering:", 'tenup' ); ?></strong> <?php esc_html_e( "Please. Look under the hood. Our team of sought after international speakers provides expert code review for enterprise platforms like WordPress.com VIP. Because the best website you have is the one that’s up.", 'tenup' ); ?></p>
-
-		<p class="center"><a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="button button-large button-primary"><?php esc_html_e( "Learn more about 10up", 'tenup' ); ?></a></p>
-	</div>
-	<?php
-}
-
-/**
- * Output HTML for team screen
- */
-function team_screen() {
-	?>
-	<div class="section section-team">
-
-		<h2><?php esc_html_e( "Meet our executives", 'tenup' ); ?></h2>
-
-		<div class="section-team-leadership">
-			<a href="http://10up.com/about/#employee-jake-goldman" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/jake.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
-				<span>Jake&nbsp;Goldman<em><?php esc_html_e( "President &amp; Founder", 'tenup' ); ?></em></span>
-			</a>
-
-			<a href="http://10up.com/about/#employee-john-eckman" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/john.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
-				<span>John&nbsp;Eckman<em><?php esc_html_e( "Chief Executive Officer", 'tenup' ); ?></em></span>
-			</a>
-
-			<a href="http://10up.com/about/#employee-jess-jurick" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/jess.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
-				<span>Jess&nbsp;Jurick<em><?php esc_html_e( "Vice President, Consulting Services", 'tenup' ); ?></em></span>
-			</a>
-
-			<a href="http://10up.com/about/#employee-vasken-hauri" class="employee-link" target="_blank">
-				<img src="<?php echo esc_url( plugins_url( '/assets/img/team/vasken.jpg', dirname( __FILE__ ) ) ); ?>" alt="">
-				<span>Vasken&nbsp;Hauri<em><?php esc_html_e( "Vice President, Engineering", 'tenup' ); ?></em></span>
-			</a>
-		</div>
-
-		<p><?php esc_html_e( "Influencing communities around the world, our team leads meetups, speaks at local events, and visits clients wherever they may be. A modest studio in Portland, Oregon hosts speakers, out of town guests, and the occasional workshop.", 'tenup' ); ?></p>
-
-		<p><?php esc_html_e( "Independence from traditional “brick and mortar” offices, freedom from commutes, and flexible schedules across nearly a dozen time zones means our team works when and where they’re most inspired, available when our clients need them.", 'tenup' ); ?></p>
-
-		<a href="http://10up.com/about/" class="section-team-header" target="_blank">
-			<h2><?php esc_html_e( "Meet the rest of our team", 'tenup' ); ?></h2>
-		</a>
-	</div>
-	<?php
 }

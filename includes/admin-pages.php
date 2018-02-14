@@ -7,10 +7,6 @@ namespace tenup;
 function register_admin_pages() {
 	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', __NAMESPACE__ . '\main_screen' );
 	add_submenu_page( null, esc_html__( 'Team 10up', 'tenup' ), esc_html__( 'Team 10up', 'tenup' ), 'edit_posts', '10up-team', __NAMESPACE__ . '\main_screen' );
-
-	if ( defined( 'TENUP_SUPPORT' ) && 3 === TENUP_SUPPORT ) {
-		add_submenu_page( null, esc_html__( 'Support', 'tenup' ), esc_html__( 'Support', 'tenup' ), 'edit_posts', '10up-support', __NAMESPACE__ . '\main_screen' );
-	}
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
 
@@ -36,8 +32,6 @@ function admin_title_fix( $admin_title, $title ) {
 		$admin_title = esc_html__( 'About 10up', 'tenup' ) . $admin_title;
 	} elseif ( 'admin_page_10up-team' === $screen->base ) {
 		$admin_title = esc_html__( 'Team 10up', 'tenup' ) . $admin_title;
-	} elseif ( 'admin_page_10up-support' === $screen->base ) {
-		$admin_title = esc_html__( 'Support', 'tenup' ) . $admin_title;
 	}
 
 	return $admin_title;
@@ -60,18 +54,11 @@ function main_screen() {
 		<h2 class="nav-tab-wrapper">
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-about' ) ); ?>" class="nav-tab <?php if ( '10up-about' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'About Us', 'tenup' ); ?></a>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-team' ) ); ?>" class="nav-tab <?php if ( '10up-team' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Our Team', 'tenup' ); ?></a>
-			<?php if ( defined( 'TENUP_SUPPORT' ) && 3 === TENUP_SUPPORT ) : ?>
-				<a href="<?php echo esc_url( admin_url( 'admin.php?page=10up-support' ) ); ?>" class="nav-tab <?php if ( '10up-support' === $_GET['page'] ) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e( 'Support', 'tenup' ); ?></a>
-			<?php endif; ?>
 		</h2>
 
 		<div class="section-wrapper">
 			<?php if ( '10up-about' === $_GET['page'] ) : ?>
 				<?php about_screen(); ?>
-			<?php elseif ( '10up-support' === $_GET['page'] ) : ?>
-				<div class="section section-support">
-					<?php get_template_part( 'tenup', 'support' ); ?>
-				</div>
 			<?php else : ?>
 				<?php team_screen(); ?>
 			<?php endif; ?>

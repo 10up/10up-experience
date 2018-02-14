@@ -36,18 +36,6 @@ function add_about_menu( $wp_admin_bar ) {
 				'title' => esc_html__( 'Team', 'tenup' ),
 			),
 		) );
-
-		if ( defined( 'TENUP_SUPPORT' ) && 3 === TENUP_SUPPORT ) {
-			$wp_admin_bar->add_menu( array(
-				'id' => '10up-support',
-				'parent' => '10up',
-				'title' => esc_html__( 'Support', 'tenup' ),
-				'href' => esc_url( admin_url( 'admin.php?page=10up-support' ) ),
-				'meta' => array(
-					'title' => esc_html__( 'Support', 'tenup' ),
-				),
-			) );
-		}
 	}
 
 }

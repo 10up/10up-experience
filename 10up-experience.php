@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: 10up Experience
- * Description: Bringing a little more of the joy of 10up into your WordPress dashboard experience.
+ * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
  * Version:     1.0
  * Author:      10up
  * Author URI:  https://10up.com

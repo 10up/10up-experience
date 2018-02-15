@@ -91,6 +91,28 @@ add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\plugin_install_warni
 add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\plugin_install_warning' );
 
 /**
+ * Add a "learn more" link to the plugin row that points to the admin page.
+ *
+ * @param array  $plugin_meta An array of the plugin's metadata,
+ *                            including the version, author,
+ *                            author URI, and plugin URI.
+ * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
+ * @param array  $plugin_data An array of plugin data.
+ * @param string $status      Status of the plugin. Defaults are 'All', 'Active',
+ *                            'Inactive', 'Recently Activated', 'Upgrade', 'Must-Use',
+ *                            'Drop-ins', 'Search'.
+ */
+function plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
+	if ( '10up-experience/10up-experience.php' !== $plugin_file ) {
+		return $plugin_meta;
+	}
+
+	$plugin_meta[] = '<a href="' . esc_url( admin_url( 'admin.php?page=10up-about' ) ) . '">' . esc_html__( 'Learn more', 'tenup' ) . '</a>';
+	return $plugin_meta;
+}
+add_filter( 'plugin_row_meta', __NAMESPACE__ . '\plugin_meta', 100, 4 );
+
+/**
  * Inject a small script for an AYS on plugin deactivation.
  *
  * @return void

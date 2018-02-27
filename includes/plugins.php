@@ -66,6 +66,13 @@ add_filter( 'install_plugins_table_api_args_tenup', __NAMESPACE__ . '\filter_ins
 add_action( 'install_plugins_tenup', 'display_plugins_table' );
 
 /**
+ * Add admin notice
+ */
+function add_admin_notice() {
+	add_action( 'admin_notices',  __NAMESPACE__ . '\plugin_install_warning' );
+}
+
+/**
  * Warn user when installing non-10up suggested plugins
  */
 function plugin_install_warning() {
@@ -83,13 +90,12 @@ function plugin_install_warning() {
 	</div>
 	<?php
 }
-add_action( 'install_plugins_pre_featured', __NAMESPACE__ . '\plugin_install_warning' );
-add_action( 'install_plugins_pre_popular', __NAMESPACE__ . '\plugin_install_warning' );
-add_action( 'install_plugins_pre_favorites', __NAMESPACE__ . '\plugin_install_warning' );
-add_action( 'install_plugins_pre_beta', __NAMESPACE__ . '\plugin_install_warning' );
-add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\plugin_install_warning' );
-add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\plugin_install_warning' );
-
+add_action( 'install_plugins_pre_featured', __NAMESPACE__ . '\add_admin_notice' );
+add_action( 'install_plugins_pre_popular', __NAMESPACE__ . '\add_admin_notice' );
+add_action( 'install_plugins_pre_favorites', __NAMESPACE__ . '\add_admin_notice' );
+add_action( 'install_plugins_pre_beta', __NAMESPACE__ . '\add_admin_notice' );
+add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\add_admin_notice' );
+add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\add_admin_notice' );
 /**
  * Add a "learn more" link to the plugin row that points to the admin page.
  *

@@ -58,7 +58,7 @@ function restrict_rest_api_setting() {
 	);
 
 	register_setting( 'reading', 'tenup_restrict_rest_api', $settings_args );
-	add_settings_field( 'tenup_restrict_rest_api', __( 'Public REST API Access', 'tenup' ), __NAMESPACE__ . '\restrict_rest_api_ui', 'reading' );
+	add_settings_field( 'tenup_restrict_rest_api', __( 'REST API Availability', 'tenup' ), __NAMESPACE__ . '\restrict_rest_api_ui', 'reading' );
 }
 add_action( 'admin_init', __NAMESPACE__ . '\restrict_rest_api_setting' );
 
@@ -71,10 +71,25 @@ function restrict_rest_api_ui() {
 	$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
 ?>
 <fieldset>
-	<legend class="screen-reader-text"><?php esc_html_e( 'Public REST API Access', 'tenup' ); ?></legend>
-	<p><label for="restrict-rest-api-all"><input id="restrict-rest-api-all" name="tenup_restrict_rest_api" type="radio" value="all"<?php checked( $restrict, 'all' ); ?> /> <?php esc_html_e( 'Restrict REST API access to authenticated users', 'tenup' ); ?></label></p>
-	<p><label for="restrict-rest-api-users"><input id="restrict-rest-api-users" name="tenup_restrict_rest_api" type="radio" value="users"<?php checked( $restrict, 'users' ); ?> /> <?php esc_html_e( 'Restrict access to the users endpoint to authenticated users', 'tenup' ); ?></label></p>
-	<p><label for="restrict-rest-api-n"><input id="restrict-rest-api-n" name="tenup_restrict_rest_api" type="radio" value="none"<?php checked( $restrict, 'none' ); ?> /> <?php esc_html_e( 'Allow public access to the REST API', 'tenup' ); ?></label></p>
+	<legend class="screen-reader-text"><?php esc_html_e( 'REST API Availability', 'tenup' ); ?></legend>
+	<p><label for="restrict-rest-api-all">
+		<input id="restrict-rest-api-all" name="tenup_restrict_rest_api" type="radio" value="all"<?php checked( $restrict, 'all' ); ?> />
+		<?php esc_html_e( 'Restrict all access to authenticated users', 'tenup' ); ?>
+	</label></p>
+	<p><label for="restrict-rest-api-users">
+		<input id="restrict-rest-api-users" name="tenup_restrict_rest_api" type="radio" value="users"<?php checked( $restrict, 'users' ); ?> />
+		<?php
+			printf(
+				// translators: %s is a link to the developer reference for the users endpoint
+				__( "Restrict access to the <code><a href='%s'>users</a></code> endpoint to authenticated users", 'tenup' ),
+				esc_url( 'https://developer.wordpress.org/rest-api/reference/users/' )
+			);
+		?>
+	</label></p>
+	<p><label for="restrict-rest-api-n">
+		<input id="restrict-rest-api-n" name="tenup_restrict_rest_api" type="radio" value="none"<?php checked( $restrict, 'none' ); ?> />
+		<?php esc_html_e( 'Publicly accessible', 'tenup' ); ?>
+	</label></p>
 </fieldset>
 <?php
 }

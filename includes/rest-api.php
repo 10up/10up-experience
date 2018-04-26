@@ -16,24 +16,8 @@ function restrict_rest_api( $result ) {
 
 	$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
 
-	if ( 'none' === $restrict ) {
-		return $result;
-	}
-
-	if ( ! user_can_access_rest_api() ) {
-		if ( 'users' === $restrict ) {
-			add_filter( 'rest_endpoints', function( $endpoints ) {
-				$keys = preg_grep( '/\/wp\/v2\/users\b/', array_keys( $endpoints ) );
-
-				foreach( $keys as $key ) {
-					unset( $endpoints[ $key ] );
-				}
-
-				return $endpoints;
-			} );
-		} else {
-			return new \WP_Error( 'rest_api_restricted', __( 'Authentication Required', 'tenup' ), array( 'status' => rest_authorization_required_code() ) );
-		}
+	if ( 'all' === $restrict && ! user_can_access_rest_api() ) {
+		return new \WP_Error( 'rest_api_restricted', __( 'Authentication Required', 'tenup' ), array( 'status' => rest_authorization_required_code() ) );
 	}
 
 	return $result;
@@ -42,13 +26,40 @@ function restrict_rest_api( $result ) {
 add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api', 99 );
 
 /**
+ * Remove user endpoints for unauthed users.
+ * @param  array $endpoints Array of endpoints
+ * @return array
+ */
+function restrict_user_endpoints( $endpoints ) {
+	$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
+
+	if ( 'none' === $restrict ) {
+		return $endpoints;
+	}
+
+	if ( ! user_can_access_rest_api() ) {
+		$keys = preg_grep( '/\/wp\/v2\/users\b/', array_keys( $endpoints ) );
+
+		foreach( $keys as $key ) {
+			unset( $endpoints[ $key ] );
+		}
+
+		return $endpoints;
+	}
+
+	return $endpoints;
+}
+add_filter( 'rest_endpoints', __NAMESPACE__ . '\restrict_user_endpoints' );
+
+/**
  * Register restrict REST API setting.
  *
  * @return void
  */
 function restrict_rest_api_setting() {
 	// If the restriction has been lifted on the code level, don't display a UI option
-	if ( ! has_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' ) ) {
+	if ( ! has_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api' )
+		|| ! has_filter( 'rest_endpoints', __NAMESPACE__ . '\restrict_user_endpoints' ) ) {
 		return false;
 	}
 

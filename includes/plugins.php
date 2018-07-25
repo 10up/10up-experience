@@ -9,7 +9,7 @@ function plugin_customizations() {
 	/**
 	 * Stream
 	 */
-	if ( is_plugin_active( 'stream/stream.php' ) ) {
+	if ( is_plugin_active( 'stream/stream.php' ) && apply_filters( 'tenup_experience_remove_stream_menu_item', true ) ) {
 
 		add_action( 'admin_init', function() {
 			remove_menu_page( 'wp_stream' );

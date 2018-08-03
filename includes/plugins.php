@@ -1,4 +1,10 @@
 <?php
+/**
+ * Plugin extension functionality
+ *
+ * @package  10up-experience
+ */
+
 namespace tenup;
 
 /**
@@ -9,11 +15,23 @@ function plugin_customizations() {
 	/**
 	 * Stream
 	 */
-	if ( is_plugin_active( 'stream/stream.php' ) ) {
+	
+	/**
+	 * Filters whether to remove stream menu item.
+	 * 
+	 * @since 1.1.0
+	 * 
+	 * @param bool $tenup_experience_remove_stream_menu_item Whether to remove menu item. Default is true.
+	 */
+	$remove_menu_item = apply_filters( 'tenup_experience_remove_stream_menu_item', true );
+	
+	if ( is_plugin_active( 'stream/stream.php' ) && $remove_menu_item ) {
 
-		add_action( 'admin_init', function() {
-			remove_menu_page( 'wp_stream' );
-		}, 11 );
+		add_action(
+			'admin_init', function() {
+				remove_menu_page( 'wp_stream' );
+			}, 11
+		);
 	}
 }
 add_action( 'admin_init', __NAMESPACE__ . '\plugin_customizations' );
@@ -21,7 +39,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\plugin_customizations' );
 /**
  * Add 10up suggested tab to plugins install screen
  *
- * @param array $tabs
+ * @param array $tabs Array of tabs.
  * @return mixed
  */
 function tenup_plugin_install_link( $tabs ) {
@@ -40,7 +58,7 @@ add_action( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link'
 /**
  * Filter the arguments passed to plugins_api() for 10up suggested page
  *
- * @param array $args
+ * @param array $args Plugin arguments passed to api.
  * @return array
  */
 function filter_install_plugin_args( $args ) {
@@ -118,17 +136,17 @@ add_filter( 'plugin_row_meta', __NAMESPACE__ . '\plugin_meta', 100, 4 );
  * @return void
  */
 function plugin_deactivation_warning() {
-	$message = __( 'Warning: This plugin provides additional enterprise-grade protective measures such as REST API security and disabling file editing in the dashboard.\n\nAre you sure you want to deactivate?', 'tenup' );
-?>
+	$message = esc_html__( 'Warning: This plugin provides additional enterprise-grade protective measures such as REST API security and disabling file editing in the dashboard.\n\nAre you sure you want to deactivate?', 'tenup' );
+	?>
 <script type="text/javascript">
 jQuery( document ).ready( function( $ ) {
 	$( '.wp-list-table.plugins tr[data-slug="10up-experience"] .deactivate' ).on( 'click', function( e ) {
-		if ( ! window.confirm( '<?php esc_html_e( $message ); ?>' ) ) {
+		if ( ! window.confirm( '<?php echo esc_js( $message ); ?>' ) ) {
 			e.preventDefault();
 		}
 	});
 });
 </script>
-<?php
+	<?php
 }
 add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warning' );

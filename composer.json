@@ -22,9 +22,11 @@
   "require": {
     "php": ">=5.3"
   },
-  "autoload": {
-    "files": [
-      "10up-experience.php"
-    ]
+  "require-dev": {
+    "10up/phpcs-composer": "dev-master"
+  },
+  "scripts": {
+    "lint": "phpcs .",
+    "lint-fix": "phpcbf ."
   }
 }

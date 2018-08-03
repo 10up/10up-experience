@@ -21,6 +21,19 @@ The 10up Experience plugin configures WordPress to better protect and inform our
 
 This plugin requires no configuration.
 
+## Features
+
+### 10up Branding
+- Add 10up information page
+- Add link to 10up page to Admin Bar
+- Add 10up thank you message to admin footer
+- Add link to 10up Suggested Plugins to Plugins page
+
+### Security
+- Disable backend file editing via `DISALLOW_FILE_EDIT` constant
+- Add `tenup_restrict_rest_api` option to restrict REST API access for unauthenticated users.
+- Remove disabled REST API endpoints for unauthenticated users
+
 ## Changelog
 
 * 1.0 - Initial release.

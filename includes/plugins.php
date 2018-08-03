@@ -77,7 +77,7 @@ function add_admin_notice() {
  */
 function plugin_install_warning() {
 	?>
-	<div class="tenup-plugin-install-warning updated">
+	<div class="notice notice-warning">
 		<p>
 			<?php
 				printf(

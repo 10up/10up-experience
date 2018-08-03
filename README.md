@@ -23,7 +23,14 @@ This plugin requires no configuration.
 
 ## Changelog
 
-* 1.0 - Initial release.
+### 1.1
+* Add `tenup_experience_remove_stream_menu_item` filter
+* Add `composer.json`
+* Add `editorconfig`
+* Coding standard fixes
+
+### 1.0
+* Initial release.
 
 ## License
 

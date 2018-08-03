@@ -9,7 +9,17 @@ function plugin_customizations() {
 	/**
 	 * Stream
 	 */
-	if ( is_plugin_active( 'stream/stream.php' ) ) {
+	
+	/**
+	 * Filters whether to remove stream menu item.
+	 * 
+	 * @since 1.1.0
+	 * 
+	 * @param bool $tenup_experience_remove_stream_menu_item Whether to remove menu item. Default is true.
+	 */
+	$remove_menu_item = apply_filters( 'tenup_experience_remove_stream_menu_item', true );
+	
+	if ( is_plugin_active( 'stream/stream.php' ) && $remove_menu_item ) {
 
 		add_action( 'admin_init', function() {
 			remove_menu_page( 'wp_stream' );

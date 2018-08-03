@@ -8,7 +8,11 @@
  * License:     GPLv2 or later
  * Text Domain: tenup
  * Domain Path: /languages/
+ *
+ * @package 10up-experience
  */
+
+define( 'TENUP_EXPERIENCE_VERSION', '1.0' );
 
 require_once __DIR__ . '/includes/admin.php';
 require_once __DIR__ . '/includes/admin-bar.php';
@@ -28,10 +32,12 @@ if ( defined( 'TENUP_EXPERIENCE_GITHUB_KEY' ) ) {
 	$tenup_plugin_updater->setAuthentication( TENUP_EXPERIENCE_GITHUB_KEY );
 }
 
-$tenup_plugin_updater->addResultFilter( function( $pluginInfo, $httpResponse = null ) {
-	$pluginInfo->icons = array(
-		'svg' => plugins_url( '/assets/img/tenup.svg', __FILE__ ),
-	);
+$tenup_plugin_updater->addResultFilter(
+	function( $plugin_info, $http_response = null ) {
+			$plugin_info->icons = array(
+				'svg' => plugins_url( '/assets/img/tenup.svg', __FILE__ ),
+			);
 
-	return $pluginInfo;
-});
+			return $plugin_info;
+	}
+);

@@ -10,7 +10,7 @@ function add_about_menu( $wp_admin_bar ) {
 	if ( is_user_logged_in() && current_user_can( 'edit_posts' ) ) {
 		$wp_admin_bar->add_menu( array(
 			'id'    => '10up',
-			'title' => '<div class="tenup-icon ab-item svg"><span class="screen-reader-text">' . esc_html__( 'About 10up', 'tenup' ) . '</span></div>',
+			'title' => '<div class="tenup-icon ab-item"><span class="screen-reader-text">' . esc_html__( 'About 10up', 'tenup' ) . '</span></div>',
 			'href'  => admin_url( 'admin.php?page=10up-about' ),
 			'meta'  => array(
 				'title' => '10up',

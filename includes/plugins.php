@@ -70,6 +70,7 @@ add_action( 'install_plugins_tenup', 'display_plugins_table' );
  */
 function add_admin_notice() {
 	add_action( 'admin_notices',  __NAMESPACE__ . '\plugin_install_warning' );
+	add_action( 'network_admin_notices',  __NAMESPACE__ . '\plugin_install_warning' );
 }
 
 /**

@@ -32,7 +32,10 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_scripts' );
  * Enqueue front end scripts
  */
 function enqueue_scripts() {
-	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
+	// Only load css on front-end if the admin bar is showing.
+	if ( is_admin_bar_showing() ) {
+		wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
+	}
 }
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_scripts' );
 

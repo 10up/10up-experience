@@ -1,8 +1,15 @@
 <?php
+/**
+ * REST API functionality
+ *
+ * @package  10up-experience
+ */
+
 namespace tenup;
 
 /**
  * Return a 403 status and corresponding error for unauthed REST API access.
+ *
  * @param  WP_Error|null|bool $result Error from another authentication handler,
  *                                    null if we should handle it, or another value
  *                                    if not.
@@ -27,6 +34,7 @@ add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api', 
 
 /**
  * Remove user endpoints for unauthed users.
+ *
  * @param  array $endpoints Array of endpoints
  * @return array
  */
@@ -40,7 +48,7 @@ function restrict_user_endpoints( $endpoints ) {
 	if ( ! user_can_access_rest_api() ) {
 		$keys = preg_grep( '/\/wp\/v2\/users\b/', array_keys( $endpoints ) );
 
-		foreach( $keys as $key ) {
+		foreach ( $keys as $key ) {
 			unset( $endpoints[ $key ] );
 		}
 
@@ -53,8 +61,6 @@ add_filter( 'rest_endpoints', __NAMESPACE__ . '\restrict_user_endpoints' );
 
 /**
  * Register restrict REST API setting.
- *
- * @return void
  */
 function restrict_rest_api_setting() {
 	// If the restriction has been lifted on the code level, don't display a UI option
@@ -80,7 +86,7 @@ add_action( 'admin_init', __NAMESPACE__ . '\restrict_rest_api_setting' );
  */
 function restrict_rest_api_ui() {
 	$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
-?>
+	?>
 <fieldset>
 	<legend class="screen-reader-text"><?php esc_html_e( 'REST API Availability', 'tenup' ); ?></legend>
 	<p><label for="restrict-rest-api-all">
@@ -102,11 +108,12 @@ function restrict_rest_api_ui() {
 		<?php esc_html_e( 'Publicly accessible', 'tenup' ); ?>
 	</label></p>
 </fieldset>
-<?php
+	<?php
 }
 
 /**
  * Check if user can access REST API based on our criteria
+ *
  * @param  int $user_id User ID
  * @return bool         Whether the given user can access the REST API
  */
@@ -117,7 +124,7 @@ function user_can_access_rest_api( $user_id = 0 ) {
 /**
  * Sanitize the `tenup_restrict_rest_api` setting.
  *
- * @param  string $value
+ * @param  string $value Current restriction.
  * @return string
  */
 function validate_restrict_rest_api_setting( $value ) {

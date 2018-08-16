@@ -1,4 +1,10 @@
 <?php
+/**
+ * Admin customizations
+ *
+ * @package  10up-experience
+ */
+
 namespace tenup;
 
 /**
@@ -14,16 +20,22 @@ if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
 function admin_enqueue_scripts() {
 	$screen = get_current_screen();
 
-	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
+	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
 
 	if ( 0 === strpos( $screen->base, 'admin_page_10up-' ) ) {
-		wp_enqueue_style( '10up-about', plugins_url( '/assets/css/tenup-pages.css', dirname( __FILE__ ) ) );
+		wp_enqueue_style( '10up-about', plugins_url( '/assets/css/tenup-pages.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
 	}
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\admin_enqueue_scripts' );
 
+/**
+ * Enqueue front end scripts
+ */
 function enqueue_scripts() {
-	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ) );
+	// Only load css on front-end if the admin bar is showing.
+	if ( is_admin_bar_showing() ) {
+		wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
+	}
 }
 add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_scripts' );
 

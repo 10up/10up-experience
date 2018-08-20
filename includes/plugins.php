@@ -143,7 +143,7 @@ add_filter( 'plugin_row_meta', __NAMESPACE__ . '\plugin_meta', 100, 4 );
  * @return void
  */
 function plugin_deactivation_warning() {
-	$message = esc_html__( 'Warning: This plugin provides additional enterprise-grade protective measures such as REST API security and disabling file editing in the dashboard.\n\nAre you sure you want to deactivate?', 'tenup' );
+	$message = esc_html__( "Warning: This plugin provides additional enterprise-grade protective measures such as REST API security and disabling file editing in the dashboard.\n\nAre you sure you want to deactivate?", 'tenup' );
 	?>
 <script type="text/javascript">
 jQuery( document ).ready( function( $ ) {

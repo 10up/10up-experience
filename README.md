@@ -23,6 +23,11 @@ This plugin requires no configuration.
 
 ## Changelog
 
+### 1.2
+* Only load admin bar CSS on front-end if the admin bar is showing
+* Use a base64-encoded admin bar icon so it can be colorized
+* Ensure plugin deactivation message linebreaks are displayed correctly
+
 ### 1.1
 * Add `tenup_experience_remove_stream_menu_item` filter
 * Add `composer.json`

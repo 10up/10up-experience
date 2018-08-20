@@ -8,17 +8,5 @@
 	background-size: 20px;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 32 512 512'%3E%3Cpath fill='rgba(240,245,250,0.6)' transform='scale(1,-1) translate(0,-512)' d='M255.994 480c-141.405-0.014-255.994-114.61-255.994-255.991 0-39.040 9.011-75.924 24.613-109.009l2.683-2.772 158.15 158.147-49.731 49.735h216.408v-216.393l-49.731 49.738-159.055-159.064c34.032-16.716 72.189-26.39 112.675-26.39 141.379 0 256.003 114.606 256.003 256.009-0.003 141.381-114.625 255.991-256.019 255.991z' /%3E%3C/svg%3E");
-}
-
-#wpadminbar .tenup-icon:before {
-	display: none;
-}
-
-#wpadminbar .hover .tenup-icon {
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 32 512 512'%3E%3Cpath fill='%2300b9eb' transform='scale(1,-1) translate(0,-512)' d='M255.994 480c-141.405-0.014-255.994-114.61-255.994-255.991 0-39.040 9.011-75.924 24.613-109.009l2.683-2.772 158.15 158.147-49.731 49.735h216.408v-216.393l-49.731 49.738-159.055-159.064c34.032-16.716 72.189-26.39 112.675-26.39 141.379 0 256.003 114.606 256.003 256.009-0.003 141.381-114.625 255.991-256.019 255.991z' /%3E%3C/svg%3E");
-}
-
-.wrap .tenup-plugin-install-warning {
-	border-left: 4px solid #ffba00;
+	background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMzIgNTEyIDUxMiI+PHBhdGggZmlsbD0iIzlFQTNBOCIgZD0iTTI1NS45OTQgMzJDMTE0LjU4OSAzMi4wMTQgMCAxNDYuNjEgMCAyODcuOTkxIDAgMzI3LjAzMSA5LjAxMSAzNjMuOTE1IDI0LjYxMyAzOTdsMi42ODMgMi43NzIgMTU4LjE1LTE1OC4xNDctNDkuNzMxLTQ5LjczNWgyMTYuNDA4djIxNi4zOTNsLTQ5LjczMS00OS43MzgtMTU5LjA1NSAxNTkuMDY0YzM0LjAzMiAxNi43MTYgNzIuMTg5IDI2LjM5IDExMi42NzUgMjYuMzkgMTQxLjM3OSAwIDI1Ni4wMDMtMTE0LjYwNiAyNTYuMDAzLTI1Ni4wMDktLjAwMy0xNDEuMzgxLTExNC42MjUtMjU1Ljk5MS0yNTYuMDE5LTI1NS45OTF6Ii8+PC9zdmc+Cg==') !important;
 }

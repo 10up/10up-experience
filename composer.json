@@ -1,7 +1,7 @@
 {
   "name": "10up/10up-experience",
   "description": "The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up's best practices",
-  "version": "1.1",
+  "version": "1.2",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",

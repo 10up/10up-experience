@@ -157,3 +157,65 @@ jQuery( document ).ready( function( $ ) {
 	<?php
 }
 add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warning' );
+
+
+/**
+ * Sets the core actions which output the update notification
+ * on the plugin list page. Because of the user capabilities set by
+ * the DISALLOW_FILE_MODS constant it is not possible to update
+ * any plugin.
+ */
+function set_plugin_update_message() {
+	$plugins = get_site_transient( 'update_plugins' );
+	if ( isset($plugins->response) && is_array($plugins->response) ) {
+		$plugins = array_keys( $plugins->response );
+		foreach ( $plugins as $plugin_file ) {
+			add_action( "after_plugin_row_$plugin_file", 'wp_plugin_update_row', 10, 2 );
+		}
+	}
+}
+
+/**
+ * Set the update count in the WP Admin Plugin menu item
+ * when the DISALLOW_FILE_MODS constant is set. This will indicate
+ * when plugins are needing to be updated.
+ *
+ * @global $menu The list of WP Admin menu items.
+ */
+function set_plugin_menu_update_count() {
+	global $menu;
+
+	$menu_index = 65; // wp-admin single site or site on network
+	if ( is_multisite() ) {
+		$menu_index = 20; // wp-admin network settings
+	}
+
+	$update_data = wp_get_update_data();
+	$update_plugins = get_site_transient( 'update_plugins' );
+	if ( ! empty( $update_plugins->response ) ) {
+		$update_data['counts']['plugins'] = count( $update_plugins->response );
+	}
+
+	if ( 1 > $update_data['counts']['plugins'] ) {
+		return;
+	}
+	$count = sprintf(
+		'<span class="update-plugins count-%d"><span class="plugin-count">%d</span></span>',
+		esc_attr( $update_data['counts']['plugins'] ),
+		number_format_i18n( $update_data['counts']['plugins'] )
+	);
+
+	$menu[ $menu_index ][0] = sprintf( __('Plugins %s'), $count );
+}
+
+/**
+ * If we are disallowing plugin updates using the DISALLOW_FILE_MODS
+ * constant this will still allow the plugin update notification to
+ * show in the wp-admin plugins page.
+ */
+if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
+	add_action( 'load-plugins.php', __NAMESPACE__ . '\set_plugin_update_message', 21 );
+	add_action( 'admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
+	add_action( 'network_admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
+}
+

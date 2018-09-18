@@ -160,19 +160,71 @@ add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warn
 
 
 /**
- * Sets the core actions which output the update notification
- * on the plugin list page. Because of the user capabilities set by
- * the DISALLOW_FILE_MODS constant it is not possible to update
- * any plugin.
+ * Set custom action which will output the update notification
+ * on all plugins which are needing to be updated.
+ *
+ * Because of the user capabilities set by the DISALLOW_FILE_MODS
+ * constant it is not possible to update any plugin.
  */
-function set_plugin_update_message() {
+function set_plugin_update_actions() {
 	$plugins = get_site_transient( 'update_plugins' );
 	if ( isset($plugins->response) && is_array($plugins->response) ) {
 		$plugins = array_keys( $plugins->response );
 		foreach ( $plugins as $plugin_file ) {
-			add_action( "after_plugin_row_$plugin_file", 'wp_plugin_update_row', 10, 2 );
+			add_action( "after_plugin_row_$plugin_file", __NAMESPACE__ . '\set_custom_update_notification', 10, 2 );
 		}
 	}
+}
+
+/**
+ * Set the custom update notification for plugins which require
+ * updates.
+ *
+ * @param string $file        Plugin basename.
+ * @param array  $plugin_data Plugin information.
+ */
+function set_custom_update_notification( $file, $plugin_data ) {
+	$current = get_site_transient( 'update_plugins' );
+	if ( ! isset( $current->response[ $file ] ) ) {
+		return false;
+	}
+
+	$response = $current->response[ $file ];
+	$plugins_allowedtags = array(
+		'a'       => array( 'href' => array(), 'title' => array() ),
+		'abbr'    => array( 'title' => array() ),
+		'acronym' => array( 'title' => array() ),
+		'code'    => array(),
+		'em'      => array(),
+		'strong'  => array(),
+	);
+
+	/** @var WP_Plugins_List_Table $wp_list_table */
+	$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
+
+	if ( is_network_admin() ) {
+		$active_class = is_plugin_active_for_network( $file ) ? ' active' : '';
+	} else {
+		$active_class = is_plugin_active( $file ) ? ' active' : '';
+	}
+
+	printf(
+		'<tr class="plugin-update-tr%s" id="%s" data-slug="%s" data-plugin="%s"><td colspan="%s" class="plugin-update colspanchange"><div class="update-message notice inline notice-warning notice-alt"><p>',
+		esc_attr( $active_class ),
+		esc_attr( $response->slug . '-update' ),
+		esc_attr( $response->slug ),
+		esc_attr( $file ),
+		esc_attr( $wp_list_table->get_column_count() )
+	);
+
+	printf(
+		__( 'Theres is a new version of %s available. <a href="%s" target="_blank">View version %s details</a>.' ),
+		wp_kses( $plugin_data['Name'], $plugins_allowedtags ),
+		esc_url( $plugin_data['PluginURI'] ),
+		$response->new_version
+	);
+
+	print( '</p></div></td></tr>' );
 }
 
 /**
@@ -214,7 +266,7 @@ function set_plugin_menu_update_count() {
  * show in the wp-admin plugins page.
  */
 if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
-	add_action( 'load-plugins.php', __NAMESPACE__ . '\set_plugin_update_message', 21 );
+	add_action( 'load-plugins.php', __NAMESPACE__ . '\set_plugin_update_actions', 21 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
 	add_action( 'network_admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
 }

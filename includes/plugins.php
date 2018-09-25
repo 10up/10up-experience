@@ -221,7 +221,7 @@ function set_custom_update_notification( $file, $plugin_data ) {
 		__( 'Theres is a new version of %s available. <a href="%s" target="_blank">View version %s details</a>.' ),
 		wp_kses( $plugin_data['Name'], $plugins_allowedtags ),
 		esc_url( $plugin_data['PluginURI'] ),
-		$response->new_version
+		esc_html( $response->new_version )
 	);
 
 	print( '</p></div></td></tr>' );

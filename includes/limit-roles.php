@@ -48,7 +48,7 @@ function confirm_user_email_is_not_whitelisted_add_to_blog( $boolean, $user_id, 
 	return $boolean;
 }
 
-add_filter( 'can_add_user_to_blog', __NAMESPACE__ . '\confirm_user_email_is_not_whitelisted_add_to_blog' );
+add_filter( 'can_add_user_to_blog', __NAMESPACE__ . '\confirm_user_email_is_not_whitelisted_add_to_blog', 10, 4 );
 
 /**
  * Register limit role settings
@@ -173,6 +173,7 @@ function limit_role_screen() {
 function can_create_user( $user, $role ) {
 	$can_create = true;
 	$options    = get_option( 'tenup_limit_roles' );
+
 	if ( empty( $options ) || empty( $options['whitelisted-domains'] ) ) {
 		return $can_create;
 	}

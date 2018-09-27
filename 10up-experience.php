@@ -19,6 +19,7 @@ require_once __DIR__ . '/includes/admin-bar.php';
 require_once __DIR__ . '/includes/admin-pages.php';
 require_once __DIR__ . '/includes/plugins.php';
 require_once __DIR__ . '/includes/rest-api.php';
+require_once __DIR__ . '/includes/authentication.php';
 
 require_once __DIR__ . '/vendor/plugin-update-checker/plugin-update-checker.php';
 

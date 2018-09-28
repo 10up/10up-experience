@@ -10,15 +10,18 @@ namespace tenup;
 /**
  * Prevent users from authenticating if they are using a weak password
  *
- * @param $user
- * @param $username
- * @param $password
+ * @param WP_User $user User object
+ * @param string  $username Username
+ * @param string  $password Password
  *
  * @return \WP_User|\WP_Error
  */
 function prevent_weak_password_auth( $user, $username, $password ) {
-	if ( in_array( $password, weak_passwords() ) ) {
-		return new \WP_Error( 'Auth Error', __( "Please reset your password by clicking on the 'Lost your Password?' link below.", "tenup" ) );
+	$test_tlds = array( 'test', 'dev', 'local', '' );
+	$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
+
+	if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $password ) ), weak_passwords(), true ) ) {
+		return new \WP_Error( 'Auth Error', esc_html__( "Please reset your password by clicking on the 'Lost your Password?' link below.", 'tenup' ) );
 	}
 
 	return $user;

@@ -18,7 +18,7 @@ namespace tenup;
  */
 function prevent_weak_password_auth( $user, $username, $password ) {
 	if ( in_array( $password, weak_passwords() ) ) {
-		return new \WP_Error( 'Auth Error', __( "Please reset your password.", "tenup" ) );
+		return new \WP_Error( 'Auth Error', __( "Please reset your password by clicking on the 'Lost your Password?' link below.", "tenup" ) );
 	}
 
 	return $user;

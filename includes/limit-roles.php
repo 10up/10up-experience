@@ -17,15 +17,18 @@ namespace tenup;
  */
 function confirm_user_email_is_not_whitelisted( $error, $update, $user ) {
 
-	$new_role   = sanitize_text_field( $_POST['role'] );
-	$can_create = can_create_user( $user, $new_role );
+	$new_role     = sanitize_text_field( $_POST['role'] );
+	$email        = sanitize_text_field( $_POST['email'] );
+	$email_domain = substr( strrchr( $email, '@' ), 1 );
+	$can_create   = can_create_user( $user, $new_role );
 
 	if ( ! $can_create ) {
 		$editable_roles = get_editable_roles();
 		$role           = isset( $editable_roles[ $new_role ] ) ? $editable_roles[ $new_role ]['name'] : 'empty';
 
+		$edit_link = sprintf( '<a href="%s">%s</a>', esc_url( admin_url( 'users.php?page=10up-limit-roles' ) ), esc_html__( 'update your whitelisted domains', 'tenup' ) );
 		/* translators: %s is a placeholder for the current role trying to be assigned to a user */
-		$error->add( 'invalid_email', sprintf( __( '<strong>ERROR</strong>: Sorry, that email is not allowed to have the %s role.' ), esc_html( $role ) ) );
+		$error->add( 'invalid_email', sprintf( __( '<strong>ERROR</strong>: Sorry, the domain "%1$s" is ineligible for the %2$s role. Please %3$s or talk to an Administrator.', 'tenup' ), esc_html( $email_domain ), esc_html( $role ), $edit_link ) );
 	}
 }
 
@@ -81,7 +84,7 @@ function limit_roles_settings() {
 
 	add_settings_field(
 		'roles',
-		__( 'Roles', 'tenup' ),
+		__( 'Role(s)', 'tenup' ),
 		__NAMESPACE__ . '\roles_checkbox',
 		'10up-limit-roles',
 		'limit_roles'
@@ -96,8 +99,8 @@ add_action( 'admin_init', __NAMESPACE__ . '\limit_roles_settings' );
 function domain_text_area() {
 	$options = get_option( 'tenup_limit_roles', array() );
 	$value   = ! empty( $options['whitelisted-domains'] ) ? $options['whitelisted-domains'] : '';
-	printf( '<textarea id="whitelisted-domains" name="tenup_limit_roles[whitelisted-domains]" class="widefat" rows="10">%s</textarea>', esc_textarea( $value ) );
-	printf( '<p class="description">%s</p>', esc_html__( 'Enter each domain you would like to whitelist on a new line.', 'tenup' ) );
+	printf( '<textarea id="whitelisted-domains" name="tenup_limit_roles[whitelisted-domains]" class="regular-text" rows="10">%s</textarea>', esc_textarea( $value ) );
+	printf( '<p class="description">%s</p>', esc_html__( 'Enter each domain on a new line.', 'tenup' ) );
 }
 
 /**
@@ -116,8 +119,6 @@ function roles_checkbox() {
 	}
 
 	echo '</ul>';
-
-	printf( '<p class="description">%s</p>', esc_html__( 'Select each role you would like to be limited to the whitelist domains.', 'tenup' ) );
 }
 
 /**
@@ -151,7 +152,7 @@ function limit_role_screen() {
 	<div class="wrap limit-role-wrap full-width-layout">
 
 		<h1><?php esc_html_e( '10up Limit Role', 'tenup' ); ?></h1>
-		<p><?php esc_html_e( 'Limit which domains are allowed to be assigned specific roles.', 'tenup' ); ?></p>
+		<p><?php esc_html_e( 'Limit the roles that may be assigned to users from specific domains.', 'tenup' ); ?></p>
 
 		<form method="post" action="options.php">
 			<?php
@@ -177,7 +178,7 @@ function can_create_user( $user, $role ) {
 	$can_create = true;
 	$options    = get_option( 'tenup_limit_roles' );
 
-	if ( empty( $options ) || empty( $options['whitelisted-domains'] ) ) {
+	if ( empty( $options ) || empty( $options['whitelisted-domains'] ) || empty( $options['roles'] ) ) {
 		return $can_create;
 	}
 

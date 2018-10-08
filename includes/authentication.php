@@ -21,7 +21,12 @@ function prevent_weak_password_auth( $user, $username, $password ) {
 	$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
 
 	if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $password ) ), weak_passwords(), true ) ) {
-		return new \WP_Error( 'Auth Error', esc_html__( "Please reset your password by clicking on the 'Lost your Password?' link below.", 'tenup' ) );
+		return new \WP_Error( 'Auth Error', sprintf( '%s <a href="%s">%s</a> %s',
+			__( 'Please', 'tenup' ),
+			esc_url( wp_lostpassword_url() ),
+			__( 'reset your password', 'tenup' ),
+			__( 'in order to meet recently improved security measures.', 'tenup' )
+		) );
 	}
 
 	return $user;

@@ -12,6 +12,8 @@ namespace tenup;
  */
 function register_admin_pages() {
 	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', __NAMESPACE__ . '\main_screen' );
+
+	add_submenu_page( 'users.php', esc_html__( '10up Limit Roles', 'tenup' ), esc_html__( '10up Limit Roles', 'tenup' ), 'edit_users', '10up-limit-roles', __NAMESPACE__ . '\limit_role_screen' );
 }
 add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
 

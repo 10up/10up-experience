@@ -261,6 +261,60 @@ function set_plugin_menu_update_count() {
 }
 
 /**
+ * Set plugin update total counts.
+ *
+ * When the DISALLOW_FILE_MODS is set all plugin counts
+ * are set to 0. This sets the plugin update totals so
+ * that the counts are displayed in the wp-admin.
+ * 
+ * @param array $update_data An array of counts for available plugin, theme, and WordPress updates.
+ *
+ * @return array $update_data.
+ */
+function set_plugin_update_totals( $update_data ) {
+	$counts = $update_data['counts'];
+	$titles = $update_data['title'];
+
+	$update_plugins = get_site_transient( 'update_plugins' );
+	if ( ! empty( $update_plugins->response ) ) {
+		$counts['plugins'] = count( $update_plugins->response );
+		$plugins_title = sprintf( 
+			_n( '%d Plugin Update', '%d Plugin Updates', intval( $counts['plugins'] ) ), 
+			intval( $counts['plugins'] )
+		);
+		$titles = ! empty( $titles ) ? $titles . ', ' . esc_attr( $plugins_title ) : esc_attr( $plugins_title );
+	}
+	$counts['total'] = $counts['total'] + $counts['plugins'];
+
+	return array( 'counts' => $counts, 'title' => $titles );
+}
+
+/**
+ * Set the upgrade data for the global plugins variable when
+ * DISALLOW_FILE_MODS constant is true. 
+ * 
+ * Leverages the filter 'show_advanced_plugins' which fires 
+ * before the plugin data is prepared for output.
+ */
+function set_global_plugin_data() {
+	global $plugins;
+
+	if ( ! isset( $plugins['all'] ) ) {
+		return;
+	}
+
+	$current = get_site_transient( 'update_plugins' );
+	foreach ( (array) $plugins['all'] as $plugin_file => $plugin_data ) {
+		if ( isset( $current->response[ $plugin_file ] ) ) {
+			$plugins['all'][ $plugin_file ]['update'] = true;
+			$plugins['upgrade'][ $plugin_file ] = $plugins['all'][ $plugin_file ];
+		}
+	}
+
+	add_filter( 'wp_get_update_data', __NAMESPACE__ . '\set_plugin_update_totals', 10 );
+}
+
+/**
  * If we are disallowing plugin updates using the DISALLOW_FILE_MODS
  * constant this will still allow the plugin update notification to
  * show in the wp-admin plugins page.
@@ -269,5 +323,6 @@ if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
 	add_action( 'load-plugins.php', __NAMESPACE__ . '\set_plugin_update_actions', 21 );
 	add_action( 'admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
 	add_action( 'network_admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
+	add_filter( 'show_advanced_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
 }
 

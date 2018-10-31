@@ -76,7 +76,7 @@ function maybe_disable_gutenberg_editor() {
 	add_filter( 'use_block_editor_for_post', '__return_false' );
 
 	// Gutenberg plugin
-	add_filter('gutenberg_can_edit_post', '__return_false');
+	add_filter( 'gutenberg_can_edit_post', '__return_false' );
 
 	return;
 

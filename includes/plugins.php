@@ -257,6 +257,11 @@ function set_plugin_menu_update_count() {
 		number_format_i18n( $update_data['counts']['plugins'] )
 	);
 
+	// Ensure the core Plugins menu item is set to the correct index.
+	if ( isset( $menu[ $menu_index ][0] ) && substr( $menu[ $menu_index ][0], 0, 8 ) !== 'Plugins ' ) {
+		return;
+	}
+
 	$menu[ $menu_index ][0] = sprintf( __('Plugins %s'), $count );
 }
 

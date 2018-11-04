@@ -23,6 +23,10 @@ This plugin requires no configuration.
 
 ## Changelog
 
+### 1.3
+* Add "Use Classic Editor" toggle to writing settings
+* Properly call a hook as a filter, not an action
+
 ### 1.2
 * Only load admin bar CSS on front-end if the admin bar is showing
 * Use a base64-encoded admin bar icon so it can be colorized

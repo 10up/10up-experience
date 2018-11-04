@@ -53,7 +53,7 @@ function tenup_plugin_install_link( $tabs ) {
 
 	return $new_tabs;
 }
-add_action( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link' );
+add_filter( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link' );
 
 /**
  * Filter the arguments passed to plugins_api() for 10up suggested page

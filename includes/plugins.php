@@ -258,7 +258,7 @@ function set_plugin_menu_update_count() {
 	);
 
 	// Ensure the core Plugins menu item is set to the correct index.
-	if ( isset( $menu[ $menu_index ][0] ) && substr( $menu[ $menu_index ][0], 0, 8 ) !== 'Plugins ' ) {
+	if ( isset( $menu[ $menu_index ][0] ) && substr( $menu[ $menu_index ][0], 0, 8 ) !== __( 'Plugins' ) . ' ' ) {
 		return;
 	}
 

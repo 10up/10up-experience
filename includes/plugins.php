@@ -87,8 +87,8 @@ add_action( 'install_plugins_tenup', 'display_plugins_table' );
  * Add admin notice
  */
 function add_admin_notice() {
-	add_action( 'admin_notices',  __NAMESPACE__ . '\plugin_install_warning' );
-	add_action( 'network_admin_notices',  __NAMESPACE__ . '\plugin_install_warning' );
+	add_action( 'admin_notices', __NAMESPACE__ . '\plugin_install_warning' );
+	add_action( 'network_admin_notices', __NAMESPACE__ . '\plugin_install_warning' );
 }
 
 /**
@@ -168,7 +168,7 @@ add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warn
  */
 function set_plugin_update_actions() {
 	$plugins = get_site_transient( 'update_plugins' );
-	if ( isset($plugins->response) && is_array($plugins->response) ) {
+	if ( isset( $plugins->response ) && is_array( $plugins->response ) ) {
 		$plugins = array_keys( $plugins->response );
 		foreach ( $plugins as $plugin_file ) {
 			add_action( "after_plugin_row_$plugin_file", __NAMESPACE__ . '\set_custom_update_notification', 10, 2 );
@@ -189,9 +189,12 @@ function set_custom_update_notification( $file, $plugin_data ) {
 		return false;
 	}
 
-	$response = $current->response[ $file ];
+	$response            = $current->response[ $file ];
 	$plugins_allowedtags = array(
-		'a'       => array( 'href' => array(), 'title' => array() ),
+		'a'       => array(
+			'href'  => array(),
+			'title' => array(),
+		),
 		'abbr'    => array( 'title' => array() ),
 		'acronym' => array( 'title' => array() ),
 		'code'    => array(),
@@ -218,7 +221,7 @@ function set_custom_update_notification( $file, $plugin_data ) {
 	);
 
 	printf(
-		__( 'There is a new version of %s available. ' ),
+		esc_html__( 'There is a new version of %s available. ' ),
 		wp_kses( $plugin_data['Name'], $plugins_allowedtags )
 	);
 
@@ -230,12 +233,12 @@ function set_custom_update_notification( $file, $plugin_data ) {
 
 	if ( empty( $url ) ) {
 		printf(
-			__( 'Version number is %s.' ),
+			esc_html__( 'Version number is %s.' ),
 			esc_html( $response->new_version )
 		);
 	} else {
 		printf(
-			__( '<a href="%s" target="_blank">View version %s details</a>.' ),
+			'<a href="%1$s" target="_blank">' . esc_html__( 'View version %2$s details.' ) . '</a>',
 			esc_url( $url ),
 			esc_html( $response->new_version )
 		);
@@ -259,7 +262,7 @@ function set_plugin_menu_update_count() {
 		$menu_index = 20; // wp-admin network settings
 	}
 
-	$update_data = wp_get_update_data();
+	$update_data    = wp_get_update_data();
 	$update_plugins = get_site_transient( 'update_plugins' );
 	if ( ! empty( $update_plugins->response ) ) {
 		$update_data['counts']['plugins'] = count( $update_plugins->response );
@@ -279,7 +282,7 @@ function set_plugin_menu_update_count() {
 		return;
 	}
 
-	$menu[ $menu_index ][0] = sprintf( __('Plugins %s'), $count );
+	$menu[ $menu_index ][0] = sprintf( __( 'Plugins %s' ), $count );
 }
 
 /**
@@ -300,15 +303,18 @@ function set_plugin_update_totals( $update_data ) {
 	$update_plugins = get_site_transient( 'update_plugins' );
 	if ( ! empty( $update_plugins->response ) ) {
 		$counts['plugins'] = count( $update_plugins->response );
-		$plugins_title = sprintf(
+		$plugins_title     = sprintf(
 			_n( '%d Plugin Update', '%d Plugin Updates', intval( $counts['plugins'] ) ),
 			intval( $counts['plugins'] )
 		);
-		$titles = ! empty( $titles ) ? $titles . ', ' . esc_attr( $plugins_title ) : esc_attr( $plugins_title );
+		$titles            = ! empty( $titles ) ? $titles . ', ' . esc_attr( $plugins_title ) : esc_attr( $plugins_title );
 	}
 	$counts['total'] = $counts['total'] + $counts['plugins'];
 
-	return array( 'counts' => $counts, 'title' => $titles );
+	return array(
+		'counts' => $counts,
+		'title'  => $titles,
+	);
 }
 
 /**
@@ -329,7 +335,7 @@ function set_global_plugin_data() {
 	foreach ( (array) $plugins['all'] as $plugin_file => $plugin_data ) {
 		if ( isset( $current->response[ $plugin_file ] ) ) {
 			$plugins['all'][ $plugin_file ]['update'] = true;
-			$plugins['upgrade'][ $plugin_file ] = $plugins['all'][ $plugin_file ];
+			$plugins['upgrade'][ $plugin_file ]       = $plugins['all'][ $plugin_file ];
 		}
 	}
 

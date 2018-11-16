@@ -15,16 +15,16 @@ function plugin_customizations() {
 	/**
 	 * Stream
 	 */
-	
+
 	/**
 	 * Filters whether to remove stream menu item.
-	 * 
+	 *
 	 * @since 1.1.0
-	 * 
+	 *
 	 * @param bool $tenup_experience_remove_stream_menu_item Whether to remove menu item. Default is true.
 	 */
 	$remove_menu_item = apply_filters( 'tenup_experience_remove_stream_menu_item', true );
-	
+
 	if ( is_plugin_active( 'stream/stream.php' ) && $remove_menu_item ) {
 
 		add_action(
@@ -218,11 +218,28 @@ function set_custom_update_notification( $file, $plugin_data ) {
 	);
 
 	printf(
-		__( 'Theres is a new version of %s available. <a href="%s" target="_blank">View version %s details</a>.' ),
-		wp_kses( $plugin_data['Name'], $plugins_allowedtags ),
-		esc_url( $plugin_data['PluginURI'] ),
-		esc_html( $response->new_version )
+		__( 'There is a new version of %s available. ' ),
+		wp_kses( $plugin_data['Name'], $plugins_allowedtags )
 	);
+
+	$url = $plugin_data['PluginURI'];
+
+	if ( empty( $url ) ) {
+		$url = $plugin_data['url'];
+	}
+
+	if ( empty( $url ) ) {
+		printf(
+			__( 'Version number is %s.' ),
+			esc_html( $response->new_version )
+		);
+	} else {
+		printf(
+			__( '<a href="%s" target="_blank">View version %s details</a>.' ),
+			esc_url( $url ),
+			esc_html( $response->new_version )
+		);
+	}
 
 	print( '</p></div></td></tr>' );
 }
@@ -271,7 +288,7 @@ function set_plugin_menu_update_count() {
  * When the DISALLOW_FILE_MODS is set all plugin counts
  * are set to 0. This sets the plugin update totals so
  * that the counts are displayed in the wp-admin.
- * 
+ *
  * @param array $update_data An array of counts for available plugin, theme, and WordPress updates.
  *
  * @return array $update_data.
@@ -283,8 +300,8 @@ function set_plugin_update_totals( $update_data ) {
 	$update_plugins = get_site_transient( 'update_plugins' );
 	if ( ! empty( $update_plugins->response ) ) {
 		$counts['plugins'] = count( $update_plugins->response );
-		$plugins_title = sprintf( 
-			_n( '%d Plugin Update', '%d Plugin Updates', intval( $counts['plugins'] ) ), 
+		$plugins_title = sprintf(
+			_n( '%d Plugin Update', '%d Plugin Updates', intval( $counts['plugins'] ) ),
 			intval( $counts['plugins'] )
 		);
 		$titles = ! empty( $titles ) ? $titles . ', ' . esc_attr( $plugins_title ) : esc_attr( $plugins_title );
@@ -296,9 +313,9 @@ function set_plugin_update_totals( $update_data ) {
 
 /**
  * Set the upgrade data for the global plugins variable when
- * DISALLOW_FILE_MODS constant is true. 
- * 
- * Leverages the filter 'show_advanced_plugins' which fires 
+ * DISALLOW_FILE_MODS constant is true.
+ *
+ * Leverages the filter 'show_advanced_plugins' which fires
  * before the plugin data is prepared for output.
  */
 function set_global_plugin_data() {

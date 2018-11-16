@@ -271,6 +271,7 @@ function set_plugin_menu_update_count() {
 	if ( 1 > $update_data['counts']['plugins'] ) {
 		return;
 	}
+
 	$count = sprintf(
 		'<span class="update-plugins count-%d"><span class="plugin-count">%d</span></span>',
 		esc_attr( $update_data['counts']['plugins'] ),
@@ -278,7 +279,7 @@ function set_plugin_menu_update_count() {
 	);
 
 	// Ensure the core Plugins menu item is set to the correct index.
-	if ( isset( $menu[ $menu_index ][0] ) && substr( $menu[ $menu_index ][0], 0, 8 ) !== __( 'Plugins' ) . ' ' ) {
+	if ( isset( $menu[ $menu_index ][0] ) && ! preg_match( '#^' . esc_html__( 'Plugins' ) . '#i', $menu[ $menu_index ][0] ) ) {
 		return;
 	}
 

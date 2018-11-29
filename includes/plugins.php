@@ -28,9 +28,11 @@ function plugin_customizations() {
 	if ( is_plugin_active( 'stream/stream.php' ) && $remove_menu_item ) {
 
 		add_action(
-			'admin_init', function() {
+			'admin_init',
+			function() {
 				remove_menu_page( 'wp_stream' );
-			}, 11
+			},
+			11
 		);
 	}
 }
@@ -322,10 +324,13 @@ function set_plugin_update_totals( $update_data ) {
  * Set the upgrade data for the global plugins variable when
  * DISALLOW_FILE_MODS constant is true.
  *
- * Leverages the filter 'show_advanced_plugins' which fires
- * before the plugin data is prepared for output.
+ * Leverages two filters in `prepare_items1 of class-wp-plugins-list-table.php
+ * hackishly.
+ *
+ * @param  boolean $value Original filter value.
+ * @return boolean
  */
-function set_global_plugin_data() {
+function set_global_plugin_data( $value ) {
 	global $plugins;
 
 	if ( ! isset( $plugins['all'] ) ) {
@@ -333,6 +338,7 @@ function set_global_plugin_data() {
 	}
 
 	$current = get_site_transient( 'update_plugins' );
+
 	foreach ( (array) $plugins['all'] as $plugin_file => $plugin_data ) {
 		if ( isset( $current->response[ $plugin_file ] ) ) {
 			$plugins['all'][ $plugin_file ]['update'] = true;
@@ -341,6 +347,8 @@ function set_global_plugin_data() {
 	}
 
 	add_filter( 'wp_get_update_data', __NAMESPACE__ . '\set_plugin_update_totals', 10 );
+
+	return $value;
 }
 
 /**
@@ -353,5 +361,6 @@ if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
 	add_action( 'admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
 	add_action( 'network_admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
 	add_filter( 'show_advanced_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
+	add_filter( 'show_network_active_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
 }
 

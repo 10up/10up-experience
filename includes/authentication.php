@@ -25,7 +25,7 @@ function prevent_weak_password_auth( $user, $username, $password ) {
 			__( 'Please', 'tenup' ),
 			esc_url( wp_lostpassword_url() ),
 			__( 'reset your password', 'tenup' ),
-			__( 'in order to meet recently improved security measures.', 'tenup' )
+			__( 'in order to meet current security measures.', 'tenup' )
 		) );
 	}
 
@@ -35,7 +35,7 @@ function prevent_weak_password_auth( $user, $username, $password ) {
 add_filter( 'authenticate', __NAMESPACE__ . '\prevent_weak_password_auth', 30, 3 );
 
 /**
- * List of the most popular weak passwords
+ * List of popular weak passwords
  *
  * @return array
  */
@@ -75,7 +75,6 @@ function weak_passwords() {
 		'robert',
 		'matthew',
 		'jordan',
-		'asshole',
 		'daniel',
 	);
 }

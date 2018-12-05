@@ -29,6 +29,11 @@ function plugin_customizations() {
 
 		add_action(
 			'admin_init', function() {
+				// Don't proceed if doing admin ajax as "remove_menu_page" produces a Invalid argument supplied for foreach() warning
+				if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+					return;
+				}
+
 				remove_menu_page( 'wp_stream' );
 			}, 11
 		);

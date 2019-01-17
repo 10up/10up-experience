@@ -17,7 +17,7 @@ function maybe_disable_author_archive() {
 		return;
 	}
 
-	$is_author_disabled = false;
+	$is_author_disabled  = false;
 	$author 			 = get_queried_object();
 	$current_domain		 = parse_url( get_site_url(), PHP_URL_HOST );
 
@@ -47,7 +47,7 @@ function maybe_disable_author_archive() {
 		$is_author_disabled = true;
 	}
 
-	if ( true  === $is_author_disabled ) {
+	if ( true === $is_author_disabled ) {
 		\wp_safe_redirect( '/', '301' );
 		exit();
 	}

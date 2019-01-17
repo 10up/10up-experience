@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Gutenberg functionality customizations
+ * Author customizations
  *
  * @package  10up-experience
  */
@@ -21,7 +21,7 @@ function maybe_disable_author_archive() {
 	$author 			 = get_queried_object();
 	$current_domain		 = parse_url( get_site_url(), PHP_URL_HOST );
 
-	// Domain names that are whitelisted allowed to index 10up user blog indexes.
+	// Domain names that are whitelisted allowed to index 10up users to be indexed
 	$whitelisted_domains = [
 		'10up.com',
 		'elasticpress.io',
@@ -47,8 +47,6 @@ function maybe_disable_author_archive() {
 		$is_author_disabled = true;
 	}
 
-	// Filter tenup_experience_allow_tenupauthor_pages defaults to false. If set to true, allows 10up
-	// author accounts to load
 	if ( true  === $is_author_disabled ) {
 		\wp_safe_redirect( '/', '301' );
 		exit();

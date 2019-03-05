@@ -23,6 +23,10 @@ This plugin requires no configuration.
 
 ## Changelog
 
+### 1.4
+* If plugin updates via dashboard are disabled, still show notifcation that an update exists.
+* Remove 10up users from author archives.
+
 ### 1.3
 * Add "Use Classic Editor" toggle to writing settings
 * Properly call a hook as a filter, not an action

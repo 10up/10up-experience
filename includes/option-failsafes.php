@@ -28,7 +28,7 @@ function required_option_failsafes() {
 	 *
 	 * @param array $required_options An array of required option keys.
 	 */
-	$required_options = apply_filters( 'tenup_experience_required_options', [ 'siteurl', 'home', 'wp_user_roles' ] );
+	$required_options = apply_filters( 'tenup_experience_required_options', [ 'siteurl', 'home', 'wp_user_roles', 'rewrite_rules' ] );
 
 	foreach ( $required_options as $option ) {
 		add_filter( "default_option_{$option}", __NAMESPACE__ . '\\require_option_failsafe', 10, 3 );

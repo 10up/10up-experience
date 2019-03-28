@@ -51,4 +51,18 @@ class StandardTest extends \WPAcceptance\PHPUnit\TestCase {
 	public function testChangeSiteTitle() {
 		parent::_testChangeSiteTitle();
 	}
+
+	/**
+	 * @testdox I can change permalinks
+	 */
+	public function testChangePermalinks() {
+		parent::_testChangePermalinks();
+	}
+
+	/**
+	 * @testdox I can see a single post with the correct permalink structure
+	 */
+	public function testPostShows() {
+		parent::_testPostShows();
+	}
 }

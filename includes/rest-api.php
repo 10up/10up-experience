@@ -96,10 +96,12 @@ function restrict_rest_api_ui() {
 	<p><label for="restrict-rest-api-users">
 		<input id="restrict-rest-api-users" name="tenup_restrict_rest_api" type="radio" value="users"<?php checked( $restrict, 'users' ); ?> />
 		<?php
-			printf(
-				// translators: %s is a link to the developer reference for the users endpoint
-				__( "Restrict access to the <code><a href='%s'>users</a></code> endpoint to authenticated users", 'tenup' ),
-				esc_url( 'https://developer.wordpress.org/rest-api/reference/users/' )
+			echo wp_kses_post(
+				sprintf(
+					// translators: %s is a link to the developer reference for the users endpoint
+					__( "Restrict access to the <code><a href='%s'>users</a></code> endpoint to authenticated users", 'tenup' ),
+					esc_url( 'https://developer.wordpress.org/rest-api/reference/users/' )
+				)
 			);
 		?>
 	</label></p>

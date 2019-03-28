@@ -53,10 +53,12 @@ function main_screen() {
 
 		<div class="about-text">
 			<?php
-				printf(
-					// translators: %s is a link to 10up.com
-					__( 'We&#8217;re a full-service digital agency making a better web with finely crafted websites, apps, and tools that drive business results. <a href="%s" target="_blank">Learn more →</a>', 'tenup' ),
-					esc_url( 'https://10up.com' )
+				echo wp_kses_post(
+					sprintf(
+						// translators: %s is a link to 10up.com
+						__( 'We&#8217;re a full-service digital agency making a better web with finely crafted websites, apps, and tools that drive business results. <a href="%s" target="_blank">Learn more →</a>', 'tenup' ),
+						esc_url( 'https://10up.com' )
+					)
 				);
 			?>
 			</div>

@@ -28,7 +28,8 @@ function plugin_customizations() {
 	if ( is_plugin_active( 'stream/stream.php' ) && $remove_menu_item ) {
 
 		add_action(
-			'admin_init', function() {
+			'admin_init',
+			function() {
 				// Don't proceed if doing admin ajax as "remove_menu_page" produces a Invalid argument supplied for foreach() warning
 				if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 					return;
@@ -105,10 +106,12 @@ function plugin_install_warning() {
 	<div class="notice notice-warning">
 		<p>
 			<?php
-				printf(
-					// translators: %s is a link to the 10up Suggested plugins screen
-					__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ),
-					esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) )
+				echo wp_kses_post(
+					sprintf(
+						// translators: %s is a link to the 10up Suggested plugins screen
+						__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ),
+						esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) )
+					)
 				);
 			?>
 		</p>
@@ -174,8 +177,10 @@ add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warn
  */
 function set_plugin_update_actions() {
 	$plugins = get_site_transient( 'update_plugins' );
+
 	if ( isset( $plugins->response ) && is_array( $plugins->response ) ) {
 		$plugins = array_keys( $plugins->response );
+
 		foreach ( $plugins as $plugin_file ) {
 			add_action( "after_plugin_row_$plugin_file", __NAMESPACE__ . '\set_custom_update_notification', 10, 2 );
 		}
@@ -208,7 +213,7 @@ function set_custom_update_notification( $file, $plugin_data ) {
 		'strong'  => array(),
 	);
 
-	/** @var WP_Plugins_List_Table $wp_list_table */
+	// @var WP_Plugins_List_Table $wp_list_table
 	$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 
 	if ( is_network_admin() ) {
@@ -289,7 +294,9 @@ function set_plugin_menu_update_count() {
 		return;
 	}
 
+	// phpcs:disable
 	$menu[ $menu_index ][0] = sprintf( __( 'Plugins %s' ), $count );
+	// phpcs:enable
 }
 
 /**
@@ -345,8 +352,10 @@ function set_global_plugin_data( $value ) {
 
 	foreach ( (array) $plugins['all'] as $plugin_file => $plugin_data ) {
 		if ( isset( $current->response[ $plugin_file ] ) ) {
+			// phpcs:disable
 			$plugins['all'][ $plugin_file ]['update'] = true;
 			$plugins['upgrade'][ $plugin_file ]       = $plugins['all'][ $plugin_file ];
+			// phpcs:enable
 		}
 	}
 

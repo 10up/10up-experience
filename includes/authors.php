@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Author customizations
  *
@@ -17,9 +16,9 @@ function maybe_disable_author_archive() {
 		return;
 	}
 
-	$is_author_disabled  = false;
-	$author 			 = get_queried_object();
-	$current_domain		 = parse_url( get_site_url(), PHP_URL_HOST );
+	$is_author_disabled = false;
+	$author             = get_queried_object();
+	$current_domain     = parse_url( get_site_url(), PHP_URL_HOST );
 
 	// Domain names that are whitelisted allowed to index 10up users to be indexed
 	$whitelisted_domains = [
@@ -29,14 +28,17 @@ function maybe_disable_author_archive() {
 	];
 
 	// Perform partial match on domains to catch subdomains or variation of domain name
-	$filtered_domains = array_filter( $whitelisted_domains, function( $domain ) use ( $current_domain ) {
-		return false !== stripos( $current_domain, $domain );
-	} );
+	$filtered_domains = array_filter(
+		$whitelisted_domains,
+		function( $domain ) use ( $current_domain ) {
+			return false !== stripos( $current_domain, $domain );
+		}
+	);
 
 	// If the query object doesn't have a user e-mail address or the filter is allowing 10up authors, bail
 	if ( ! empty( $filtered_domains ) ||
-		 empty( $author->data->user_email ) ||
-		 true === apply_filters( 'tenup_experience_allow_tenupauthor_pages', false ) ) {
+		empty( $author->data->user_email ) ||
+		true === apply_filters( 'tenup_experience_allow_tenupauthor_pages', false ) ) {
 
 		return;
 
@@ -51,9 +53,6 @@ function maybe_disable_author_archive() {
 		\wp_safe_redirect( '/', '301' );
 		exit();
 	}
-
-	return;
-
 }
 
 add_action( 'wp', __NAMESPACE__ . '\\maybe_disable_author_archive' );

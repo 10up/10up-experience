@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Gutenberg functionality customizations
  *
@@ -23,11 +22,11 @@ function disable_gutenberg_editor_setting() {
 	add_settings_field(
 		get_disable_gutenberg_key(),
 		__( 'Use Classic Editor', 'tenup' ),
-		 __NAMESPACE__ . '\gutenberg_settings_ui',
-		 'writing',
-		 'default',
-		 array(
-			'label_for'	=> 'disable-gutenberg-editor'
+		__NAMESPACE__ . '\gutenberg_settings_ui',
+		'writing',
+		'default',
+		array(
+			'label_for' => 'disable-gutenberg-editor',
 		)
 	);
 }
@@ -77,9 +76,6 @@ function maybe_disable_gutenberg_editor() {
 
 	// Gutenberg plugin
 	add_filter( 'gutenberg_can_edit_post', '__return_false' );
-
-	return;
-
 }
 
 add_action( 'admin_init', __NAMESPACE__ . '\maybe_disable_gutenberg_editor' );

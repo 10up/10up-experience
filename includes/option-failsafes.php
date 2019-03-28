@@ -71,6 +71,9 @@ function require_option_failsafe( $default, $option, $passed_default ) {
 		return $default;
 	}
 
+	// Record current time as last checked time.
+	wp_cache_set( "option_last_checked_{$option}", time(), 'options' );
+
 	// Remove the required option from notoptions array.
 	$notoptions = wp_cache_get( 'notoptions', 'options' );
 	if ( is_array( $notoptions ) && isset( $notoptions[ $option ] ) ) {
@@ -85,9 +88,6 @@ function require_option_failsafe( $default, $option, $passed_default ) {
 		wp_cache_set( 'alloptions', $alloptions, 'options' );
 	}
 	wp_cache_delete( $option, 'options' );
-
-	// Record current time as last checked time.
-	wp_cache_set( "option_last_checked_{$option}", time(), 'options' );
 
 	// Recheck for the option as it now will not be in the "notoptions" array.
 	return get_option( $option );

@@ -73,15 +73,17 @@ function require_option_failsafe( $default, $option, $passed_default ) {
 
 	// Remove the required option from notoptions array.
 	$notoptions = wp_cache_get( 'notoptions', 'options' );
-	if ( is_array( $notoptions ) ) {
+	if ( is_array( $notoptions ) && isset( $notoptions[ $option ] ) ) {
 		unset( $notoptions[ $option ] );
 		wp_cache_set( 'notoptions', $notoptions, 'options' );
 	}
 
 	// Purge other caches where we might have a bad value.
 	$alloptions = wp_load_alloptions();
-	unset( $alloptions[ $option ] );
-	wp_cache_set( 'alloptions', $alloptions, 'options' );
+	if ( isset( $alloptions[ $option ] ) ) {
+		unset( $alloptions[ $option ] );
+		wp_cache_set( 'alloptions', $alloptions, 'options' );
+	}
 	wp_cache_delete( $option, 'options' );
 
 	// Record current time as last checked time.

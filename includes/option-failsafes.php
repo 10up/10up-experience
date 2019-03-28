@@ -78,6 +78,12 @@ function require_option_failsafe( $default, $option, $passed_default ) {
 		wp_cache_set( 'notoptions', $notoptions, 'options' );
 	}
 
+	// Purge other caches where we might have a bad value.
+	$alloptions = wp_load_alloptions();
+	unset( $alloptions[ $option ] );
+	wp_cache_set( 'alloptions', $alloptions, 'options' );
+	wp_cache_delete( $option, 'options' );
+
 	// Record current time as last checked time.
 	wp_cache_set( "option_last_checked_{$option}", time(), 'options' );
 

@@ -12,7 +12,7 @@
  * @package 10up-experience
  */
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.4' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.5' );
 
 require_once __DIR__ . '/includes/admin.php';
 require_once __DIR__ . '/includes/admin-bar.php';

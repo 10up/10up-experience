@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 10up Experience
  * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.4
+ * Version:     1.5
  * Author:      10up
  * Author URI:  https://10up.com
  * License:     GPLv2 or later

@@ -22,6 +22,7 @@ require_once __DIR__ . '/includes/rest-api.php';
 require_once __DIR__ . '/includes/gutenberg.php';
 require_once __DIR__ . '/includes/authors.php';
 require_once __DIR__ . '/includes/authentication.php';
+require_once __DIR__ . '/includes/option-failsafes.php';
 
 require_once __DIR__ . '/vendor/plugin-update-checker/plugin-update-checker.php';
 

@@ -12,7 +12,7 @@
  * @package 10up-experience
  */
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.4' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.5' );
 
 require_once __DIR__ . '/includes/admin.php';
 require_once __DIR__ . '/includes/admin-bar.php';
@@ -22,6 +22,7 @@ require_once __DIR__ . '/includes/rest-api.php';
 require_once __DIR__ . '/includes/gutenberg.php';
 require_once __DIR__ . '/includes/authors.php';
 require_once __DIR__ . '/includes/authentication.php';
+require_once __DIR__ . '/includes/option-failsafes.php';
 
 require_once __DIR__ . '/vendor/plugin-update-checker/plugin-update-checker.php';
 

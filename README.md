@@ -1,10 +1,8 @@
-# 10up Experience Plugin [![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience)
+# 10up Experience Plugin
 
-The 10up Experience plugin configures WordPress to better protect and inform our clients, aligned to 10up’s best practices. It is not meant as a general-distribution plugin and does not have an open development process, but is available for public perusal.
+> The 10up Experience plugin configures WordPress to better protect and inform our clients, aligned to 10up’s best practices. It is not meant as a general-distribution plugin and does not have an open development process, but is available for public perusal.
 
-<p align="center">
-<a href="http://10up.com/contact/"><img src="https://10updotcom-wpengine.s3.amazonaws.com/uploads/2016/10/10up-Github-Banner.png" width="850"></a>
-</p>
+[![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience) [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level)
 
 ## Requirements
 
@@ -20,6 +18,10 @@ The 10up Experience plugin configures WordPress to better protect and inform our
 ## Plugin Usage
 
 This plugin requires no configuration.
+
+## Support Level
+
+**Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
 
 ## Changelog
 
@@ -48,3 +50,9 @@ This plugin requires no configuration.
 ## License
 
 This plugin is free software; you can redistribute it and/or modify it under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl-2.0.html) as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+## Like what you see?
+
+<p align="center">
+<a href="http://10up.com/contact/"><img src="https://10updotcom-wpengine.s3.amazonaws.com/uploads/2016/10/10up-Github-Banner.png" width="850"></a>
+</p>

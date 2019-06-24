@@ -25,31 +25,7 @@ This plugin requires no configuration.
 
 ## Changelog
 
-### 1.4
-* If plugin updates via dashboard are disabled, still show notifcation that an update exists.
-* Remove 10up users from author archives.
-
-### 1.3
-* Add "Use Classic Editor" toggle to writing settings
-* Properly call a hook as a filter, not an action
-
-### 1.2
-* Only load admin bar CSS on front-end if the admin bar is showing
-* Use a base64-encoded admin bar icon so it can be colorized
-* Ensure plugin deactivation message linebreaks are displayed correctly
-
-### 1.1
-* Add `tenup_experience_remove_stream_menu_item` filter
-* Add `composer.json`
-* Add `editorconfig`
-* Coding standard fixes
-
-### 1.0
-* Initial release.
-
-## License
-
-This plugin is free software; you can redistribute it and/or modify it under the terms of the [GNU General Public License](http://www.gnu.org/licenses/gpl-2.0.html) as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+A complete listing of all notable changes to the 10up Experience Plugin are documented in [CHANGELOG.md](https://github.com/10up/10up-experience/blob/develop/CHANGELOG.md).
 
 ## Like what you see?
 

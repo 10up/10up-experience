@@ -23,6 +23,12 @@ This plugin requires no configuration.
 
 ## Changelog
 
+### 1.6
+* Password protected post functionality turned off by default. Add a setting to "Writing" to re-enable.
+
+### 1.5
+* Introduces filters that establish a failsafe procedure whereby required options can only exist in the notoptions cache for a maximum period, by default, 10 seconds.
+
 ### 1.4
 * If plugin updates via dashboard are disabled, still show notifcation that an update exists.
 * Remove 10up users from author archives.

@@ -25,6 +25,7 @@ This plugin requires no configuration.
 
 ### 1.6
 * Password protected post functionality turned off by default. Add a setting to "Writing" to re-enable.
+* Fix rewrite rule flushing bug.
 
 ### 1.5
 * Introduces filters that establish a failsafe procedure whereby required options can only exist in the notoptions cache for a maximum period, by default, 10 seconds.

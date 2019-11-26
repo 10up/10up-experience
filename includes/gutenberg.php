@@ -46,7 +46,7 @@ function gutenberg_settings_ui() {
 		<legend class="screen-reader-text"><?php esc_html_e( 'Gutenberg Editor Settings', 'tenup' ); ?></legend>
 		<p>
 			<input id="disable-gutenberg-editor" name="<?php echo esc_attr( get_disable_gutenberg_key() ); ?>" type="checkbox" value="1" <?php checked( $disable_editor, 1 ); ?> />
-		</label></p>
+		</p>
 		<p class="description"><?php esc_html_e( 'Disables Gutenberg, the new editor introduced in WordPress 5.0, in favor of the prior writing experience.', 'tenup' ); ?></p>
 	</fieldset>
 	<?php

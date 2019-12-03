@@ -39,13 +39,6 @@ class StandardTest extends \WPAcceptance\PHPUnit\TestCase {
 	}
 
 	/**
-	 * @testdox I can install a plugin
-	 */
-	public function testInstallPlugin() {
-		parent::_testInstallPlugin();
-	}
-
-	/**
 	 * @testdox I can change the site title
 	 */
 	public function testChangeSiteTitle() {

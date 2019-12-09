@@ -2,6 +2,10 @@
 /**
  * Required option failsafes
  *
+ * @internal This feature has been removed as of version 1.7, as we reevaluate our approach
+ * to implementing safeguards on required options. The code here is preserved as a work
+ * in progress, but is not loaded during plugin execution.
+ *
  * @package  10up-experience
  */
 

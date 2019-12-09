@@ -23,6 +23,9 @@ This plugin requires no configuration.
 
 ## Changelog
 
+### 1.6.1
+* Remove option failsafes
+
 ### 1.6
 * Password protected post functionality turned off by default. Add a setting to "Writing" to re-enable.
 * Fix rewrite rule flushing bug.

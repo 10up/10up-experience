@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [Unreleased] - TBD
+
+## [1.6.1] - 2019-12-09
+### Removed
+- Option failsafes
+
+## [1.6] - 2019-12-03
+### Added
+- Password protected post functionality turned off by default. Add a setting to "Writing" to re-enable.
+
+### Fixed
+- Rewrite rule flushing bug.
+
 ## [1.5] - 2019-03-29
 ### Added
 - WP Acceptance tests
@@ -43,6 +56,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [1.0] - 2018-03-01
 - Initial release
 
+[Unreleased]: https://github.com/10up/10up-experience/compare/1.6.1...develop
+[1.6.1]: https://github.com/10up/10up-experience/compare/1.6...1.6.1
+[1.6]: https://github.com/10up/10up-experience/compare/1.5...1.6
 [1.5]: https://github.com/10up/10up-experience/compare/1.4...1.5
 [1.4]: https://github.com/10up/10up-experience/compare/1.3...1.4
 [1.3]: https://github.com/10up/10up-experience/compare/1.2...1.3

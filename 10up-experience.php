@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 10up Experience
  * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.5
+ * Version:     1.6.1
  * Author:      10up
  * Author URI:  https://10up.com
  * License:     GPLv2 or later
@@ -12,7 +12,7 @@
  * @package 10up-experience
  */
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.5' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.6.1' );
 
 require_once __DIR__ . '/includes/admin.php';
 require_once __DIR__ . '/includes/admin-bar.php';
@@ -22,9 +22,9 @@ require_once __DIR__ . '/includes/rest-api.php';
 require_once __DIR__ . '/includes/gutenberg.php';
 require_once __DIR__ . '/includes/authors.php';
 require_once __DIR__ . '/includes/authentication.php';
-require_once __DIR__ . '/includes/option-failsafes.php';
+require_once __DIR__ . '/includes/password-protection.php';
 
-require_once __DIR__ . '/vendor/plugin-update-checker/plugin-update-checker.php';
+require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 
 $tenup_plugin_updater = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/10up/10up-experience/',

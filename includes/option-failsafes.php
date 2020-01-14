@@ -2,6 +2,10 @@
 /**
  * Required option failsafes
  *
+ * @internal This feature has been removed as of version 1.7, as we reevaluate our approach
+ * to implementing safeguards on required options. The code here is preserved as a work
+ * in progress, but is not loaded during plugin execution.
+ *
  * @package  10up-experience
  */
 
@@ -28,7 +32,7 @@ function required_option_failsafes() {
 	 *
 	 * @param array $required_options An array of required option keys.
 	 */
-	$required_options = apply_filters( 'tenup_experience_required_options', [ 'siteurl', 'home', 'wp_user_roles', 'rewrite_rules' ] );
+	$required_options = apply_filters( 'tenup_experience_required_options', [ 'siteurl', 'home', 'wp_user_roles' ] );
 
 	foreach ( $required_options as $option ) {
 		add_filter( "default_option_{$option}", __NAMESPACE__ . '\\require_option_failsafe', 10, 3 );

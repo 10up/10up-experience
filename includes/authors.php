@@ -5,7 +5,16 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\Authors;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'wp', __NAMESPACE__ . '\\maybe_disable_author_archive' );
+}
 
 /**
  * Check to see if author archive page should be disabled for 10up user accounts
@@ -54,5 +63,3 @@ function maybe_disable_author_archive() {
 		exit();
 	}
 }
-
-add_action( 'wp', __NAMESPACE__ . '\\maybe_disable_author_archive' );

@@ -5,7 +5,19 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\RestAPI;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	// Make sure this runs somewhat late but before core's cookie auth at 100
+	add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api', 99 );
+	add_filter( 'rest_endpoints', __NAMESPACE__ . '\restrict_user_endpoints' );
+	add_action( 'admin_init', __NAMESPACE__ . '\restrict_rest_api_setting' );
+}
 
 /**
  * Return a 403 status and corresponding error for unauthed REST API access.
@@ -29,8 +41,6 @@ function restrict_rest_api( $result ) {
 
 	return $result;
 }
-// Make sure this runs somewhat late but before core's cookie auth at 100
-add_filter( 'rest_authentication_errors', __NAMESPACE__ . '\restrict_rest_api', 99 );
 
 /**
  * Remove user endpoints for unauthed users.
@@ -57,7 +67,6 @@ function restrict_user_endpoints( $endpoints ) {
 
 	return $endpoints;
 }
-add_filter( 'rest_endpoints', __NAMESPACE__ . '\restrict_user_endpoints' );
 
 /**
  * Register restrict REST API setting.
@@ -77,7 +86,6 @@ function restrict_rest_api_setting() {
 	register_setting( 'reading', 'tenup_restrict_rest_api', $settings_args );
 	add_settings_field( 'tenup_restrict_rest_api', __( 'REST API Availability', 'tenup' ), __NAMESPACE__ . '\restrict_rest_api_ui', 'reading' );
 }
-add_action( 'admin_init', __NAMESPACE__ . '\restrict_rest_api_setting' );
 
 /**
  * Display UI for restrict REST API setting.

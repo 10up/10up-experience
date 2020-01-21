@@ -5,7 +5,17 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\Gutenberg;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'admin_init', __NAMESPACE__ . '\disable_gutenberg_editor_setting' );
+	add_action( 'admin_init', __NAMESPACE__ . '\maybe_disable_gutenberg_editor' );
+}
 
 /**
  * Register 10up Gutenberg setting.
@@ -30,8 +40,6 @@ function disable_gutenberg_editor_setting() {
 		)
 	);
 }
-
-add_action( 'admin_init', __NAMESPACE__ . '\disable_gutenberg_editor_setting' );
 
 /**
  * Display UI for 10up custom Gutenberg settings.
@@ -77,5 +85,3 @@ function maybe_disable_gutenberg_editor() {
 	// Gutenberg plugin
 	add_filter( 'gutenberg_can_edit_post', '__return_false' );
 }
-
-add_action( 'admin_init', __NAMESPACE__ . '\maybe_disable_gutenberg_editor' );

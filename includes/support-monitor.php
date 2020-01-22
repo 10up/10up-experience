@@ -343,7 +343,13 @@ function send_daily_report() {
 	$messages = [
 		format_message( get_plugin_report(), 'notice', 'plugins' ),
 		format_message( get_wp_version(), 'notice', 'wp_core' ),
-		format_message( get_php_version(), 'notice', 'system' ),
+		format_message(
+			[
+				'php_version' => get_php_version(),
+			],
+			'notice',
+			'system'
+		),
 	];
 
 	send_request( $messages );

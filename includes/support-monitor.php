@@ -155,7 +155,7 @@ function reset_queued_messages() {
 function queue_message( $message ) {
 	$messages = get_queued_messages();
 
-	$messages[] = $message;
+	$messages[] = format_message( $message );
 
 	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 		update_site_option( 'tenup_support_monitor_messages', $messages, false );
@@ -331,6 +331,8 @@ function setup_report_cron() {
  * @since 1.7
  */
 function send_daily_report() {
+	global $wpdb;
+
 	$setting = get_setting();
 
 	if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
@@ -342,7 +344,16 @@ function send_daily_report() {
 
 	$messages = [
 		format_message( get_plugin_report(), 'notice', 'plugins' ),
-		format_message( get_wp_version(), 'notice', 'wp_core' ),
+		format_message(
+			[
+				'wp_version' => get_wp_version(),
+				'wp_cache'   => ( defined( 'WP_CACHE' ) && WP_CACHE ),
+				'db_version' => $wpdb->db_version,
+				'wp_debug'   => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+			],
+			'notice',
+			'wp'
+		),
 		format_message(
 			[
 				'php_version' => get_php_version(),

@@ -24,7 +24,7 @@ function setup() {
 
 	add_action( 'tenup_support_monitor_message_cron', __NAMESPACE__ . '\send_cron_messages' );
 	add_action( 'admin_init', __NAMESPACE__ . '\setup_report_cron' );
-	add_action( 'send_daily_report_cron', __NAMESPACE__ . '\send_daily_report' );
+	add_action( 'init', __NAMESPACE__ . '\send_daily_report' );
 }
 
 /**
@@ -61,6 +61,10 @@ function ms_save_settings() {
 		$setting['api_key'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['api_key'] );
 	}
 
+	if ( isset( $_POST['tenup_support_monitor_settings']['project_id'] ) ) {
+		$setting['project_id'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['project_id'] );
+	}
+
 	if ( isset( $_POST['tenup_support_monitor_settings']['enable_support_monitor'] ) ) {
 		$setting['enable_support_monitor'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['enable_support_monitor'] );
 	}
@@ -83,16 +87,22 @@ function ms_settings() {
 	<table class="form-table" role="presentation">
 		<tbody>
 			<tr>
-				<th scope="row">Enable</th>
+				<th scope="row"><?php esc_html_e( 'Enable', 'tenup' ); ?></th>
 				<td>
-					<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes">Yes</label><br>
-					<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no">No</label>
+					<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+					<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 				</td>
 			</tr>
 			<tr>
-				<th scope="row">API Key</th>
+				<th scope="row"><?php esc_html_e( 'API Key', 'tenup' ); ?></th>
 				<td>
 					<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
+				</td>
+			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'Project ID', 'tenup' ); ?></th>
+				<td>
+					<input name="tenup_support_monitor_settings[project_id]" type="text" id="tenup_project_id" value="<?php echo esc_attr( $setting['project_id'] ); ?>" class="regular-text">
 				</td>
 			</tr>
 		</tbody>
@@ -111,6 +121,7 @@ function get_setting( $setting_key = null ) {
 	$defaults = [
 		'enable_support_monitor' => 'no',
 		'api_key'                => '',
+		'project_id'             => '',
 	];
 
 	$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
@@ -172,7 +183,7 @@ function queue_message( $message ) {
 function setting_section_description() {
 	?>
 	<p>
-		<?php esc_html_e( '10up collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.' ); ?>
+		<?php esc_html_e( '10up collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
 	</p>
 	<?php
 }
@@ -210,6 +221,14 @@ function register_settings() {
 		'api_key',
 		esc_html__( 'API Key', 'tenup' ),
 		__NAMESPACE__ . '\api_key_field',
+		'general',
+		'tenup_support_monitor'
+	);
+
+	add_settings_field(
+		'project_id',
+		esc_html__( 'Project ID', 'tenup' ),
+		__NAMESPACE__ . '\project_id_field',
 		'general',
 		'tenup_support_monitor'
 	);
@@ -257,6 +276,18 @@ function api_key_field() {
 }
 
 /**
+ * Output project ID field
+ *
+ * @since 1.7
+ */
+function project_id_field() {
+	$value = get_setting( 'project_id' );
+	?>
+	<input name="tenup_support_monitor_settings[project_id]" type="text" id="tenup_project_id" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
+	<?php
+}
+
+/**
  * Sends a message async one time
  *
  * @param  array  $data Arbitrary data
@@ -266,12 +297,15 @@ function api_key_field() {
  * @return boolean
  */
 function format_message( $data, $type = 'notice', $group = 'message' ) {
+	$setting = get_setting();
+
 	$message = [
 		'time'       => time(),
 		'data'       => $data,
-		'type'       => $type,
-		'group'      => $group,
-		'message_id' => md5( get_setting( 'api_key' ) . microtime() ),
+		'type'       => sanitize_text_field( $type ),
+		'group'      => sanitize_text_field( $group ),
+		'project_id' => sanitize_text_field( $setting['project_id'] ),
+		'message_id' => md5( $setting['api_key'] . microtime( true ) ),
 	];
 
 	return apply_filters( 'tenup_support_monitor_message', $message );
@@ -289,7 +323,7 @@ function send_message( $data, $type = 'notice', $group = 'message' ) {
 
 	$setting = get_setting();
 
-	if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
+	if ( empty( $setting['api_key'] ) || empty( $setting['project_id'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
 		wp_unschedule_hook( 'tenup_support_monitor_message_cron' );
 
 		return false;
@@ -312,7 +346,7 @@ function send_message( $data, $type = 'notice', $group = 'message' ) {
 function setup_report_cron() {
 	$setting = get_setting();
 
-	if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
+	if ( empty( $setting['api_key'] ) || empty( $setting['project_id'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
 		if ( wp_next_scheduled( 'send_daily_report_cron' ) ) {
 			wp_unschedule_hook( 'send_daily_report_cron' );
 		}
@@ -335,7 +369,7 @@ function send_daily_report() {
 
 	$setting = get_setting();
 
-	if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
+	if ( empty( $setting['api_key'] ) || empty( $setting['project_id'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
 		return;
 	}
 
@@ -348,7 +382,7 @@ function send_daily_report() {
 			[
 				'wp_version' => get_wp_version(),
 				'wp_cache'   => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-				'db_version' => $wpdb->db_version,
+				'db_version' => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
 				'wp_debug'   => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 			],
 			'notice',
@@ -375,6 +409,8 @@ function send_daily_report() {
 function send_request( $messages ) {
 	$api_url = apply_filters( 'tenup_support_monitor_api_url', 'https://10up.com', $messages );
 
+	error_log( wp_json_encode( $messages ) );
+
 	wp_remote_request(
 		$api_url,
 		[
@@ -382,7 +418,8 @@ function send_request( $messages ) {
 			'body'     => wp_json_encode( $messages ),
 			'blocking' => false,
 			'headers'  => [
-				'X-Tenup-Support-Monitor-Key' => get_setting( 'api_key' ),
+				'X-Tenup-Support-Monitor-Key'        => sanitize_text_field( get_setting( 'api_key' ) ),
+				'X-Tenup-Support-Monitor-Project-Id' => sanitize_text_field( get_setting( 'project_id' ) ),
 			],
 		]
 	);

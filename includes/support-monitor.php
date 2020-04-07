@@ -30,7 +30,7 @@ function setup() {
 	add_action( 'admin_init', __NAMESPACE__ . '\setup_report_cron' );
 
 	// Temporary way to force-send a test message
-	if ( isset( $_GET['send_daily_report' ] ) ) {
+	if ( isset( $_GET['send_daily_report'] ) ) {
 		add_action( 'init', __NAMESPACE__ . '\send_daily_report' );
 	}
 
@@ -399,7 +399,7 @@ function send_request( $messages ) {
 		],
 		'blocking' => false,
 		'headers'  => [
-			'X-Tenup-Support-Monitor-Key'        => sanitize_text_field( $api_key ),
+			'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),
 		],
 	];
 

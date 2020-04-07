@@ -26,7 +26,7 @@ function setup() {
 		return;
 	}
 
-	add_action( 'init',       __NAMESPACE__ . '\register_debug_cpt' );
+	add_action( 'init', __NAMESPACE__ . '\register_debug_cpt' );
 	add_action( 'admin_menu', __NAMESPACE__ . '\register_menu' );
 
 }
@@ -60,8 +60,8 @@ function register_debug_cpt() {
  * Logs an entry if the support monitor debugger has been enabled
  *
  * @param string $url - Full URL message was sent to
- * @param array $message - Array of message parts
- * @param array $response - Response of request to support monitor service
+ * @param array  $message - Array of message parts
+ * @param array  $response - Response of request to support monitor service
  * @return void
  */
 function maybe_add_log_entry( $url, $message, $response ) {
@@ -77,12 +77,14 @@ function maybe_add_log_entry( $url, $message, $response ) {
 		wp_json_encode( $response )
 	);
 
-	wp_insert_post( [
-		'post_type'          => CPT_SLUG,
-		'post_status'        => 'publish',
-		'post_title'         => current_time( 'mysql' ),
-		'post_content'       => $post_content,
-	] );
+	wp_insert_post(
+		[
+			'post_type'    => CPT_SLUG,
+			'post_status'  => 'publish',
+			'post_title'   => current_time( 'mysql' ),
+			'post_content' => $post_content,
+		]
+	);
 
 }
 

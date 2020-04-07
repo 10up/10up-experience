@@ -27,6 +27,7 @@ require_once __DIR__ . '/includes/authors.php';
 require_once __DIR__ . '/includes/authentication.php';
 require_once __DIR__ . '/includes/password-protection.php';
 require_once __DIR__ . '/includes/support-monitor.php';
+require_once __DIR__ . '/includes/support-monitor-debug.php';
 
 require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 

@@ -9,12 +9,16 @@
 
 namespace TenUpExperience\SupportMonitor;
 
+use \TenUpExperience\SupportMonitor\Debug;
+
 /**
  * Setup module
  *
  * @since 1.7
  */
 function setup() {
+	Debug\setup();
+
 	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 		add_action( 'wpmu_options', __NAMESPACE__ . '\ms_settings' );
 		add_action( 'admin_init', __NAMESPACE__ . '\ms_save_settings' );
@@ -387,19 +391,28 @@ function send_request( $messages ) {
 		return;
 	}
 
+	$request_message = [
+		'method'   => 'POST',
+		'body'     => [
+			'message' => wp_json_encode( $messages ),
+			'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+		],
+		'blocking' => false,
+		'headers'  => [
+			'X-Tenup-Support-Monitor-Key'        => sanitize_text_field( $api_key ),
+		],
+	];
+
 	$response = wp_remote_request(
 		$api_url,
-		[
-			'method'   => 'POST',
-			'body'     => [
-				'message' => wp_json_encode( $messages ),
-				'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
-			],
-			'blocking' => false,
-			'headers'  => [
-				'X-Tenup-Support-Monitor-Key'        => sanitize_text_field( $api_key ),
-			],
-		]
+		$request_message
+	);
+
+	// Create entry in debug log if debugger enabled
+	Debug\maybe_add_log_entry(
+		$api_url,
+		$request_message,
+		$response
 	);
 
 }

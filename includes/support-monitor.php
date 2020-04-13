@@ -74,6 +74,10 @@ function ms_save_settings() {
 		$setting['enable_support_monitor'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['enable_support_monitor'] );
 	}
 
+	if ( isset( $_POST['tenup_support_monitor_settings']['server_url'] ) ) {
+		$setting['server_url'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['server_url'] );
+	}
+
 	update_site_option( 'tenup_support_monitor_settings', $setting );
 }
 
@@ -104,6 +108,12 @@ function ms_settings() {
 					<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
 				</td>
 			</tr>
+			<tr>
+				<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
+				<td>
+					<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
+				</td>
+			</tr>
 		</tbody>
 	</table>
 	<?php
@@ -120,6 +130,7 @@ function get_setting( $setting_key = null ) {
 	$defaults = [
 		'enable_support_monitor' => 'no',
 		'api_key'                => '',
+		'server_url'             => 'https://www.10up.com',
 	];
 
 	$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
@@ -223,6 +234,14 @@ function register_settings() {
 		'tenup_support_monitor'
 	);
 
+	add_settings_field(
+		'server_url',
+		esc_html__( 'API Server URL', 'tenup' ),
+		__NAMESPACE__ . '\api_server_field',
+		'general',
+		'tenup_support_monitor'
+	);
+
 }
 
 /**
@@ -264,6 +283,20 @@ function api_key_field() {
 	<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
 	<?php
 }
+
+/**
+ * Output api server URL
+ *
+ * @since 1.7
+ */
+function api_server_field() {
+	$value = get_setting( 'server_url' );
+
+	?>
+	<input placeholder="https://www.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
+	<?php
+}
+
 
 /**
  * Sends a message async one time
@@ -384,7 +417,14 @@ function send_daily_report() {
  * @since  1.7
  */
 function send_request( $messages ) {
-	$api_url = apply_filters( 'tenup_support_monitor_api_url', 'https://10up.com/wp-json/tenup/support-monitor/v1/message', $messages );
+
+	$server_url = get_setting( 'server_url' );
+
+	if ( empty( $server_url ) ) {
+		return false;
+	}
+
+	$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( $server_url . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
 	$api_key = get_setting( 'api_key' );
 
 	if ( empty( $api_key ) || empty( $messages ) || empty( $api_url ) ) {

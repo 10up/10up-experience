@@ -6,10 +6,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [1.6.2] - 2020-04-15
 ### Added
-- Changelog and License files, updated Readme (props [@jeffpaul](https://github.com/jeffpaul) via [#49](https://github.com/10up/10up-experience/pull/49))
+- Changelog and License files, updated Readme (props [@jeffpaul](https://github.com/jeffpaul) via [#49](https://github.com/10up/10up-experience/pull/49), [#62](https://github.com/10up/10up-experience/pull/62))
 
 ### Fixed
 - Resolved version number mismatch between GitHub and Packagist (props [@ivankruchkoff](https://github.com/ivankruchkoff), [@jeffpaul](https://github.com/jeffpaul), [@cameronterry](https://github.com/cameronterry), [@colegeissinger](https://github.com/colegeissinger) via [#56](https://github.com/10up/10up-experience/pull/56))
+- WP Acceptance environment instruction for 5.3 version test (props [@felipeelia](https://github.com/felipeelia) via [#62](https://github.com/10up/10up-experience/pull/62))
 
 ## [1.6.1] - 2019-12-09
 ### Removed

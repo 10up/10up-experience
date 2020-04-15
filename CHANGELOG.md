@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [1.6.2] - 2020-04-15
+### Added
+- Changelog and License files, updated Readme (props [@jeffpaul](https://github.com/jeffpaul) via [#49](https://github.com/10up/10up-experience/pull/49))
+
+### Fixed
+- Resolved version number mismatch between GitHub and Packagist (props [@ivankruchkoff](https://github.com/ivankruchkoff), [@jeffpaul](https://github.com/jeffpaul), [@cameronterry](https://github.com/cameronterry), [@colegeissinger](https://github.com/colegeissinger) via [#56](https://github.com/10up/10up-experience/pull/56))
+
 ## [1.6.1] - 2019-12-09
 ### Removed
 - Option failsafes
@@ -56,7 +63,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [1.0] - 2018-03-01
 - Initial release
 
-[Unreleased]: https://github.com/10up/10up-experience/compare/1.6.1...develop
+[Unreleased]: https://github.com/10up/10up-experience/compare/master...develop
+[1.6.2]: https://github.com/10up/10up-experience/compare/1.6.1...1.6.2
 [1.6.1]: https://github.com/10up/10up-experience/compare/1.6...1.6.1
 [1.6]: https://github.com/10up/10up-experience/compare/1.5...1.6
 [1.5]: https://github.com/10up/10up-experience/compare/1.4...1.5

@@ -437,7 +437,7 @@ function send_request( $messages ) {
 			'message' => wp_json_encode( $messages ),
 			'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
 		],
-		'blocking' => false,
+		'blocking' => Debug\is_debug_enabled(),
 		'headers'  => [
 			'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),
 		],
@@ -451,8 +451,8 @@ function send_request( $messages ) {
 	// Create entry in debug log if debugger enabled
 	Debug\maybe_add_log_entry(
 		$api_url,
-		$request_message,
-		$response
+		$messages,
+		wp_remote_retrieve_response_code( $response )
 	);
 
 }

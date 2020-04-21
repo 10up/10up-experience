@@ -26,67 +26,16 @@ function setup() {
 		return;
 	}
 
-	add_action( 'init', __NAMESPACE__ . '\register_debug_cpt' );
-	add_action( 'admin_menu', __NAMESPACE__ . '\register_menu' );
-
-}
-
-/**
- * Register the post monitor debugger post type
- *
- * @return void
- */
-function register_debug_cpt() {
-
-	$args = array(
-		'public'             => false,
-		'publicly_queryable' => false,
-		'show_in_rest'       => false,
-		'show_ui'            => true,
-		'show_in_menu'       => false,
-		'query_var'          => false,
-		'label'              => esc_html__( '10up Support Monitor Log', 'tenup' ),
-		'has_archive'        => false,
-		'supports'           => [ 'title', 'editor' ],
-		'menu_icon'          => 'dashicons-book-alt',
-		'taxonomies'         => [],
-	);
-
-	register_post_type( CPT_SLUG, $args );
-
-}
-
-/**
- * Logs an entry if the support monitor debugger has been enabled
- *
- * @param string $url - Full URL message was sent to
- * @param array  $message - Array of message parts
- * @param array  $response - Response of request to support monitor service
- * @return void
- */
-function maybe_add_log_entry( $url, $message, $response ) {
-
-	if ( ! is_debug_enabled() ) {
-		return;
+	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+		add_action( 'network_admin_menu', __NAMESPACE__ . '\register_network_menu' );
+	} else {
+		add_action( 'admin_menu', __NAMESPACE__ . '\register_menu' );
 	}
 
-	$post_content = sprintf(
-		'<p>URL: %s</p><p>Message: %s</p><p>Response: %s</p>',
-		$url,
-		wp_json_encode( $message ),
-		wp_json_encode( $response )
-	);
-
-	wp_insert_post(
-		[
-			'post_type'    => CPT_SLUG,
-			'post_status'  => 'publish',
-			'post_title'   => current_time( 'mysql' ),
-			'post_content' => $post_content,
-		]
-	);
-
+	add_action( 'admin_init', __NAMESPACE__ . '\empty_log' );
+	add_action( 'admin_init', __NAMESPACE__ . '\test_message' );
 }
+
 
 /**
  * Regisers the Support Monitor log link under the 'Tools' menu
@@ -97,11 +46,132 @@ function register_menu() {
 
 	add_submenu_page(
 		'tools.php',
-		esc_html__( '10up Support Monitor', 'tenup' ),
-		esc_html__( '10up Support Monitor', 'tenup' ),
+		esc_html__( '10up Support Monitor Debug', 'tenup' ),
+		esc_html__( '10up Support Monitor Debug', 'tenup' ),
 		'manage_options',
-		'edit.php?post_type=' . CPT_SLUG
+		'tenup_support_monitor',
+		__NAMESPACE__ . '\debug_screen'
 	);
+}
+
+/**
+ * Regisers the Support Monitor log link under the network settings
+ *
+ * @return void
+ */
+function register_network_menu() {
+
+	add_submenu_page(
+		'settings.php',
+		esc_html__( '10up Support Monitor Debug', 'tenup' ),
+		esc_html__( '10up Support Monitor Debug', 'tenup' ),
+		'manage_network_options',
+		'tenup_support_monitor',
+		__NAMESPACE__ . '\debug_screen'
+	);
+}
+
+function empty_log() {
+	if ( empty( $_GET['tenup_support_monitor_nonce'] ) || ! wp_verify_nonce( $_GET['tenup_support_monitor_nonce'], 'tenup_sm_empty_action' ) ) {
+		return;
+	}
+
+	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+		delete_site_option( 'tenup_support_monitor_log' );
+
+		wp_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
+	} else {
+		delete_option( 'tenup_support_monitor_log' );
+
+		wp_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
+	}
+}
+
+function test_message() {
+	if ( empty( $_GET['tenup_support_monitor_nonce'] ) || ! wp_verify_nonce( $_GET['tenup_support_monitor_nonce'], 'tenup_sm_test_message_action' ) ) {
+		return;
+	}
+
+	\TenUpExperience\SupportMonitor\send_daily_report();
+
+	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+		wp_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
+	} else {
+		wp_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
+	}
+}
+
+/**
+ * Output debug screen
+ */
+function debug_screen() {
+	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+		$log = get_site_option( 'tenup_support_monitor_log' );
+	} else {
+		$log = get_option( 'tenup_support_monitor_log' );
+	}
+	?>
+
+	<div class="wrap">
+		<h2><?php esc_html_e( 'Support Monitor Message Log', 'tenup' ); ?></h2>
+
+		<p>
+			<a href="<?php echo add_query_arg( 'tenup_support_monitor_nonce', wp_create_nonce( 'tenup_sm_empty_action' ) ); ?>" class="button"><?php esc_html_e( 'Empty Log', 'tenup' ); ?></a>
+			<a href="<?php echo add_query_arg( 'tenup_support_monitor_nonce', wp_create_nonce( 'tenup_sm_test_message_action' ) ); ?>" class="button"><?php esc_html_e( 'Send Test Message', 'tenup' ); ?></a>
+		</p>
+
+		<?php if ( ! empty( $log ) ) : ?>
+			<?php foreach ( $log as $message_array ) : ?>
+				<?php foreach ( $message_array['messages'] as $message ) : ?>
+					<div>
+						<strong><?php echo esc_html( date( 'F j, Y, g:i a', $message['time'] ) ); ?>:</strong><br>
+						<strong><?php esc_html_e( 'Response Code:', 'tenup' ); ?></strong> <?php echo esc_html( $message_array['messages_response'] ); ?><br>
+						<strong><?php esc_html_e( 'Type:', 'tenup' ); ?></strong> <?php echo esc_html( $message['type'] ); ?><br>
+						<strong><?php esc_html_e( 'Group:', 'tenup' ); ?></strong> <?php echo esc_html( $message['group'] ); ?><br>
+						<strong><?php esc_html_e( 'ID:', 'tenup' ); ?></strong> <?php echo esc_html( $message['message_id'] ); ?><br>
+						<pre><?php echo esc_html( json_encode( $message['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
+					</div>
+				<?php endforeach; ?>
+			<?php endforeach; ?>
+		<?php else : ?>
+			<p><?php esc_html_e( 'No messages.', 'tenup' ); ?></p>
+		<?php endif; ?>
+	</div>
+	<?php
+}
+
+/**
+ * Logs an entry if the support monitor debugger has been enabled
+ *
+ * @param string $url - Full URL message was sent to
+ * @param array  $messages - Array of messages
+ * @param array  $response_code - Response code
+ * @return void
+ */
+function maybe_add_log_entry( $url, $messages, $response_code ) {
+
+	if ( ! is_debug_enabled() ) {
+		return;
+	}
+
+	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+		$log = get_site_option( 'tenup_support_monitor_log', [] );
+	} else {
+		$log = get_option( 'tenup_support_monitor_log', [] );
+	}
+
+	$prepared = [
+		'messages'          => $messages,
+		'messages_response' => $response_code,
+	];
+
+	array_unshift( $log, $prepared );
+
+	if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+		update_site_option( 'tenup_support_monitor_log', $log );
+	} else {
+		update_option( 'tenup_support_monitor_log', $log );
+	}
 }
 
 /**

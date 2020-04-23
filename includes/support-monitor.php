@@ -370,6 +370,21 @@ function setup_report_cron() {
 }
 
 /**
+ * Check if xmlrpc is enabled
+ *
+ * @return boolean
+ */
+function xmlrpc_enabled() {
+	$enabled = apply_filters( 'pre_option_enable_xmlrpc', false );
+
+	if ( false === $enabled ) {
+		$enabled = apply_filters( 'option_enable_xmlrpc', true );
+	}
+
+	return apply_filters( 'xmlrpc_enabled', $enabled );
+}
+
+/**
  * Send the daily report async
  *
  * @since 1.7
@@ -395,6 +410,7 @@ function send_daily_report() {
 				'db_version'         => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
 				'wp_debug'           => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 				'disallow_file_mods' => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
+				'xmlrpc_enabled'     => xmlrpc_enabled(),
 			],
 			'notice',
 			'wp'

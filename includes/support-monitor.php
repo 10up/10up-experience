@@ -390,10 +390,11 @@ function send_daily_report() {
 		format_message( get_plugin_report(), 'notice', 'plugins' ),
 		format_message(
 			[
-				'wp_version' => get_wp_version(),
-				'wp_cache'   => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-				'db_version' => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
-				'wp_debug'   => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+				'wp_version'         => get_wp_version(),
+				'wp_cache'           => ( defined( 'WP_CACHE' ) && WP_CACHE ),
+				'db_version'         => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
+				'wp_debug'           => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+				'disallow_file_mods' => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
 			],
 			'notice',
 			'wp'

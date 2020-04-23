@@ -71,6 +71,9 @@ function register_network_menu() {
 	);
 }
 
+/**
+ * Empty message log
+ */
 function empty_log() {
 	if ( empty( $_GET['tenup_support_monitor_nonce'] ) || ! wp_verify_nonce( $_GET['tenup_support_monitor_nonce'], 'tenup_sm_empty_action' ) ) {
 		return;
@@ -87,6 +90,9 @@ function empty_log() {
 	}
 }
 
+/**
+ * Send test message
+ */
 function test_message() {
 	if ( empty( $_GET['tenup_support_monitor_nonce'] ) || ! wp_verify_nonce( $_GET['tenup_support_monitor_nonce'], 'tenup_sm_test_message_action' ) ) {
 		return;

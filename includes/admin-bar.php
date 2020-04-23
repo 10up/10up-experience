@@ -5,7 +5,16 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\AdminBar;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'admin_bar_menu', __NAMESPACE__ . '\add_about_menu', 11 );
+}
 
 /**
  * Let's setup our 10up menu in the toolbar
@@ -39,4 +48,3 @@ function add_about_menu( $wp_admin_bar ) {
 	}
 
 }
-add_action( 'admin_bar_menu', __NAMESPACE__ . '\add_about_menu', 11 );

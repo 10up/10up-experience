@@ -5,7 +5,17 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\AdminPages;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
+	add_filter( 'admin_title', __NAMESPACE__ . '\admin_title_fix', 10, 2 );
+}
 
 /**
  * Register admin pages with output callbacks
@@ -13,7 +23,6 @@ namespace tenup;
 function register_admin_pages() {
 	add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', __NAMESPACE__ . '\main_screen' );
 }
-add_action( 'admin_menu', __NAMESPACE__ . '\register_admin_pages' );
 
 /**
  * Ensure our admin pages get a proper title.
@@ -40,7 +49,6 @@ function admin_title_fix( $admin_title, $title ) {
 
 	return $admin_title;
 }
-add_filter( 'admin_title', __NAMESPACE__ . '\admin_title_fix', 10, 2 );
 
 /**
  * Output about screens

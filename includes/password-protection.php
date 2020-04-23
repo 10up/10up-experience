@@ -5,7 +5,17 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\PasswordProtection;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'admin_init', __NAMESPACE__ . '\password_protection_setting' );
+	add_action( 'admin_print_footer_scripts', __NAMESPACE__ . '\print_admin_css' );
+}
 
 /**
  * Register setting.
@@ -30,8 +40,6 @@ function password_protection_setting() {
 		)
 	);
 }
-
-add_action( 'admin_init', __NAMESPACE__ . '\password_protection_setting' );
 
 /**
  * Display UI the setting.
@@ -83,5 +91,3 @@ function print_admin_css() {
 	</style>
 	<?php
 }
-
-add_action( 'admin_print_footer_scripts', __NAMESPACE__ . '\print_admin_css' );

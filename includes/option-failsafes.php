@@ -9,7 +9,16 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\OptionFailsafes;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'plugins_loaded', __NAMESPACE__ . '\\required_option_failsafes' );
+}
 
 /**
  * Ensures a list of required options have failsafes in place.
@@ -38,7 +47,6 @@ function required_option_failsafes() {
 		add_filter( "default_option_{$option}", __NAMESPACE__ . '\\require_option_failsafe', 10, 3 );
 	}
 }
-add_action( 'plugins_loaded', __NAMESPACE__ . '\\required_option_failsafes' );
 
 /**
  * Establish a failsafe for a required option.

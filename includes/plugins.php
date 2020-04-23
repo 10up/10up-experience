@@ -5,7 +5,45 @@
  * @package  10up-experience
  */
 
-namespace tenup;
+namespace TenUpExperience\Plugins;
+
+/**
+ * Setup module
+ *
+ * @since 1.7
+ */
+function setup() {
+	add_action( 'admin_init', __NAMESPACE__ . '\plugin_customizations' );
+	add_filter( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link' );
+	add_filter( 'install_plugins_table_api_args_tenup', __NAMESPACE__ . '\filter_install_plugin_args' );
+
+	/**
+	 * Setup 10up suggested plugin display table
+	 */
+	add_action( 'install_plugins_tenup', 'display_plugins_table' );
+
+	add_action( 'install_plugins_pre_featured', __NAMESPACE__ . '\add_admin_notice' );
+	add_action( 'install_plugins_pre_popular', __NAMESPACE__ . '\add_admin_notice' );
+	add_action( 'install_plugins_pre_favorites', __NAMESPACE__ . '\add_admin_notice' );
+	add_action( 'install_plugins_pre_beta', __NAMESPACE__ . '\add_admin_notice' );
+	add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\add_admin_notice' );
+	add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\add_admin_notice' );
+	add_filter( 'plugin_row_meta', __NAMESPACE__ . '\plugin_meta', 100, 4 );
+	add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warning' );
+
+	/**
+	 * If we are disallowing plugin updates using the DISALLOW_FILE_MODS
+	 * constant this will still allow the plugin update notification to
+	 * show in the wp-admin plugins page.
+	 */
+	if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
+		add_action( 'load-plugins.php', __NAMESPACE__ . '\set_plugin_update_actions', 21 );
+		add_action( 'admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
+		add_action( 'network_admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
+		add_filter( 'show_advanced_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
+		add_filter( 'show_network_active_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
+	}
+}
 
 /**
  * Start plugin customizations
@@ -41,7 +79,6 @@ function plugin_customizations() {
 		);
 	}
 }
-add_action( 'admin_init', __NAMESPACE__ . '\plugin_customizations' );
 
 /**
  * Add 10up suggested tab to plugins install screen
@@ -60,7 +97,6 @@ function tenup_plugin_install_link( $tabs ) {
 
 	return $new_tabs;
 }
-add_filter( 'install_plugins_tabs', __NAMESPACE__ . '\tenup_plugin_install_link' );
 
 /**
  * Filter the arguments passed to plugins_api() for 10up suggested page
@@ -83,12 +119,6 @@ function filter_install_plugin_args( $args ) {
 
 	return $args;
 }
-add_filter( 'install_plugins_table_api_args_tenup', __NAMESPACE__ . '\filter_install_plugin_args' );
-
-/**
- * Setup 10up suggested plugin display table
- */
-add_action( 'install_plugins_tenup', 'display_plugins_table' );
 
 /**
  * Add admin notice
@@ -118,12 +148,7 @@ function plugin_install_warning() {
 	</div>
 	<?php
 }
-add_action( 'install_plugins_pre_featured', __NAMESPACE__ . '\add_admin_notice' );
-add_action( 'install_plugins_pre_popular', __NAMESPACE__ . '\add_admin_notice' );
-add_action( 'install_plugins_pre_favorites', __NAMESPACE__ . '\add_admin_notice' );
-add_action( 'install_plugins_pre_beta', __NAMESPACE__ . '\add_admin_notice' );
-add_action( 'install_plugins_pre_search', __NAMESPACE__ . '\add_admin_notice' );
-add_action( 'install_plugins_pre_dashboard', __NAMESPACE__ . '\add_admin_notice' );
+
 /**
  * Add a "learn more" link to the plugin row that points to the admin page.
  *
@@ -144,7 +169,6 @@ function plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
 	$plugin_meta[] = '<a href="' . esc_url( admin_url( 'admin.php?page=10up-about' ) ) . '">' . esc_html__( 'Learn more', 'tenup' ) . '</a>';
 	return $plugin_meta;
 }
-add_filter( 'plugin_row_meta', __NAMESPACE__ . '\plugin_meta', 100, 4 );
 
 /**
  * Inject a small script for an AYS on plugin deactivation.
@@ -165,7 +189,6 @@ jQuery( document ).ready( function( $ ) {
 </script>
 	<?php
 }
-add_action( 'admin_head-plugins.php', __NAMESPACE__ . '\plugin_deactivation_warning' );
 
 
 /**
@@ -362,18 +385,5 @@ function set_global_plugin_data( $value ) {
 	add_filter( 'wp_get_update_data', __NAMESPACE__ . '\set_plugin_update_totals', 10 );
 
 	return $value;
-}
-
-/**
- * If we are disallowing plugin updates using the DISALLOW_FILE_MODS
- * constant this will still allow the plugin update notification to
- * show in the wp-admin plugins page.
- */
-if ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ) {
-	add_action( 'load-plugins.php', __NAMESPACE__ . '\set_plugin_update_actions', 21 );
-	add_action( 'admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
-	add_action( 'network_admin_menu', __NAMESPACE__ . '\set_plugin_menu_update_count', 99 );
-	add_filter( 'show_advanced_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
-	add_filter( 'show_network_active_plugins', __NAMESPACE__ . '\set_global_plugin_data', 10 );
 }
 

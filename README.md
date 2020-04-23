@@ -2,7 +2,7 @@
 
 > The 10up Experience plugin configures WordPress to better protect and inform our clients, aligned to 10up’s best practices. It is not meant as a general-distribution plugin and does not have an open development process, but is available for public perusal.
 
-[![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience) [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/10up-experience.svg)](https://github.com/10up/10up-experience/releases/latest) [![GPLv2 License](https://img.shields.io/github/license/10up/10up-experience.svg)](https://github.com/10up/10up-experience/blob/develop/LICENSE.md)
+[![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience) [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/v/tag/10up/10up-experience?label=release)](https://github.com/10up/10up-experience/tags) [![GPLv2 License](https://img.shields.io/github/license/10up/10up-experience.svg)](https://github.com/10up/10up-experience/blob/develop/LICENSE.md)
 
 ## Requirements
 

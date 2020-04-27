@@ -422,6 +422,11 @@ function send_daily_report() {
 			'notice',
 			'system'
 		),
+		format_message(
+			get_users_report(),
+			'notice',
+			'users'
+		),
 	];
 
 	send_request( $messages );
@@ -582,7 +587,7 @@ function get_php_version() {
  * @since  1.7
  * @return array
  */
-function get_users() {
+function get_users_report() {
 	$users = [];
 
 	$args = [

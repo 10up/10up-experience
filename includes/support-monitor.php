@@ -130,7 +130,7 @@ function get_setting( $setting_key = null ) {
 	$defaults = [
 		'enable_support_monitor' => 'no',
 		'api_key'                => '',
-		'server_url'             => 'https://www.10up.com',
+		'server_url'             => 'https://supportmonitor.10up.com',
 	];
 
 	$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
@@ -469,6 +469,10 @@ function send_request( $messages ) {
 		$api_url,
 		$request_message
 	);
+
+	echo '<pre>';
+	print_r($response);
+	exit;
 
 	// Create entry in debug log if debugger enabled
 	Debug\maybe_add_log_entry(

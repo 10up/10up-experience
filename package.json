@@ -1,0 +1,103 @@
+{
+  "name": "10up-experience",
+  "description": "The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.",
+  "homepage": "https://10up.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/10up/10up-experience"
+  },
+  "author": {
+    "name": "10up",
+    "email": "info@10up.com",
+    "url": "https://10up.com",
+    "role": "developer"
+  },
+  "scripts": {
+    "start": "composer install --ignore-platform-reqs && npm install && npm run build",
+    "build": "NODE_ENV=production webpack --config config/webpack.config.prod.js",
+    "dev": "NODE_ENV=development webpack --config config/webpack.config.dev.js",
+    "watch": "NODE_ENV=development webpack --watch --config config/webpack.config.dev.js",
+    "build-release": "npm install && composer install --no-dev -o && npm run build",
+    "lint-release": "npm install && composer install && npm run lint",
+    "lint-css": "stylelint assets/css",
+    "lint-js": "eslint assets/js",
+    "lint-php": "composer run lint",
+    "format-js": "eslint --fix assets/js",
+    "lint": "npm run lint-css && npm run lint-js && npm run lint-php",
+    "format": "npm run format-js",
+    "test:a11y": "node tests/accessibility/compliance/pa11y.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.css": [
+      "stylelint"
+    ],
+    "*.js": [
+      "eslint"
+    ],
+    "*.php": [
+      "./vendor/bin/phpcs --extensions=php --warning-severity=8 -s"
+    ]
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@10up/babel-preset-default": "^1.0.0",
+    "@10up/eslint-config": "^2.0.0",
+    "@10up/stylelint-config": "^1.0.9",
+    "@babel/core": "^7.9.0",
+    "@wordpress/eslint-plugin": "^5.0.1",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "backstopjs": "^4.4",
+    "browser-sync": "^2.26.7",
+    "browser-sync-webpack-plugin": "^2.2.2",
+    "browserslist": "^4.8.2",
+    "caniuse-db": "^1.0.30001016",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "core-js": "^3.6.0",
+    "css-loader": "^3.4.0",
+    "cssnano": "^4.1.10",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jsdoc": "^22.1.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "husky": "^3.1.0",
+    "imagemin-webpack-plugin": "^2.4.2",
+    "lint-staged": "^9.5.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "postcss-editor-styles": "^0.3.0",
+    "postcss-import": "^12.0.1",
+    "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.0.4",
+    "stylelint": "^9.10.1",
+    "stylelint-config-wordpress": "^14.0.0",
+    "stylelint-declaration-use-variable": "^1.7.2",
+    "stylelint-order": "^2.2.1",
+    "stylelint-webpack-plugin": "^1.1.2",
+    "terser": "^4.4.3",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10",
+    "webpack-fix-style-only-entries": "^0.4.0",
+    "webpack-merge": "^4.2.2",
+    "webpackbar": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=8.11"
+  },
+  "dependencies": {
+    "normalize.css": "^8.0.1"
+  }
+}

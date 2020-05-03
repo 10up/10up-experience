@@ -21,7 +21,8 @@
   },
   "require": {
     "php": ">=5.3",
-    "yahnis-elsts/plugin-update-checker": "4.8.1"
+    "yahnis-elsts/plugin-update-checker": "4.8.1",
+    "bjeavons/zxcvbn-php": "dev-master"
   },
   "require-dev": {
     "10up/phpcs-composer": "dev-master",

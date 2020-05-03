@@ -15,6 +15,7 @@
 namespace TenUpExperience;
 
 define( 'TENUP_EXPERIENCE_VERSION', '1.6.2' );
+define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 
 require_once __DIR__ . '/includes/utils.php';
 require_once __DIR__ . '/includes/admin.php';
@@ -26,6 +27,7 @@ require_once __DIR__ . '/includes/gutenberg.php';
 require_once __DIR__ . '/includes/authors.php';
 require_once __DIR__ . '/includes/authentication.php';
 require_once __DIR__ . '/includes/password-protection.php';
+require_once __DIR__ . '/includes/passwords.php';
 require_once __DIR__ . '/includes/support-monitor.php';
 require_once __DIR__ . '/includes/support-monitor-debug.php';
 
@@ -65,5 +67,6 @@ Gutenberg\setup();
 Authors\setup();
 Authentication\setup();
 PasswordProtection\setup();
+Passwords\setup();
 SupportMonitor\setup();
 

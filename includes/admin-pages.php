@@ -36,7 +36,7 @@ function register_admin_pages() {
 function admin_title_fix( $admin_title, $title ) {
 	$screen = get_current_screen();
 
-	wp_enqueue_style( '10up-admin', plugins_url( '/assets/css/admin.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
+	wp_enqueue_style( '10up-admin', plugins_url( '/dist/css/admin.css', dirname( __FILE__ ) ), array(), TENUP_EXPERIENCE_VERSION );
 
 	if ( 0 !== strpos( $screen->base, 'admin_page_10up-' ) ) {
 		return $admin_title;

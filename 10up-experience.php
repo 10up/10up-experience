@@ -14,26 +14,20 @@
 
 namespace TenUpExperience;
 
+use Puc_v4_Factory;
+
 define( 'TENUP_EXPERIENCE_VERSION', '1.6.2' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
+define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
+if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	exit( esc_html__( 'This plugin requires vendor/autoload.php which is missing. The file should be bundled with the plugin and is committed to the repository.' ) );
+}
+
+require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/utils.php';
-require_once __DIR__ . '/includes/admin.php';
-require_once __DIR__ . '/includes/admin-bar.php';
-require_once __DIR__ . '/includes/admin-pages.php';
-require_once __DIR__ . '/includes/plugins.php';
-require_once __DIR__ . '/includes/rest-api.php';
-require_once __DIR__ . '/includes/gutenberg.php';
-require_once __DIR__ . '/includes/authors.php';
-require_once __DIR__ . '/includes/authentication.php';
-require_once __DIR__ . '/includes/password-protection.php';
-require_once __DIR__ . '/includes/passwords.php';
-require_once __DIR__ . '/includes/support-monitor.php';
-require_once __DIR__ . '/includes/support-monitor-debug.php';
 
-require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
-
-$tenup_plugin_updater = \Puc_v4_Factory::buildUpdateChecker(
+$tenup_plugin_updater = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/10up/10up-experience/',
 	__FILE__,
 	'10up-experience'
@@ -58,15 +52,12 @@ $network_activated = Utils\is_network_activated( plugin_basename( __FILE__ ) );
 
 define( 'TENUP_EXPERIENCE_IS_NETWORK', (bool) $network_activated );
 
-Admin\setup();
-AdminBar\setup();
-AdminPages\setup();
-Plugins\setup();
-RestAPI\setup();
-Gutenberg\setup();
-Authors\setup();
-Authentication\setup();
-PasswordProtection\setup();
-Passwords\setup();
-SupportMonitor\setup();
-
+AdminCustomizations\Customizations::instance()->setup();
+API\API::instance()->setup();
+Authentication\Passwords::instance()->setup();
+Authors\Authors::instance()->setup();
+Gutenberg\Gutenberg::instance()->setup();
+Plugins\Plugins::instance()->setup();
+PostPasswords\PostPasswords::instance()->setup();
+SupportMonitor\Monitor::instance()->setup();
+SupportMonitor\Debug::instance()->setup();

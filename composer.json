@@ -15,19 +15,23 @@
       "homepage": "https://10up.com/"
     }
   ],
+  "autoload": {
+    "psr-4": {
+      "TenUpExperience\\": "./includes/classes/"
+    }
+  },
   "support": {
     "issues": "https://github.com/10up/10up-experience/issues",
     "source": "https://github.com/10up/10up-experience"
   },
   "require": {
-    "php": ">=5.3",
     "yahnis-elsts/plugin-update-checker": "4.8.1",
-    "bjeavons/zxcvbn-php": "dev-master"
+    "bjeavons/zxcvbn-php": "^1.0"
   },
   "require-dev": {
     "10up/phpcs-composer": "dev-master",
     "10up/wpacceptance": "dev-master",
-    "squizlabs/php_codesniffer": "^3.0@dev"
+    "squizlabs/php_codesniffer": "3.*"
   },
   "scripts": {
     "lint": "phpcs .",

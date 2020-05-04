@@ -20,12 +20,25 @@ define( 'TENUP_EXPERIENCE_VERSION', '1.6.2' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
-if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	wp_die( esc_html__( 'This plugin requires vendor/autoload.php which is missing. The file should be bundled with the plugin and is committed to the repository.' ) );
-}
+require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 
-require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/includes/utils.php';
+
+spl_autoload_register( function( $class_name ) {
+	$path_parts = explode( '\\', $class_name );
+
+	if ( ! empty( $path_parts ) ) {
+		$package = $path_parts[0];
+
+		unset( $path_parts[0] );
+
+		if ( 'TenUpExperience' === $package ) {
+			require_once __DIR__ . '/includes/classes/' . implode( '/', $path_parts ) . '.php';
+		} elseif ( 'ZxcvbnPhp' === $package ) {
+			require_once __DIR__ . '/vendor/bjeavons/zxcvbn-php/src/' . implode( '/', $path_parts ) . '.php';
+		}
+	}
+} );
 
 $tenup_plugin_updater = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/10up/10up-experience/',

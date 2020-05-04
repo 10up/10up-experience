@@ -16,7 +16,7 @@ namespace TenUpExperience;
 
 use Puc_v4_Factory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.6.2' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.7' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 

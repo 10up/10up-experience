@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 10up Experience
  * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.6.2
+ * Version:     1.7
  * Author:      10up
  * Author URI:  https://10up.com
  * License:     GPLv2 or later
@@ -21,7 +21,7 @@ define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	exit( esc_html__( 'This plugin requires vendor/autoload.php which is missing. The file should be bundled with the plugin and is committed to the repository.' ) );
+	wp_die( esc_html__( 'This plugin requires vendor/autoload.php which is missing. The file should be bundled with the plugin and is committed to the repository.' ) );
 }
 
 require_once __DIR__ . '/vendor/autoload.php';

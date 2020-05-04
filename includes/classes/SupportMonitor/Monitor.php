@@ -401,34 +401,34 @@ class Monitor extends Singleton {
 		require_once ABSPATH . 'wp-admin/includes/update.php';
 
 		$messages = [
-			format_message( get_plugin_report(), 'notice', 'plugins' ),
-			format_message(
+			$this->format_message( $this->get_plugin_report(), 'notice', 'plugins' ),
+			$this->format_message(
 				[
-					'wp_version'         => get_wp_version(),
+					'wp_version'         => $this->get_wp_version(),
 					'wp_cache'           => ( defined( 'WP_CACHE' ) && WP_CACHE ),
 					'db_version'         => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
 					'wp_debug'           => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 					'disallow_file_mods' => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
-					'xmlrpc_enabled'     => xmlrpc_enabled(),
+					'xmlrpc_enabled'     => $this->xmlrpc_enabled(),
 				],
 				'notice',
 				'wp'
 			),
-			format_message(
+			$this->format_message(
 				[
-					'php_version' => get_php_version(),
+					'php_version' => $this->get_php_version(),
 				],
 				'notice',
 				'system'
 			),
-			format_message(
-				get_users_report(),
+			$this->format_message(
+				$this->get_users_report(),
 				'notice',
 				'users'
 			),
 		];
 
-		send_request( $messages );
+		$this->send_request( $messages );
 	}
 
 	/**
@@ -484,11 +484,11 @@ class Monitor extends Singleton {
 	 * @since  1.7
 	 */
 	public function send_cron_messages() {
-		$messages = get_queued_messages();
+		$messages = $this->get_queued_messages();
 
-		send_request( $messages );
+		$this->send_request( $messages );
 
-		reset_queued_messages();
+		$this->reset_queued_messages();
 	}
 
 	/**
@@ -505,7 +505,7 @@ class Monitor extends Singleton {
 
 		foreach ( $_plugins as $file => $plugin ) {
 			$plugins[] = [
-				'slug'    => get_plugin_name( $file ),
+				'slug'    => $this->get_plugin_name( $file ),
 				'name'    => $plugin['Name'],
 				'status'  => 'must-use',
 				'version' => $plugin['Version'],
@@ -516,9 +516,9 @@ class Monitor extends Singleton {
 
 		foreach ( $_plugins as $file => $plugin ) {
 			$plugins[] = [
-				'slug'    => get_plugin_name( $file ),
+				'slug'    => $this->get_plugin_name( $file ),
 				'name'    => $plugin['Name'],
-				'status'  => get_status( $file ),
+				'status'  => $this->get_status( $file ),
 				'version' => $plugin['Version'],
 			];
 		}

@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 * Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
 * Require strong passwords by default. This can be disabled in general settings.
+* Disallow reserved usernames from being used e.g. admin.
+* Set X-Frame-Options to same origin.
 
 ### Fixed
 * Refactored to use classes and modern build scripts.

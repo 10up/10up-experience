@@ -14,6 +14,7 @@ namespace TenUpExperience\Authentication;
  */
 function setup() {
 	add_filter( 'authenticate', __NAMESPACE__ . '\prevent_weak_password_auth', 30, 3 );
+	add_filter( 'authenticate', __NAMESPACE__ . '\prevent_common_username', 30, 3 );
 }
 
 /**
@@ -39,6 +40,28 @@ function prevent_weak_password_auth( $user, $username, $password ) {
 				__( 'reset your password', 'tenup' ),
 				__( 'in order to meet current security measures.', 'tenup' )
 			)
+		);
+	}
+
+	return $user;
+}
+
+/**
+ * Prevent users from authenticating if they are using a generic username
+ *
+ * @param WP_User $user User object
+ * @param string  $username Username
+ *
+ * @return \WP_User|\WP_Error
+ */
+function prevent_common_username( $user, $username ) {
+	$test_tlds = array( 'test', 'dev', 'local', '' );
+	$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
+
+	if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $username ) ), reserved_usernames(), true ) ) {
+		return new \WP_Error(
+			'Auth Error',
+			__( 'Please have an administor change your username in order to meet current security measures.', 'tenup' )
 		);
 	}
 
@@ -87,5 +110,28 @@ function weak_passwords() {
 		'matthew',
 		'jordan',
 		'daniel',
+	);
+}
+
+/**
+ * List of reserved usernames
+ *
+ * @return array
+ */
+function reserved_usernames() {
+	return array(
+		'admin',
+		'administrator',
+		'user',
+		'username',
+		'demo',
+		'sql',
+		'guest',
+		'root',
+		'test',
+		'mysql',
+		'ftp',
+		'www',
+		'client',
 	);
 }

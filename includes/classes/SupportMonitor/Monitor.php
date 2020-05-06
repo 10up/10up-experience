@@ -587,7 +587,9 @@ class Monitor extends Singleton {
 	 * @return array
 	 */
 	public function get_users_report() {
-		$users = [];
+		$report = [
+			'10up' => [],
+		];
 
 		$args = [
 			'search'         => '*@get10up.com',
@@ -598,7 +600,7 @@ class Monitor extends Singleton {
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
-			$users[] = [
+			$report['10up'][] = [
 				'email'        => $user->user_email,
 				'display_name' => $user->display_name,
 				'role'         => $user->roles,
@@ -614,12 +616,13 @@ class Monitor extends Singleton {
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
-			$users[] = [
+			$report['10up'][] = [
 				'email'        => $user->user_email,
 				'display_name' => $user->display_name,
 				'role'         => $user->roles,
 			];
 		}
-		return $users;
+
+		return $report;
 	}
 }

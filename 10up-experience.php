@@ -68,6 +68,7 @@ define( 'TENUP_EXPERIENCE_IS_NETWORK', (bool) $network_activated );
 AdminCustomizations\Customizations::instance()->setup();
 API\API::instance()->setup();
 Authentication\Passwords::instance()->setup();
+Authentication\Usernames::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
 Plugins\Plugins::instance()->setup();

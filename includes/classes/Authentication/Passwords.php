@@ -163,7 +163,7 @@ class Passwords extends Singleton {
 	 * @return \WP_User|\WP_Error
 	 */
 	public function prevent_weak_password_auth( $user, $username, $password ) {
-		$test_tlds = array( 'test', 'dev', 'local', '' );
+		$test_tlds = array( 'test', 'local', '' );
 		$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
 
 		if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $password ) ), $this->weak_passwords(), true ) ) {

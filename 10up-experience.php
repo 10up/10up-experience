@@ -71,6 +71,7 @@ Authentication\Passwords::instance()->setup();
 Authentication\Usernames::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
+Headers\Headers::instance()->setup();
 Plugins\Plugins::instance()->setup();
 PostPasswords\PostPasswords::instance()->setup();
 SupportMonitor\Monitor::instance()->setup();

@@ -31,7 +31,7 @@ class Usernames extends Singleton {
 	 * @return \WP_User|\WP_Error
 	 */
 	public function prevent_common_username( $user, $username ) {
-		$test_tlds = array( 'test', 'dev', 'local', '' );
+		$test_tlds = array( 'test', 'local', '' );
 		$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
 
 		if ( in_array( ! $tld, $test_tlds, true ) && in_array( strtolower( trim( $username ) ), $this->reserved_usernames(), true ) ) {

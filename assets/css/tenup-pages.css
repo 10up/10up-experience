@@ -1,36 +1,29 @@
 .tenup-badge {
-	background: url('../img/logo.png') no-repeat top left;
+	background: url("../img/logo.png") no-repeat top left;
 	background-size: cover;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-ms-background-size: cover;
-	-o-background-size: cover;
-	width: 110px;
-	height: 126px;
 	display: inline-block;
+	height: 126px;
+	overflow: hidden;
 	position: absolute;
-	top: 0;
 	right: 0;
 	text-indent: 100%;
+	top: 0;
 	white-space: nowrap;
-	overflow: hidden;
+	width: 110px;
 }
 
 @media
-  only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (   min--moz-device-pixel-ratio: 2),
-  only screen and (     -o-min-device-pixel-ratio: 2/1),
-  only screen and (        min-device-pixel-ratio: 2),
-  only screen and (                min-resolution: 192dppx),
-  only screen and (                min-resolution: 2dppx) {
+	only screen and (                min-resolution: 192dppx),
+	only screen and (                min-resolution: 2dppx) {
+
 	.tenup-badge {
-		background: url('../img/logo@2x.png') no-repeat top left;
+		background: url("../img/logo@2x.png") no-repeat top left;
 		background-size: 110px 126px;
-		-webkit-background-size: 110px 126px;
-		-moz-background-size: 110px 126px;
-		-ms-background-size: 110px 126px;
-		-o-background-size: 110px 126px;
 	}
+}
+
+.about-wrap img {
+	max-width: 100%;
 }
 
 .about-wrap .full-width-img img {
@@ -38,19 +31,15 @@
 	margin: 0 auto;
 }
 
-.about-wrap img {
-	max-width: 100%;
-}
-
 .about-wrap .nav-tab-active {
-	background-color: #F1F1F1;
-	border-bottom-color: #F6F7FB;
+	background-color: #f1f1f1; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+	border-bottom-color: #f6f7fb; /* stylelint-disable-line sh-waqar/declaration-use-variable */
 }
 
 .about-wrap .section {
 	margin: 0 auto;
-	padding-bottom: 20px;
 	overflow: hidden;
+	padding-bottom: 20px;
 }
 
 .about-wrap .center {
@@ -63,25 +52,31 @@
 }
 
 @media screen and (max-width: 480px) {
+
 	.about-wrap h2.nav-tab-wrapper {
 		padding-right: 0;
 	}
+
 	.about-wrap h2 .nav-tab {
-		width: 100%;
-		margin-top: 0;
-		margin-right: 0;
 		box-sizing: border-box;
+		margin-right: 0;
+		margin-top: 0;
+		width: 100%;
 	}
+
 	.about-wrap h1 {
 		padding-right: 55px;
 	}
+
 	.tenup-badge {
-		width: 55px;
 		height: 63px;
+		width: 55px;
 	}
+
 	.section-wrapper {
 		padding: 20px 0;
 	}
+
 	.about-wrap .section-about {
 		padding: 0 20px;
 	}

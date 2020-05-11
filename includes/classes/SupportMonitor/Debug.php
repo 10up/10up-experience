@@ -139,6 +139,7 @@ class Debug extends Singleton {
 					<?php foreach ( $message_array['messages'] as $message ) : ?>
 						<div>
 							<strong><?php echo esc_html( gmdate( 'F j, Y, g:i a', $message['time'] ) ); ?>:</strong><br>
+							<strong><?php esc_html_e( 'API URL:', 'tenup' ); ?></strong> <?php echo esc_html( $message_array['url'] ); ?><br>
 							<strong><?php esc_html_e( 'Response Code:', 'tenup' ); ?></strong> <?php echo esc_html( $message_array['messages_response'] ); ?><br>
 							<strong><?php esc_html_e( 'Type:', 'tenup' ); ?></strong> <?php echo esc_html( $message['type'] ); ?><br>
 							<strong><?php esc_html_e( 'Group:', 'tenup' ); ?></strong> <?php echo esc_html( $message['group'] ); ?><br>
@@ -178,6 +179,7 @@ class Debug extends Singleton {
 		$prepared = [
 			'messages'          => $messages,
 			'messages_response' => $response_code,
+			'url'               => $url,
 		];
 
 		array_unshift( $log, $prepared );

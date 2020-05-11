@@ -105,12 +105,14 @@ class Monitor extends Singleton {
 						<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
 					</td>
 				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
-					<td>
-						<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
-					</td>
-				</tr>
+				<?php if ( Debug::instance()->is_debug_enabled() ) : ?>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
+						<td>
+							<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
+						</td>
+					</tr>
+				<?php endif; ?>
 			</tbody>
 		</table>
 		<?php
@@ -132,6 +134,10 @@ class Monitor extends Singleton {
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
 		$settings = wp_parse_args( $settings, $defaults );
+
+		if ( ! Debug::instance()->is_debug_enabled() ) {
+			$settings['server_url'] = 'https://supportmonitor.10up.com';
+		}
 
 		if ( ! empty( $setting_key ) ) {
 			return $settings[ $setting_key ];
@@ -231,13 +237,15 @@ class Monitor extends Singleton {
 			'tenup_support_monitor'
 		);
 
-		add_settings_field(
-			'server_url',
-			esc_html__( 'API Server URL', 'tenup' ),
-			[ $this, 'api_server_field' ],
-			'general',
-			'tenup_support_monitor'
-		);
+		if ( Debug::instance()->is_debug_enabled() ) {
+			add_settings_field(
+				'server_url',
+				esc_html__( 'API Server URL', 'tenup' ),
+				[ $this, 'api_server_field' ],
+				'general',
+				'tenup_support_monitor'
+			);
+		}
 
 	}
 
@@ -454,6 +462,7 @@ class Monitor extends Singleton {
 
 		$request_message = [
 			'method'   => 'POST',
+			'timeout'  => 30,
 			'body'     => [
 				'message' => wp_json_encode( $messages ),
 				'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),

@@ -453,7 +453,7 @@ class Monitor extends Singleton {
 			return false;
 		}
 
-		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( $server_url . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
+		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( untrailingslashit( $server_url ) . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
 		$api_key = $this->get_setting( 'api_key' );
 
 		if ( empty( $api_key ) || empty( $messages ) || empty( $api_url ) ) {

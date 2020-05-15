@@ -350,7 +350,6 @@ class Monitor extends Singleton {
 
 		$message = [
 			'time'       => time(),
-			'production' => ( 'yes' === $setting['production_environment'] ),
 			'data'       => $data,
 			'type'       => sanitize_text_field( $type ),
 			'group'      => sanitize_text_field( $group ),
@@ -481,26 +480,29 @@ class Monitor extends Singleton {
 	 */
 	public function send_request( $messages ) {
 
-		$server_url = $this->get_setting( 'server_url' );
+		$setting = $this->get_setting();
 
-		if ( empty( $server_url ) ) {
+		if ( empty( $setting['server_url'] ) ) {
 			return false;
 		}
 
-		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( untrailingslashit( $server_url ) . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
+		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( untrailingslashit( $setting['server_url'] ) . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
 		$api_key = $this->get_setting( 'api_key' );
 
 		if ( empty( $api_key ) || empty( $messages ) || empty( $api_url ) ) {
 			return;
 		}
 
+		$body = [
+			'message'    => wp_json_encode( $messages ),
+			'production' => ( 'yes' === $setting['production_environment'] ),
+			'url'        => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+		];
+
 		$request_message = [
 			'method'   => 'POST',
 			'timeout'  => 30,
-			'body'     => [
-				'message' => wp_json_encode( $messages ),
-				'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
-			],
+			'body'     => apply_filters( 'tenup_support_monitor_request_body', $body ),
 			'blocking' => Debug::instance()->is_debug_enabled(),
 			'headers'  => [
 				'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),

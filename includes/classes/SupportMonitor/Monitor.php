@@ -71,6 +71,10 @@ class Monitor extends Singleton {
 			$setting['enable_support_monitor'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['enable_support_monitor'] );
 		}
 
+		if ( isset( $_POST['tenup_support_monitor_settings']['production_environment'] ) ) {
+			$setting['production_environment'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['production_environment'] );
+		}
+
 		if ( isset( $_POST['tenup_support_monitor_settings']['server_url'] ) ) {
 			$setting['server_url'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['server_url'] );
 		}
@@ -105,6 +109,13 @@ class Monitor extends Singleton {
 						<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
 					</td>
 				</tr>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Production Environment', 'tenup' ); ?></th>
+					<td>
+						<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'yes', $setting['production_environment'] ); ?> type="radio" id="tenup_production_environment_yes" value="yes"> <label for="tenup_production_environment_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+						<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'no', $setting['production_environment'] ); ?> type="radio" id="tenup_production_environment_no" value="no"> <label for="tenup_production_environment_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+					</td>
+				</tr>
 				<?php if ( Debug::instance()->is_debug_enabled() ) : ?>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
@@ -130,6 +141,7 @@ class Monitor extends Singleton {
 			'enable_support_monitor' => 'no',
 			'api_key'                => '',
 			'server_url'             => 'https://supportmonitor.10up.com',
+			'production_environment' => 'no',
 		];
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
@@ -237,6 +249,14 @@ class Monitor extends Singleton {
 			'tenup_support_monitor'
 		);
 
+		add_settings_field(
+			'production_environment',
+			esc_html__( 'Production Environment', 'tenup' ),
+			[ $this, 'production_environment_field' ],
+			'general',
+			'tenup_support_monitor'
+		);
+
 		if ( Debug::instance()->is_debug_enabled() ) {
 			add_settings_field(
 				'server_url',
@@ -274,6 +294,19 @@ class Monitor extends Singleton {
 		?>
 		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
 		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+		<?php
+	}
+
+	/**
+	 * Output production environment field
+	 *
+	 * @since 1.7
+	 */
+	public function production_environment_field() {
+		$value = $this->get_setting( 'production_environment' );
+		?>
+		<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_production_environment_yes" value="yes"> <label for="tenup_production_environment_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+		<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_production_environment_no" value="no"> <label for="tenup_production_environment_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 		<?php
 	}
 
@@ -317,6 +350,7 @@ class Monitor extends Singleton {
 
 		$message = [
 			'time'       => time(),
+			'production' => ( 'yes' === $setting['production_environment'] ),
 			'data'       => $data,
 			'type'       => sanitize_text_field( $type ),
 			'group'      => sanitize_text_field( $group ),

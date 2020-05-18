@@ -31,6 +31,7 @@ class Monitor extends Singleton {
 
 		add_action( 'tenup_support_monitor_message_cron', [ $this, 'send_cron_messages' ] );
 		add_action( 'admin_init', [ $this, 'setup_report_cron' ] );
+		add_action( 'send_daily_report_cron', [ $this, 'send_daily_report' ] );
 	}
 
 	/**
@@ -404,7 +405,7 @@ class Monitor extends Singleton {
 		}
 
 		if ( ! wp_next_scheduled( 'send_daily_report_cron' ) ) {
-			wp_schedule_event( time(), 'twicedaily', 'send_daily_report_cron' );
+			wp_schedule_event( time(), 'daily', 'send_daily_report_cron' );
 		}
 	}
 

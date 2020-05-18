@@ -20,6 +20,11 @@ class Passwords extends Singleton {
 	 * @since 1.7
 	 */
 	public function setup() {
+		// If Force Strong Passwords plugin is active, bail.
+		if ( function_exists( 'slt_fsp_init' ) ) {
+			return;
+		}
+
 		if ( $this->require_strong_passwords() ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts_styles' ] );
 			add_action( 'login_enqueue_scripts', [ $this, 'enqueue_scripts_styles' ] );

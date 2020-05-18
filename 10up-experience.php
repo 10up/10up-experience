@@ -67,7 +67,6 @@ define( 'TENUP_EXPERIENCE_IS_NETWORK', (bool) $network_activated );
 
 AdminCustomizations\Customizations::instance()->setup();
 API\API::instance()->setup();
-Authentication\Passwords::instance()->setup();
 Authentication\Usernames::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
@@ -76,3 +75,10 @@ Plugins\Plugins::instance()->setup();
 PostPasswords\PostPasswords::instance()->setup();
 SupportMonitor\Monitor::instance()->setup();
 SupportMonitor\Debug::instance()->setup();
+
+/**
+ * We load this later to make sure there are no conflicts with other plugins.
+ */
+add_action( 'plugins_loaded', function() {
+	Authentication\Passwords::instance()->setup();
+} );

@@ -23,7 +23,7 @@
 
 * __Authors__
 
-  Removes 10up user author archives so they are mistakenly indexed by search engines.
+  Removes 10up user author archives so they aren't mistakenly indexed by search engines.
 
 * __Gutenberg__
 

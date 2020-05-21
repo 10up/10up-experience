@@ -2,7 +2,16 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
-## [Unreleased] - TBD
+## [1.7] -TBD
+### Added
+* Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
+* Require strong passwords by default. This can be disabled in general settings.
+* Disallow reserved usernames from being used e.g. admin.
+* Set X-Frame-Options to same origin.
+* Add constant `TENUP_DISABLE_BRANDING` to disable 10up admin branding.
+
+### Fixed
+* Refactored to use classes and modern build scripts.
 
 ## [1.6.2] - 2020-04-15
 ### Added

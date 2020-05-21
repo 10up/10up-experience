@@ -49,6 +49,8 @@
 
   `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.
 
+*Note:* 10up admin branding can be disabled by defining the constant `TENUP_DISABLE_BRANDING` as `true`.
+
 ## Support Level
 
 **Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.

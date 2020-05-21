@@ -25,13 +25,6 @@ class Customizations extends Singleton {
 		add_action( 'admin_bar_menu', [ $this, 'add_about_menu' ], 11 );
 		add_action( 'admin_menu', [ $this, 'register_admin_pages' ] );
 		add_filter( 'admin_title', [ $this, 'admin_title_fix' ], 10, 2 );
-
-		/**
-		 * Disable plugin/theme editor
-		 */
-		if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
-			define( 'DISALLOW_FILE_EDIT', true );
-		}
 	}
 
 	/**

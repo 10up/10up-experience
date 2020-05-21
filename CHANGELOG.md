@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 * Require strong passwords by default. This can be disabled in general settings.
 * Disallow reserved usernames from being used e.g. admin.
 * Set X-Frame-Options to same origin.
+* Add constant `TENUP_DISABLE_BRANDING` to disable 10up admin branding.
 
 ### Fixed
 * Refactored to use classes and modern build scripts.

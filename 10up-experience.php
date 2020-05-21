@@ -65,7 +65,10 @@ $network_activated = Utils\is_network_activated( plugin_basename( __FILE__ ) );
 
 define( 'TENUP_EXPERIENCE_IS_NETWORK', (bool) $network_activated );
 
-AdminCustomizations\Customizations::instance()->setup();
+if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
+	AdminCustomizations\Customizations::instance()->setup();
+}
+
 API\API::instance()->setup();
 Authentication\Usernames::instance()->setup();
 Authors\Authors::instance()->setup();
@@ -82,3 +85,10 @@ SupportMonitor\Debug::instance()->setup();
 add_action( 'plugins_loaded', function() {
 	Authentication\Passwords::instance()->setup();
 } );
+
+/**
+ * Disable plugin/theme editor
+ */
+if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {
+	define( 'DISALLOW_FILE_EDIT', true );
+}

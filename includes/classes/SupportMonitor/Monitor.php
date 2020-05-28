@@ -640,7 +640,7 @@ class Monitor extends Singleton {
 		$args = [
 			'search'         => '*@get10up.com',
 			'search_columns' => [ 'user_email' ],
-			'number'         => '100',
+			'number'         => '1000',
 		];
 
 		$_users = get_users( $args );
@@ -656,7 +656,7 @@ class Monitor extends Singleton {
 		$args = [
 			'search'         => '*@10up.com',
 			'search_columns' => [ 'user_email' ],
-			'number'         => '100',
+			'number'         => '1000',
 		];
 
 		$_users = get_users( $args );

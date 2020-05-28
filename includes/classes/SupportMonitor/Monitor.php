@@ -446,12 +446,13 @@ class Monitor extends Singleton {
 			$this->format_message( $this->get_plugin_report(), 'notice', 'plugins' ),
 			$this->format_message(
 				[
-					'wp_version'         => $this->get_wp_version(),
-					'wp_cache'           => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-					'db_version'         => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
-					'wp_debug'           => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
-					'disallow_file_mods' => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
-					'xmlrpc_enabled'     => $this->xmlrpc_enabled(),
+					'wp_version'           => $this->get_wp_version(),
+					'wp_cache'             => ( defined( 'WP_CACHE' ) && WP_CACHE ),
+					'object_cache_enabled' => wp_using_ext_object_cache(),
+					'db_version'           => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
+					'wp_debug'             => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+					'disallow_file_mods'   => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
+					'xmlrpc_enabled'       => $this->xmlrpc_enabled(),
 				],
 				'notice',
 				'wp'

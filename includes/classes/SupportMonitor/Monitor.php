@@ -644,6 +644,10 @@ class Monitor extends Singleton {
 			'number'         => '1000',
 		];
 
+		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			$args['blog_id'] = 0;
+		}
+
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
@@ -659,6 +663,10 @@ class Monitor extends Singleton {
 			'search_columns' => [ 'user_email' ],
 			'number'         => '1000',
 		];
+
+		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			$args['blog_id'] = 0;
+		}
 
 		$_users = get_users( $args );
 

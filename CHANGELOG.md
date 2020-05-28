@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
-## [1.7] -TBD
+## [1.7.1]
+### Fixed
+* Fix number of users being queried by Support Monitor.
+
+## [1.7]
 ### Added
 * Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
 * Require strong passwords by default. This can be disabled in general settings.

@@ -176,7 +176,7 @@ class Passwords extends Singleton {
 				'Auth Error',
 				sprintf(
 					'%s <a href="%s">%s</a> %s',
-					ecc_html__( 'Please', 'tenup' ),
+					esc_html__( 'Please', 'tenup' ),
 					esc_url( wp_lostpassword_url() ),
 					esc_html__( 'reset your password', 'tenup' ),
 					esc_html__( 'in order to meet current security measures.', 'tenup' )

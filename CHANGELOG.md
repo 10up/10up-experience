@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.7.2] - 2020-06-02
+### Fixed
+* Fix `esc_html__` call.
+* Query for users across network if network activated
+
+### Added
+* Send object cache info to Support Monitor
+
 ## [1.7.1]
 ### Fixed
 * Fix number of users being queried by Support Monitor.

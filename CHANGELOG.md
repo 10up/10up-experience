@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.7.3]
+### Fixed
+* Fix how we retrieve WP version.
+
 ## [1.7.2] - 2020-06-02
 ### Fixed
 * Fix `esc_html__` call.

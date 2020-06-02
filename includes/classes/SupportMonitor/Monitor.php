@@ -579,8 +579,13 @@ class Monitor extends Singleton {
 	 * @return string
 	 */
 	public function get_wp_version() {
-		$data = get_preferred_from_update_core();
-		return $data->version;
+		global $wp_version;
+
+		if ( ! empty( $wp_version ) ) {
+			return $wp_version;
+		}
+
+		return null;
 	}
 
 	/**

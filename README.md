@@ -45,6 +45,19 @@
 
   By default, all users must use a medium or greater strength password. This can be turned off in general settings (or network settings if network activated). Reserved usernames such as `admin` are prevented from being used.
 
+	In addition to the above restrictions, this plugin also offer the ability to disable user accounts without removing the account itself.
+
+	 It also supports automatically disabling inactive users who haven't logged in a certain amount of days. Use the following filters to control this functionality:
+
+	```php
+	// enables disabling inactive users automatically.
+	add_filter( 'tenup_experience_enable_disable_inactive_users', '__return_true' );
+	// controls the number of days without activity to disable an user account. default is 60.
+	add_filter( 'tenup_experience_disable_user_inactivity_threshold', function() { return 30; } );
+	```
+
+	**NOTE**: the user is only set to the "disabled" status after trying to login, so even though an user who hasn't logged in past the inactivity threshold doesn't show as disabled it is effectively not able to log in anymore.
+
 * __Headers__
 
   `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.

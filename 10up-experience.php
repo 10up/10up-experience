@@ -71,6 +71,7 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 
 API\API::instance()->setup();
 Authentication\Usernames::instance()->setup();
+Authentication\DisableUsers::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
 Headers\Headers::instance()->setup();

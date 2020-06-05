@@ -13,6 +13,14 @@ use TenUpExperience\Singleton;
  * REST API customizations class
  */
 class API extends Singleton {
+
+	/**
+	 * Default value for API restriction
+	 *
+	 * @var string
+	 */
+	public $option_default = 'users';
+
 	/**
 	 * Setup module
 	 *
@@ -39,10 +47,10 @@ class API extends Singleton {
 			return $result;
 		}
 
-		$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
+		$restrict = get_option( 'tenup_restrict_rest_api', $this->option_default );
 
 		if ( 'all' === $restrict && ! $this->user_can_access_rest_api() ) {
-			return new \WP_Error( 'rest_api_restricted', __( 'Authentication Required', 'tenup' ), array( 'status' => rest_authorization_required_code() ) );
+			return new \WP_Error( 'rest_api_restricted', esc_html__( 'Authentication Required', 'tenup' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return $result;
@@ -55,7 +63,7 @@ class API extends Singleton {
 	 * @return array
 	 */
 	public function restrict_user_endpoints( $endpoints ) {
-		$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
+		$restrict = get_option( 'tenup_restrict_rest_api', $this->option_default );
 
 		if ( 'none' === $restrict ) {
 			return $endpoints;
@@ -99,7 +107,7 @@ class API extends Singleton {
 	 * @return void
 	 */
 	public function restrict_rest_api_ui() {
-		$restrict = get_option( 'tenup_restrict_rest_api', 'all' );
+		$restrict = get_option( 'tenup_restrict_rest_api', $this->option_default );
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'REST API Availability', 'tenup' ); ?></legend>
@@ -148,7 +156,7 @@ class API extends Singleton {
 			return $value;
 		}
 
-		// Default to 'all' in case something wrong gets sent
-		return 'all';
+		// Default to 'users' in case something wrong gets sent
+		return 'users';
 	}
 }

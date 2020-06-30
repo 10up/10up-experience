@@ -15,9 +15,51 @@
 1. Activate the plugin via the dashboard or WP-CLI.
 1. Updates use the built-in WordPress update system to pull from GitHub releases.
 
-## Plugin Usage
+## Functionality
 
-This plugin requires no configuration.
+* __REST API__
+
+  Adds an option to general settings to restrict REST API access. The options are: show REST API to everyone, only show REST API to logged in users, and show REST API to everyone except `/users` endpoint. By default, the plugin requires authentication for the `/users` endpoint.
+
+	*Configured in `Settings > Reading`.*
+
+* __Authors__
+
+  Removes 10up user author archives so they aren't mistakenly indexed by search engines.
+
+* __Gutenberg__
+
+  Adds an option in writing to switch back to Classic Editor.
+
+	*Configured in `Settings > Writing`.*
+
+* __Plugins__
+
+  Adds a 10up Suggested Plugins section to the plugins screen. Warns users who attempt to deactivate the 10up Experience plugin. Outputs a notice on non-suggested plugins tabs warning users from installing non-approved plugins. If `DISALLOW_FILE_MODS` is on, update notices will be shown in the plugins table.
+
+* __Post Passwords__
+
+  Password protecting post functionality is removed both in Gutenberg and the classic editor. This can be disabled in the writing section of the admin.
+
+	*Configured in `Settings > Writing`.*
+
+* __Support Monitor__
+
+  Sends non-PII information about the website back to 10up including plugins installed, constants defined in `wp-config.php`, 10up user accounts, and more.
+
+	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
+
+* __Authentication__
+
+  By default, all users must use a medium or greater strength password. This can be turned off in general settings (or network settings if network activated). Reserved usernames such as `admin` are prevented from being used.
+
+	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
+
+* __Headers__
+
+  `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.
+
+*Note:* 10up admin branding can be disabled by defining the constant `TENUP_DISABLE_BRANDING` as `true`.
 
 ## Support Level
 

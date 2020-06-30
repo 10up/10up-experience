@@ -20,6 +20,11 @@ class Passwords extends Singleton {
 	 * @since 1.7
 	 */
 	public function setup() {
+		// If Force Strong Passwords plugin is active, bail.
+		if ( function_exists( 'slt_fsp_init' ) ) {
+			return;
+		}
+
 		if ( $this->require_strong_passwords() ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_scripts_styles' ] );
 			add_action( 'login_enqueue_scripts', [ $this, 'enqueue_scripts_styles' ] );
@@ -163,7 +168,7 @@ class Passwords extends Singleton {
 	 * @return \WP_User|\WP_Error
 	 */
 	public function prevent_weak_password_auth( $user, $username, $password ) {
-		$test_tlds = array( 'test', 'dev', 'local', '' );
+		$test_tlds = array( 'test', 'local', '' );
 		$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
 
 		if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $password ) ), $this->weak_passwords(), true ) ) {
@@ -171,7 +176,7 @@ class Passwords extends Singleton {
 				'Auth Error',
 				sprintf(
 					'%s <a href="%s">%s</a> %s',
-					ecc_html__( 'Please', 'tenup' ),
+					esc_html__( 'Please', 'tenup' ),
 					esc_url( wp_lostpassword_url() ),
 					esc_html__( 'reset your password', 'tenup' ),
 					esc_html__( 'in order to meet current security measures.', 'tenup' )

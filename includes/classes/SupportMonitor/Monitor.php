@@ -31,6 +31,7 @@ class Monitor extends Singleton {
 
 		add_action( 'tenup_support_monitor_message_cron', [ $this, 'send_cron_messages' ] );
 		add_action( 'admin_init', [ $this, 'setup_report_cron' ] );
+		add_action( 'send_daily_report_cron', [ $this, 'send_daily_report' ] );
 	}
 
 	/**
@@ -71,6 +72,10 @@ class Monitor extends Singleton {
 			$setting['enable_support_monitor'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['enable_support_monitor'] );
 		}
 
+		if ( isset( $_POST['tenup_support_monitor_settings']['production_environment'] ) ) {
+			$setting['production_environment'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['production_environment'] );
+		}
+
 		if ( isset( $_POST['tenup_support_monitor_settings']['server_url'] ) ) {
 			$setting['server_url'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['server_url'] );
 		}
@@ -106,11 +111,20 @@ class Monitor extends Singleton {
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Production Environment', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
+						<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'yes', $setting['production_environment'] ); ?> type="radio" id="tenup_production_environment_yes" value="yes"> <label for="tenup_production_environment_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+						<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'no', $setting['production_environment'] ); ?> type="radio" id="tenup_production_environment_no" value="no"> <label for="tenup_production_environment_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 					</td>
 				</tr>
+				<?php if ( Debug::instance()->is_debug_enabled() ) : ?>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
+						<td>
+							<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
+						</td>
+					</tr>
+				<?php endif; ?>
 			</tbody>
 		</table>
 		<?php
@@ -128,10 +142,15 @@ class Monitor extends Singleton {
 			'enable_support_monitor' => 'no',
 			'api_key'                => '',
 			'server_url'             => 'https://supportmonitor.10up.com',
+			'production_environment' => 'no',
 		];
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
 		$settings = wp_parse_args( $settings, $defaults );
+
+		if ( ! Debug::instance()->is_debug_enabled() ) {
+			$settings['server_url'] = 'https://supportmonitor.10up.com';
+		}
 
 		if ( ! empty( $setting_key ) ) {
 			return $settings[ $setting_key ];
@@ -232,12 +251,22 @@ class Monitor extends Singleton {
 		);
 
 		add_settings_field(
-			'server_url',
-			esc_html__( 'API Server URL', 'tenup' ),
-			[ $this, 'api_server_field' ],
+			'production_environment',
+			esc_html__( 'Production Environment', 'tenup' ),
+			[ $this, 'production_environment_field' ],
 			'general',
 			'tenup_support_monitor'
 		);
+
+		if ( Debug::instance()->is_debug_enabled() ) {
+			add_settings_field(
+				'server_url',
+				esc_html__( 'API Server URL', 'tenup' ),
+				[ $this, 'api_server_field' ],
+				'general',
+				'tenup_support_monitor'
+			);
+		}
 
 	}
 
@@ -266,6 +295,19 @@ class Monitor extends Singleton {
 		?>
 		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
 		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+		<?php
+	}
+
+	/**
+	 * Output production environment field
+	 *
+	 * @since 1.7
+	 */
+	public function production_environment_field() {
+		$value = $this->get_setting( 'production_environment' );
+		?>
+		<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_production_environment_yes" value="yes"> <label for="tenup_production_environment_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+		<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_production_environment_no" value="no"> <label for="tenup_production_environment_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 		<?php
 	}
 
@@ -313,6 +355,7 @@ class Monitor extends Singleton {
 			'type'       => sanitize_text_field( $type ),
 			'group'      => sanitize_text_field( $group ),
 			'message_id' => md5( $setting['api_key'] . microtime( true ) . wp_rand( 0, 10000 ) ),
+
 		];
 
 		return apply_filters( 'tenup_support_monitor_message', $message );
@@ -363,7 +406,7 @@ class Monitor extends Singleton {
 		}
 
 		if ( ! wp_next_scheduled( 'send_daily_report_cron' ) ) {
-			wp_schedule_event( time(), 'twicedaily', 'send_daily_report_cron' );
+			wp_schedule_event( time(), 'daily', 'send_daily_report_cron' );
 		}
 	}
 
@@ -404,12 +447,13 @@ class Monitor extends Singleton {
 			$this->format_message( $this->get_plugin_report(), 'notice', 'plugins' ),
 			$this->format_message(
 				[
-					'wp_version'         => $this->get_wp_version(),
-					'wp_cache'           => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-					'db_version'         => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
-					'wp_debug'           => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
-					'disallow_file_mods' => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
-					'xmlrpc_enabled'     => $this->xmlrpc_enabled(),
+					'wp_version'           => $this->get_wp_version(),
+					'wp_cache'             => ( defined( 'WP_CACHE' ) && WP_CACHE ),
+					'object_cache_enabled' => wp_using_ext_object_cache(),
+					'db_version'           => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
+					'wp_debug'             => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+					'disallow_file_mods'   => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
+					'xmlrpc_enabled'       => $this->xmlrpc_enabled(),
 				],
 				'notice',
 				'wp'
@@ -439,25 +483,29 @@ class Monitor extends Singleton {
 	 */
 	public function send_request( $messages ) {
 
-		$server_url = $this->get_setting( 'server_url' );
+		$setting = $this->get_setting();
 
-		if ( empty( $server_url ) ) {
+		if ( empty( $setting['server_url'] ) ) {
 			return false;
 		}
 
-		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( $server_url . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
+		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( untrailingslashit( $setting['server_url'] ) . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
 		$api_key = $this->get_setting( 'api_key' );
 
 		if ( empty( $api_key ) || empty( $messages ) || empty( $api_url ) ) {
 			return;
 		}
 
+		$body = [
+			'message'    => wp_json_encode( $messages ),
+			'production' => ( 'yes' === $setting['production_environment'] ),
+			'url'        => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+		];
+
 		$request_message = [
 			'method'   => 'POST',
-			'body'     => [
-				'message' => wp_json_encode( $messages ),
-				'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
-			],
+			'timeout'  => 30,
+			'body'     => apply_filters( 'tenup_support_monitor_request_body', $body ),
 			'blocking' => Debug::instance()->is_debug_enabled(),
 			'headers'  => [
 				'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),
@@ -532,8 +580,13 @@ class Monitor extends Singleton {
 	 * @return string
 	 */
 	public function get_wp_version() {
-		$data = get_preferred_from_update_core();
-		return $data->version;
+		global $wp_version;
+
+		if ( ! empty( $wp_version ) ) {
+			return $wp_version;
+		}
+
+		return null;
 	}
 
 	/**
@@ -587,18 +640,24 @@ class Monitor extends Singleton {
 	 * @return array
 	 */
 	public function get_users_report() {
-		$users = [];
+		$report = [
+			'10up' => [],
+		];
 
 		$args = [
 			'search'         => '*@get10up.com',
 			'search_columns' => [ 'user_email' ],
-			'number'         => '100',
+			'number'         => '1000',
 		];
+
+		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			$args['blog_id'] = 0;
+		}
 
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
-			$users[] = [
+			$report['10up'][] = [
 				'email'        => $user->user_email,
 				'display_name' => $user->display_name,
 				'role'         => $user->roles,
@@ -608,18 +667,23 @@ class Monitor extends Singleton {
 		$args = [
 			'search'         => '*@10up.com',
 			'search_columns' => [ 'user_email' ],
-			'number'         => '100',
+			'number'         => '1000',
 		];
+
+		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			$args['blog_id'] = 0;
+		}
 
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
-			$users[] = [
+			$report['10up'][] = [
 				'email'        => $user->user_email,
 				'display_name' => $user->display_name,
 				'role'         => $user->roles,
 			];
 		}
-		return $users;
+
+		return $report;
 	}
 }

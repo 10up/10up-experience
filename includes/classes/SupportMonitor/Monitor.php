@@ -312,7 +312,7 @@ class Monitor extends Singleton {
 			'data'       => $data,
 			'type'       => sanitize_text_field( $type ),
 			'group'      => sanitize_text_field( $group ),
-			'message_id' => md5( $setting['api_key'] . microtime( true ) ),
+			'message_id' => md5( $setting['api_key'] . microtime( true ) . wp_rand( 0, 10000 ) ),
 		];
 
 		return apply_filters( 'tenup_support_monitor_message', $message );

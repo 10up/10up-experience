@@ -2,11 +2,13 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
-## [1.7.3]
+## [Unreleased] - TBD
+
+## [1.7.3] - TBD
 ### Fixed
 * Fix how we retrieve WP version.
 
-## [1.7.2] - 2020-06-02
+## [1.7.2] - 2020-06-01
 ### Fixed
 * Fix `esc_html__` call.
 * Query for users across network if network activated
@@ -14,11 +16,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Added
 * Send object cache info to Support Monitor
 
-## [1.7.1]
+## [1.7.1] - 2020-05-28
 ### Fixed
 * Fix number of users being queried by Support Monitor.
 
-## [1.7]
+## [1.7] - 2020-05-21
 ### Added
 * Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
 * Require strong passwords by default. This can be disabled in general settings.
@@ -90,6 +92,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial release
 
 [Unreleased]: https://github.com/10up/10up-experience/compare/master...develop
+[1.7.3]: https://github.com/10up/10up-experience/compare/1.7.2...1.7.3
+[1.7.2]: https://github.com/10up/10up-experience/compare/1.7.1...1.7.2
+[1.7.1]: https://github.com/10up/10up-experience/compare/1.7...1.7.1
+[1.7]: https://github.com/10up/10up-experience/compare/1.6.2...1.7
 [1.6.2]: https://github.com/10up/10up-experience/compare/1.6.1...1.6.2
 [1.6.1]: https://github.com/10up/10up-experience/compare/1.6...1.6.1
 [1.6]: https://github.com/10up/10up-experience/compare/1.5...1.6

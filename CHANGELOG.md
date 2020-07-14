@@ -5,31 +5,35 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [Unreleased] - TBD
 
 ## [1.7.3] - TBD
-### Fixed
-* Fix how we retrieve WP version.
+### Added
+- Custom `X-Redirect-By` header for easier redirect debugging (props [@petenelson](https://github.com/petenelson) via [#73](https://github.com/10up/10up-experience/pull/73))
+
+### Changed
+- How Support Monitor retrieves the WordPress version.
+- API restriction default to users
 
 ## [1.7.2] - 2020-06-01
-### Fixed
-* Fix `esc_html__` call.
-* Query for users across network if network activated
-
 ### Added
-* Send object cache info to Support Monitor
+- Send object cache info to Support Monitor
+
+### Fixed
+- Fix `esc_html__` call.
+- Query for users across network if network activated
 
 ## [1.7.1] - 2020-05-28
 ### Fixed
-* Fix number of users being queried by Support Monitor.
+- Fix number of users being queried by Support Monitor.
 
 ## [1.7] - 2020-05-21
 ### Added
-* Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
-* Require strong passwords by default. This can be disabled in general settings.
-* Disallow reserved usernames from being used e.g. admin.
-* Set X-Frame-Options to same origin.
-* Add constant `TENUP_DISABLE_BRANDING` to disable 10up admin branding.
+- Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
+- Require strong passwords by default. This can be disabled in general settings.
+- Disallow reserved usernames from being used e.g. admin.
+- Set X-Frame-Options to same origin.
+- Add constant `TENUP_DISABLE_BRANDING` to disable 10up admin branding.
 
 ### Fixed
-* Refactored to use classes and modern build scripts.
+- Refactored to use classes and modern build scripts.
 
 ## [1.6.2] - 2020-04-15
 ### Added

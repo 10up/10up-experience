@@ -89,7 +89,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [1.0] - 2018-03-01
 - Initial release
 
-[Unreleased]: https://github.com/10up/10up-experience/compare/master...develop
+[Unreleased]: https://github.com/10up/10up-experience/compare/trunk...develop
 [1.6.2]: https://github.com/10up/10up-experience/compare/1.6.1...1.6.2
 [1.6.1]: https://github.com/10up/10up-experience/compare/1.6...1.6.1
 [1.6]: https://github.com/10up/10up-experience/compare/1.5...1.6

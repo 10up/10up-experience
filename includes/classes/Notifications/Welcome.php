@@ -80,7 +80,7 @@ class Welcome extends Singleton {
 			</p>
 
 			<p>
-				<?php _e( '<strong>This plugin changes some WordPress default functionality</strong> e.g. requiring authentication for the REST API users endpoint. Make sure to look at the <a href="https://github.com/10up/10up-experience">readme</a> to understand all the changes it makes.', 'tenup' ); ?>
+				<?php echo wp_kses_post( __( '<strong>This plugin changes some WordPress default functionality</strong> e.g. requiring authentication for the REST API users endpoint. Make sure to look at the <a href="https://github.com/10up/10up-experience">readme</a> to understand all the changes it makes.', 'tenup' ) ); ?>
 			</p>
 		</div>
 		<?php

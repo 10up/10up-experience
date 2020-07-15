@@ -86,11 +86,11 @@ class Debug extends Singleton {
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 			delete_site_option( 'tenup_support_monitor_log' );
 
-			wp_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
+			wp_safe_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
 		} else {
 			delete_option( 'tenup_support_monitor_log' );
 
-			wp_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
+			wp_safe_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
 		}
 	}
 
@@ -107,9 +107,9 @@ class Debug extends Singleton {
 		Monitor::instance()->send_daily_report();
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
-			wp_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
+			wp_safe_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
 		} else {
-			wp_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
+			wp_safe_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
 		}
 	}
 

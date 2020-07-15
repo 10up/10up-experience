@@ -65,7 +65,7 @@ class Authors extends Singleton {
 		}
 
 		if ( true === $is_author_disabled ) {
-			\wp_safe_redirect( home_url(), '301' );
+			\wp_safe_redirect( home_url(), '301', '10up Experience' );
 			exit();
 		}
 	}

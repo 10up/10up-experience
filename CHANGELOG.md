@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.7.3] - 2020-07-20
+### Fixed
+* Fix how we retrieve WP version.
+* Improve how we generate message ID for Support Monitor
+
+### Added
+* Show welcome admin notification
+* Change API restriction to default to only restricting the users endpoint.
+* 10up Experience header added during author redirect to improve debugging. Props [petenelson](https://github.com/petenelson).
+
 ## [1.7.2] - 2020-06-02
 ### Fixed
 * Fix `esc_html__` call.

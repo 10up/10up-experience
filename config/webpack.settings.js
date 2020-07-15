@@ -3,6 +3,7 @@ module.exports = {
 	entries: {
 		// JS files.
 		passwords: './assets/js/passwords.js',
+		notices: './assets/js/notices.js',
 
 		// CSS files.
 		admin: './assets/css/admin.css',

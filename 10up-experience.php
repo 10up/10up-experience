@@ -48,8 +48,6 @@ $tenup_plugin_updater = Puc_v4_Factory::buildUpdateChecker(
 	'10up-experience'
 );
 
-$tenup_plugin_updater->setBranch( 'trunk' );
-
 if ( defined( 'TENUP_EXPERIENCE_GITHUB_KEY' ) ) {
 	$tenup_plugin_updater->setAuthentication( TENUP_EXPERIENCE_GITHUB_KEY );
 }

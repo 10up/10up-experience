@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 10up Experience
  * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.7.2
+ * Version:     1.7.3
  * Author:      10up
  * Author URI:  https://10up.com
  * License:     GPLv2 or later
@@ -16,7 +16,7 @@ namespace TenUpExperience;
 
 use Puc_v4_Factory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.7.2' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.7.3' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
@@ -24,27 +24,31 @@ require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update
 
 require_once __DIR__ . '/includes/utils.php';
 
-spl_autoload_register( function( $class_name ) {
-	$path_parts = explode( '\\', $class_name );
+spl_autoload_register(
+	function( $class_name ) {
+		$path_parts = explode( '\\', $class_name );
 
-	if ( ! empty( $path_parts ) ) {
-		$package = $path_parts[0];
+		if ( ! empty( $path_parts ) ) {
+			$package = $path_parts[0];
 
-		unset( $path_parts[0] );
+			unset( $path_parts[0] );
 
-		if ( 'TenUpExperience' === $package ) {
-			require_once __DIR__ . '/includes/classes/' . implode( '/', $path_parts ) . '.php';
-		} elseif ( 'ZxcvbnPhp' === $package ) {
-			require_once __DIR__ . '/vendor/bjeavons/zxcvbn-php/src/' . implode( '/', $path_parts ) . '.php';
+			if ( 'TenUpExperience' === $package ) {
+				require_once __DIR__ . '/includes/classes/' . implode( '/', $path_parts ) . '.php';
+			} elseif ( 'ZxcvbnPhp' === $package ) {
+				require_once __DIR__ . '/vendor/bjeavons/zxcvbn-php/src/' . implode( '/', $path_parts ) . '.php';
+			}
 		}
 	}
-} );
+);
 
 $tenup_plugin_updater = Puc_v4_Factory::buildUpdateChecker(
 	'https://github.com/10up/10up-experience/',
 	__FILE__,
 	'10up-experience'
 );
+
+$tenup_plugin_updater->setBranch( 'trunk' );
 
 if ( defined( 'TENUP_EXPERIENCE_GITHUB_KEY' ) ) {
 	$tenup_plugin_updater->setAuthentication( TENUP_EXPERIENCE_GITHUB_KEY );
@@ -83,9 +87,12 @@ Notifications\Welcome::instance()->setup();
 /**
  * We load this later to make sure there are no conflicts with other plugins.
  */
-add_action( 'plugins_loaded', function() {
-	Authentication\Passwords::instance()->setup();
-} );
+add_action(
+	'plugins_loaded',
+	function() {
+		Authentication\Passwords::instance()->setup();
+	}
+);
 
 /**
  * Disable plugin/theme editor

@@ -2,38 +2,38 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
-## [1.7.3] - 2020-07-20
-### Fixed
-* Fix how we retrieve WP version.
-* Improve how we generate message ID for Support Monitor
-
+## [1.7.3] - 2020-07-15
 ### Added
-* Show welcome admin notification
-* Change API restriction to default to only restricting the users endpoint.
-* 10up Experience header added during author redirect to improve debugging. Props [petenelson](https://github.com/petenelson).
+- Show welcome admin notification
+- Change API restriction to default to only restricting the users endpoint.
+- 10up Experience header added during author redirect to improve debugging. Props [petenelson](https://github.com/petenelson).
 
-## [1.7.2] - 2020-06-02
 ### Fixed
-* Fix `esc_html__` call.
-* Query for users across network if network activated
+- Fix how we retrieve WP version.
+- Improve how we generate message ID for Support Monitor
 
+## [1.7.2] - 2020-06-01
 ### Added
-* Send object cache info to Support Monitor
+- Send object cache info to Support Monitor
 
-## [1.7.1]
 ### Fixed
-* Fix number of users being queried by Support Monitor.
+- Fix `esc_html__` call.
+- Query for users across network if network activated
 
-## [1.7]
+## [1.7.1] - 2020-05-28
+### Fixed
+- Fix number of users being queried by Support Monitor.
+
+## [1.7] - 2020-05-21
 ### Added
-* Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
-* Require strong passwords by default. This can be disabled in general settings.
-* Disallow reserved usernames from being used e.g. admin.
-* Set X-Frame-Options to same origin.
-* Add constant `TENUP_DISABLE_BRANDING` to disable 10up admin branding.
+- Support monitor functionality. Sends non-PII data e.g. plugin versions back to 10up.
+- Require strong passwords by default. This can be disabled in general settings.
+- Disallow reserved usernames from being used e.g. admin.
+- Set X-Frame-Options to same origin.
+- Add constant `TENUP_DISABLE_BRANDING` to disable 10up admin branding.
 
 ### Fixed
-* Refactored to use classes and modern build scripts.
+- Refactored to use classes and modern build scripts.
 
 ## [1.6.2] - 2020-04-15
 ### Added
@@ -96,6 +96,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial release
 
 [Unreleased]: https://github.com/10up/10up-experience/compare/master...develop
+[1.7.3]: https://github.com/10up/10up-experience/compare/1.7.2...1.7.3
+[1.7.2]: https://github.com/10up/10up-experience/compare/1.7.1...1.7.2
+[1.7.1]: https://github.com/10up/10up-experience/compare/1.7...1.7.1
+[1.7]: https://github.com/10up/10up-experience/compare/1.6.2...1.7
 [1.6.2]: https://github.com/10up/10up-experience/compare/1.6.1...1.6.2
 [1.6.1]: https://github.com/10up/10up-experience/compare/1.6...1.6.1
 [1.6]: https://github.com/10up/10up-experience/compare/1.5...1.6

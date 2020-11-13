@@ -449,7 +449,7 @@ class Monitor extends Singleton {
 				[
 					'wp_version'           => $this->get_wp_version(),
 					'wp_cache'             => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-					'object_cache_enabled' => wp_using_ext_object_cache(),
+					'object_cache_enabled' => $this->get_is_using_object_cache(),
 					'db_version'           => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
 					'wp_debug'             => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 					'disallow_file_mods'   => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
@@ -685,5 +685,28 @@ class Monitor extends Singleton {
 		}
 
 		return $report;
+	}
+
+	/**
+	 * Check if the site is using an external object cache.
+	 *
+	 * Manually sets a value into an external object cache and attempts the retrieve
+	 * it. This is needed for caching drop-ins that do not set the
+	 * $_wp_using_ext_object_cache global varialbe, for example Redis Cache Pro.
+	 *
+	 * @return bool
+	 */
+	public function get_is_using_object_cache() {
+		if ( wp_using_ext_object_cache() ) {
+			return true;
+		}
+
+		$check = time();
+
+		wp_cache_set( 'tenup_experience_cache_check', $check, null, MINUTE_IN_SECONDS );
+
+		$result = wp_cache_get( 'foo' );
+
+		return ( $result === $check );
 	}
 }

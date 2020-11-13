@@ -705,7 +705,7 @@ class Monitor extends Singleton {
 
 		wp_cache_set( 'tenup_experience_cache_check', $check, null, MINUTE_IN_SECONDS );
 
-		$result = wp_cache_get( 'foo' );
+		$result = wp_cache_get( 'tenup_experience_cache_check' );
 
 		return ( $result === $check );
 	}

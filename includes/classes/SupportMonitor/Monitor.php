@@ -690,10 +690,6 @@ class Monitor extends Singleton {
 	/**
 	 * Check if the site is using an external object cache.
 	 *
-	 * Manually sets a value into an external object cache and attempts the retrieve
-	 * it. This is needed for caching drop-ins that do not set the
-	 * $_wp_using_ext_object_cache global varialbe, for example Redis Cache Pro.
-	 *
 	 * @return bool
 	 */
 	public function get_is_using_object_cache() {
@@ -701,12 +697,6 @@ class Monitor extends Singleton {
 			return true;
 		}
 
-		$check = time();
-
-		wp_cache_set( 'tenup_experience_cache_check', $check, null, MINUTE_IN_SECONDS );
-
-		$result = wp_cache_get( 'tenup_experience_cache_check' );
-
-		return ( $result === $check );
+		return file_exists( WP_CONTENT_DIR . '/object-cache.php' );
 	}
 }

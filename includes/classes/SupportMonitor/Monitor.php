@@ -41,7 +41,6 @@ class Monitor extends Singleton {
 	 */
 	public function ms_save_settings() {
 		global $pagenow;
-
 		if ( ! is_network_admin() ) {
 			return;
 		}
@@ -445,6 +444,7 @@ class Monitor extends Singleton {
 
 		$messages = [
 			$this->format_message( $this->get_plugin_report(), 'notice', 'plugins' ),
+			$this->format_message( $this->get_theme_report(), 'notice', 'themes' ),
 			$this->format_message(
 				[
 					'wp_version'           => $this->get_wp_version(),
@@ -571,6 +571,28 @@ class Monitor extends Singleton {
 			];
 		}
 		return $plugins;
+	}
+
+	/**
+	 * Get WP themes
+	 *
+	 * @since  1.7
+	 * @return array
+	 */
+	public function get_theme_report() {
+
+		$themes = [];
+
+		$_themes = wp_get_themes();
+		foreach ( $_themes as $key => $theme ) {
+			$themes[] = [
+				'slug'    => $key,
+				'name'    => $theme['Name'],
+				'status'  => $theme['Status'],
+				'version' => $theme['Version'],
+			];
+		}
+		return $themes;
 	}
 
 	/**

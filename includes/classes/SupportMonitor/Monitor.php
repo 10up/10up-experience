@@ -472,6 +472,17 @@ class Monitor extends Singleton {
 			),
 		];
 
+		// If this is production, request that a web vitals insight also be generated.
+		if ( 'yes' === $setting['production_environment'] ) {
+			$messages[] = $this->format_message(
+				[
+					'url' => 'https://10up.com/',
+				],
+				'notice',
+				'webvitals'
+			);
+		}
+
 		$this->send_request( $messages );
 	}
 

@@ -476,7 +476,7 @@ class Monitor extends Singleton {
 		if ( 'yes' === $setting['production_environment'] ) {
 			$messages[] = $this->format_message(
 				[
-					'url' => 'https://10up.com/',
+					'url' => home_url(),
 				],
 				'notice',
 				'webvitals'

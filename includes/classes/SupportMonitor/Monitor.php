@@ -449,7 +449,7 @@ class Monitor extends Singleton {
 				[
 					'wp_version'           => $this->get_wp_version(),
 					'wp_cache'             => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-					'object_cache_enabled' => wp_using_ext_object_cache(),
+					'object_cache_enabled' => $this->get_is_using_object_cache(),
 					'db_version'           => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
 					'wp_debug'             => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 					'disallow_file_mods'   => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
@@ -696,5 +696,18 @@ class Monitor extends Singleton {
 		}
 
 		return $report;
+	}
+
+	/**
+	 * Check if the site is using an external object cache.
+	 *
+	 * @return bool
+	 */
+	public function get_is_using_object_cache() {
+		if ( wp_using_ext_object_cache() ) {
+			return true;
+		}
+
+		return file_exists( WP_CONTENT_DIR . '/object-cache.php' );
 	}
 }

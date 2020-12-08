@@ -44,7 +44,7 @@
       "./vendor/bin/phpcs --extensions=php --warning-severity=8 -s"
     ]
   },
-  "license": "GPLv2-or-later",
+  "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@10up/babel-preset-default": "^1.0.0",
     "@10up/eslint-config": "^2.0.0",

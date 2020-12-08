@@ -8,7 +8,7 @@
     "10up"
   ],
   "homepage": "https://github.com/10up/10up-experience",
-  "license": ["GPL-2.0-only"],
+  "license": ["GPLv2-or-later"],
   "authors": [
     {
       "name": "10up",

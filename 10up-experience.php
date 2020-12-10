@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 10up Experience
  * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.7.3
+ * Version:     1.8.0
  * Author:      10up
  * Author URI:  https://10up.com
  * License:     GPLv2 or later
@@ -16,7 +16,7 @@ namespace TenUpExperience;
 
 use Puc_v4_Factory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.7.3' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.8.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 

@@ -2,6 +2,7 @@
   "name": "10up-experience",
   "description": "The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.",
   "homepage": "https://10up.com",
+  "version": "1.8.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/10up/10up-experience"
@@ -43,7 +44,7 @@
       "./vendor/bin/phpcs --extensions=php --warning-severity=8 -s"
     ]
   },
-  "license": "MIT",
+  "license": "GPL-2.0-or-later",
   "devDependencies": {
     "@10up/babel-preset-default": "^1.0.0",
     "@10up/eslint-config": "^2.0.0",

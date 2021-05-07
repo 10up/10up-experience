@@ -81,6 +81,8 @@ PostPasswords\PostPasswords::instance()->setup();
 SupportMonitor\Monitor::instance()->setup();
 SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
+Notifications\Welcome::instance()->setup();
+AdminCustomizations\PasswordPolicy::instance()->setup();
 
 /**
  * We load this later to make sure there are no conflicts with other plugins.

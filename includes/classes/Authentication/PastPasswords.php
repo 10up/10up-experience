@@ -18,12 +18,12 @@ class PastPasswords extends Singleton {
 	/**
 	 * Meta key for list of past password hashes
 	 */
-	const METAKEY_PASSWORD = '_past_passwords';
+	const METAKEY_PASSWORD = '_tenup_past_passwords';
 
 	/**
 	 * Meta key for last time password was updated
 	 */
-	const METAKEY_PASSWORD_EXPIRE = '_password_last_updated';
+	const METAKEY_PASSWORD_EXPIRE = '_tenup_password_last_updated';
 
 	/**
 	 * Setup hook sand filters

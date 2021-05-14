@@ -25,17 +25,17 @@ class PasswordPolicy extends Singleton {
 	 * @since 1.7
 	 */
 	public function setup() {
-		if ( apply_filters( 'tenup_experience_enable_password_policy', true ) ) {
-			add_action( 'admin_menu', [ $this, 'register_admin_pages' ] );
-			add_filter( 'admin_init', [ $this, 'register_password_policy_settings' ], 10, 2 );
-		}
+		add_action( 'admin_menu', [ $this, 'register_admin_pages' ] );
+		add_filter( 'admin_init', [ $this, 'register_password_policy_settings' ], 10, 2 );
 	}
 
 	/**
 	 * Register admin pages with output callbacks
 	 */
 	public function register_admin_pages() {
-		add_users_page( esc_html__( 'Password Policy', 'tenup' ), esc_html__( 'Password Policy', 'tenup' ), 'manage_options', '10up-password-policy', [ $this, 'password_policy_screen' ] );
+		if ( apply_filters( 'tenup_experience_enable_password_policy', true ) ) {
+			add_users_page( esc_html__( 'Password Policy', 'tenup' ), esc_html__( 'Password Policy', 'tenup' ), 'manage_options', '10up-password-policy', [ $this, 'password_policy_screen' ] );
+		}
 	}
 
 	/**

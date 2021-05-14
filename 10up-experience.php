@@ -75,6 +75,7 @@ API\API::instance()->setup();
 AdminCustomizations\PasswordPolicy::instance()->setup();
 Authentication\Usernames::instance()->setup();
 Authentication\PastPasswords::instance()->setup();
+Authentication\Login::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
 Headers\Headers::instance()->setup();

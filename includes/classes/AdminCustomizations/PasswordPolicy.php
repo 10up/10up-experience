@@ -48,7 +48,7 @@ class PasswordPolicy extends Singleton {
 			self::PASSWORD_POLICY_OPTION_NAME,
 			self::PASSWORD_POLICY_OPTION_NAME,
 			[
-				'sanitize_callback' => array( $this, 'sanitize_settings' ),
+				'sanitize_callback' => [ $this, 'sanitize_settings' ],
 			]
 		);
 
@@ -96,7 +96,7 @@ class PasswordPolicy extends Singleton {
 			add_settings_field(
 				$setting_id,
 				$setting['label'],
-				array( $this, 'field' ),
+				[ $this, 'field' ],
 				self::PASSWORD_POLICY_OPTION_NAME,
 				self::PASSWORD_POLICY_OPTION_NAME,
 				$options

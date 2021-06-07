@@ -99,6 +99,13 @@ add_action(
 );
 
 /**
+ * Clean up when plugin is deactivated
+ */
+register_deactivation_hook( __FILE__, function(){
+	Authentication\PastPasswords::instance()->deactivate();
+} );
+
+/**
  * Disable plugin/theme editor
  */
 if ( ! defined( 'DISALLOW_FILE_EDIT' ) ) {

@@ -30,12 +30,22 @@ class PastPasswords extends Singleton {
 	 */
 	public function setup() {
 		add_action( 'init', [ $this, 'maybe_schedule_event' ] );
-		add_action( 'tenup_check_expired_passwords', [ $this, 'notify_expired_passwords' ] );
+		add_action( 'tenup_notify_expired_passwords', [ $this, 'notify_expired_passwords' ] );
 		add_action( 'user_profile_update_errors', [ $this, 'update_profile' ], 10, 3 );
+
 		// Run duplicate password check after password strength test in TenUpExperience\Authentication\PassWord
 		add_action( 'validate_password_reset', [ $this, 'validate_password_reset' ], 11, 2 );
 		add_action( 'password_reset', [ $this, 'password_reset' ], 10, 2 );
 		add_filter( 'wp_authenticate_user', [ $this, 'prevent_login_for_expired_passwords' ], 10, 2 );
+	}
+
+	/**
+	 * Remove cron event when plugin is deactivated
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		wp_clear_scheduled_hook( 'tenup_notify_expired_passwords' );
 	}
 
 	/**
@@ -191,19 +201,20 @@ class PastPasswords extends Singleton {
 					),
 				),
 				'number'     => apply_filters( 'tenup_number_user_query', 250 ),
-				'fields'     => 'email',
+				'fields'     => array( 'user_email' ),
 			)
 		);
 
 		if ( ! empty( $users->get_results() ) ) {
-			$message       = PasswordPolicy::instance()->get_setting( 'reminder_email' );
 			$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
+			$message       = PasswordPolicy::instance()->get_setting( 'reminder_email' );
 			// translators: %1$s is the URL to the reset password screen and %2$s is the link to the reset password screen
-			$reminder_days = sprintf( '<p><a href="%1$s">%2$s</a></p>', esc_url( wp_lostpassword_url() ), esc_html__( 'Rest your password', 'tenup' ) );
-			// translators: Numbers of days a uses password is still good for
-			$subject = sprintf( _n( 'Password expires in %s day', 'Password expires in %s days', $reminder_days, 'text-domain' ), number_format_i18n( $reminder_days ) );
+			$message .= sprintf( '<p><a href="%1$s">%2$s</a></p>', esc_url( wp_lostpassword_url() ), esc_html__( 'Rest your password', 'tenup' ) );
+			// translators: %d Numbers of days a uses password is still good for. %s the site url
+			$subject = sprintf( _n( 'Password expires in %1$d day for %2$s', 'Password expires in %1$d days for %2$s', $reminder_days, 'text-domain' ), number_format_i18n( $reminder_days ), esc_url( home_url() ) );
 
-			foreach ( $users->get_results() as $user_email ) {
+			$user_emails = wp_list_pluck( $users->get_results(), 'user_email' );
+			foreach ( $user_emails as $user_email ) {
 				wp_mail( $user_email, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
 			}
 		}

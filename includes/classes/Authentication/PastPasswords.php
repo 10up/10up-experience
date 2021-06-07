@@ -30,10 +30,10 @@ class PastPasswords extends Singleton {
 	 */
 	public function setup() {
 		add_action( 'user_profile_update_errors', [ $this, 'update_profile' ], 10, 3 );
-
 		// Run duplicate password check after password strength test in TenUpExperience\Authentication\PassWord
 		add_action( 'validate_password_reset', [ $this, 'validate_password_reset' ], 11, 2 );
 		add_action( 'password_reset', [ $this, 'password_reset' ], 10, 2 );
+		add_filter( 'wp_authenticate_user', [ $this, 'prevent_login_for_expired_passwords' ], 10, 2 );
 	}
 
 	/**
@@ -132,8 +132,33 @@ class PastPasswords extends Singleton {
 			}
 
 			update_user_meta( $user->ID, self::METAKEY_PASSWORD, $old_passwords );
-			update_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, current_time( 'Y-m-d' ) );
+			update_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, current_datetime()->format( 'Y-m-d' ) );
 		}
+	}
+
+	/**
+	 * Prevent users from authenticating if their current password is expired
+	 *
+	 * @param WP_User $user User object
+	 * @param string  $password current password
+	 *
+	 * @return \WP_User|\WP_Error
+	 */
+	public function prevent_login_for_expired_passwords( $user, $password ) {
+		$today                     = current_datetime();
+		$last_updated_password     = get_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, true );
+		$days_password_is_good_for = (int) PasswordPolicy::instance()->get_setting( 'expires' );
+		$password_expiration       = $today->modify( "-$days_password_is_good_for day" );
+
+		if ( empty( $last_updated_password ) || $last_updated_password > $password_expiration ) {
+			return new \WP_Error(
+				'Password Expired',
+				// translators: URL to the reset password screen
+				sprintf( __( 'Your password has expired please <a href="%s">reset your password</a>.', 'tenup' ), esc_url( wp_lostpassword_url() ) )
+			);
+		}
+
+		return $user;
 	}
 
 	/**

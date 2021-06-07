@@ -74,8 +74,6 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 API\API::instance()->setup();
 AdminCustomizations\PasswordPolicy::instance()->setup();
 Authentication\Usernames::instance()->setup();
-Authentication\PastPasswords::instance()->setup();
-Authentication\Login::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
 Headers\Headers::instance()->setup();
@@ -85,6 +83,10 @@ SupportMonitor\Monitor::instance()->setup();
 SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
 Notifications\Welcome::instance()->setup();
+
+if( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ){
+	Authentication\PastPasswords::instance()->setup();
+}
 
 /**
  * We load this later to make sure there are no conflicts with other plugins.

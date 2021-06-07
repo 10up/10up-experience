@@ -29,11 +29,26 @@ class PastPasswords extends Singleton {
 	 * Setup hook sand filters
 	 */
 	public function setup() {
+		add_action( 'init', [ $this, 'maybe_schedule_event' ] );
+		add_action( 'tenup_check_expired_passwords', [ $this, 'notify_expired_passwords' ] );
 		add_action( 'user_profile_update_errors', [ $this, 'update_profile' ], 10, 3 );
 		// Run duplicate password check after password strength test in TenUpExperience\Authentication\PassWord
 		add_action( 'validate_password_reset', [ $this, 'validate_password_reset' ], 11, 2 );
 		add_action( 'password_reset', [ $this, 'password_reset' ], 10, 2 );
 		add_filter( 'wp_authenticate_user', [ $this, 'prevent_login_for_expired_passwords' ], 10, 2 );
+	}
+
+	/**
+	 * Schedule tenup_notify_expired_passwords cron event
+	 *
+	 * @return void
+	 */
+	public function maybe_schedule_event() {
+		if ( ! wp_next_scheduled( 'tenup_notify_expired_passwords' ) ) {
+			$time = new \DateTime( current_datetime()->format( 'Y-m-d' ) . ' 1:00:00' ); // Run at 1AM everyday.
+			$time->modify( '+1 day' );
+			wp_schedule_event( $time->getTimestamp(), 'daily', 'tenup_notify_expired_passwords' );
+		}
 	}
 
 	/**
@@ -69,7 +84,7 @@ class PastPasswords extends Singleton {
 		$new_password         = filter_input( INPUT_POST, 'pass1', FILTER_SANITIZE_STRING );
 		$new_password_confirm = filter_input( INPUT_POST, 'pass2', FILTER_SANITIZE_STRING );
 
-		if ( ! empty( $new_password ) && $new_password === $new_password_confirm ) {
+		if ( ! empty( $new_password ) && $new_password === $new_password_confirm && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			if ( $this->invalid_duplicate( $user, $new_password ) ) {
 				$errors->add( 'duplicate_password', __( 'This password has previously been used, you must select a unique password', 'tenup' ) );
 			}
@@ -118,7 +133,7 @@ class PastPasswords extends Singleton {
 	 * @param object $user User object for user being edited
 	 */
 	private function save_current_password( $user ) {
-		if ( is_object( $user ) ) {
+		if ( is_object( $user ) && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			$max_password  = (int) PasswordPolicy::instance()->get_setting( 'past_passwords' );
 			$old_passwords = (array) get_user_meta( $user->ID, self::METAKEY_PASSWORD, true );
 
@@ -145,12 +160,10 @@ class PastPasswords extends Singleton {
 	 * @return \WP_User|\WP_Error
 	 */
 	public function prevent_login_for_expired_passwords( $user, $password ) {
-		$today                     = current_datetime();
-		$last_updated_password     = get_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, true );
-		$days_password_is_good_for = (int) PasswordPolicy::instance()->get_setting( 'expires' );
-		$password_expiration       = $today->modify( "-$days_password_is_good_for day" );
+		$last_updated_password = get_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, true );
+		$password_expiration   = $this->get_password_expired_date();
 
-		if ( empty( $last_updated_password ) || $last_updated_password > $password_expiration ) {
+		if ( empty( $last_updated_password ) || $last_updated_password > $password_expiration && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			return new \WP_Error(
 				'Password Expired',
 				// translators: URL to the reset password screen
@@ -159,6 +172,61 @@ class PastPasswords extends Singleton {
 		}
 
 		return $user;
+	}
+
+	/**
+	 * Notify all users that have an expired password
+	 *
+	 * @return void
+	 */
+	public function notify_expired_passwords() {
+		$users = new \WP_User_Query(
+			array(
+				'role__in'   => $this->get_password_expire_roles(),
+				'meta_query' => array(
+					array(
+						'key'     => self::METAKEY_PASSWORD_EXPIRE,
+						'value'   => $this->get_password_expired_date(),
+						'compare' => '=',
+					),
+				),
+				'number'     => apply_filters( 'tenup_number_user_query', 250 ),
+				'fields'     => 'email',
+			)
+		);
+
+		if ( ! empty( $users->get_results() ) ) {
+			$message       = PasswordPolicy::instance()->get_setting( 'reminder_email' );
+			$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
+			// translators: %1$s is the URL to the reset password screen and %2$s is the link to the reset password screen
+			$reminder_days = sprintf( '<p><a href="%1$s">%2$s</a></p>', esc_url( wp_lostpassword_url() ), esc_html__( 'Rest your password', 'tenup' ) );
+			// translators: Numbers of days a uses password is still good for
+			$subject = sprintf( _n( 'Password expires in %s day', 'Password expires in %s days', $reminder_days, 'text-domain' ), number_format_i18n( $reminder_days ) );
+
+			foreach ( $users->get_results() as $user_email ) {
+				wp_mail( $user_email, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+			}
+		}
+	}
+
+	/**
+	 * List of roles that qualify for password policy
+	 *
+	 * @return array
+	 */
+	private function get_password_expire_roles() {
+		return apply_filters( 'tenup_password_expire_roles', array( 'administrator', 'editor', 'author' ) );
+	}
+
+	/**
+	 * Get date for todays expired passwords
+	 *
+	 * @return string
+	 */
+	private function get_password_expired_date() {
+		$today                     = current_datetime();
+		$days_password_is_good_for = (int) PasswordPolicy::instance()->get_setting( 'expires' );
+		return $today->modify( "-$days_password_is_good_for day" )->format( 'Y-m-d' );
 	}
 
 	/**

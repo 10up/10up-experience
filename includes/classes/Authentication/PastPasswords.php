@@ -190,6 +190,14 @@ class PastPasswords extends Singleton {
 	 * @return void
 	 */
 	public function notify_expired_passwords() {
+		$today         = current_datetime();
+		$reminder_date = $this->get_password_reminder_date();
+		$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
+
+		if ( (int) $today->diff( new \DateTime( $reminder_date ) )->format( '%a' ) !== $reminder_days ) {
+			return;
+		}
+
 		$users = new \WP_User_Query(
 			array(
 				'role__in'   => $this->get_password_expire_roles(),
@@ -201,21 +209,31 @@ class PastPasswords extends Singleton {
 					),
 				),
 				'number'     => apply_filters( 'tenup_number_user_query', 250 ),
-				'fields'     => array( 'user_email' ),
+				'field'      => array( 'user_email', 'user_login' ),
 			)
 		);
 
 		if ( ! empty( $users->get_results() ) ) {
-			$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
-			$message       = PasswordPolicy::instance()->get_setting( 'reminder_email' );
-			// translators: %1$s is the URL to the reset password screen and %2$s is the link to the reset password screen
-			$message .= sprintf( '<p><a href="%1$s">%2$s</a></p>', esc_url( wp_lostpassword_url() ), esc_html__( 'Rest your password', 'tenup' ) );
-			// translators: %d Numbers of days a uses password is still good for. %s the site url
-			$subject = sprintf( _n( 'Password expires in %1$d day for %2$s', 'Password expires in %1$d days for %2$s', $reminder_days, 'text-domain' ), number_format_i18n( $reminder_days ), esc_url( home_url() ) );
+			$blog_name       = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+			$expiration_text = current_datetime()->modify( "+$reminder_days day" )->format( 'F dS, Y' );
+			$message         = PasswordPolicy::instance()->get_setting( 'reminder_email' );
+			$message        .= sprintf( '<p>%s</p>', esc_html__( 'To reset your password, visit the following address:', 'tenup' ) );
+			// translators: %1$s is the URL to the reset password screen
+			$message .= sprintf( '<p><a href="%1$s">%1$s</a></p>', esc_url( wp_lostpassword_url() ) );
+			// translators:  %1$s the site url and %2$d Numbers of days a uses password is still good for.
+			$subject = sprintf( _n( '[%1$s] Password expires in %2$d day', '[%1$s] Password expires in %2$d days', $reminder_days, 'tenup' ), $blog_name, number_format_i18n( $reminder_days ) );
 
-			$user_emails = wp_list_pluck( $users->get_results(), 'user_email' );
-			foreach ( $user_emails as $user_email ) {
-				wp_mail( $user_email, $subject, $message, array( 'Content-Type: text/html; charset=UTF-8' ) );
+			foreach ( $users->get_results() as $user ) {
+				$custom_message = $message;
+				$custom_message = str_replace( '###USERNAME###', $user->user_login, $custom_message );
+				$custom_message = str_replace( '###ADMIN_EMAIL###', get_option( 'admin_email' ), $custom_message );
+				$custom_message = str_replace( '###EMAIL###', $user->user_email, $custom_message );
+				$custom_message = str_replace( '###SITENAME###', $blog_name, $custom_message );
+				$custom_message = str_replace( '###SITEURL###', home_url(), $custom_message );
+				$custom_message = str_replace( '###DAYSLEFT###', $reminder_days, $custom_message );
+				$custom_message = str_replace( '###EXPIRATIONDATE###', $expiration_text, $custom_message );
+
+				wp_mail( $user->user_email, $subject, $custom_message, array( 'Content-Type: text/html; charset=UTF-8' ) );
 			}
 		}
 	}
@@ -238,6 +256,17 @@ class PastPasswords extends Singleton {
 		$today                     = current_datetime();
 		$days_password_is_good_for = (int) PasswordPolicy::instance()->get_setting( 'expires' );
 		return $today->modify( "-$days_password_is_good_for day" )->format( 'Y-m-d' );
+	}
+
+	/**
+	 * Get date for todays passwords reminders
+	 *
+	 * @return string
+	 */
+	private function get_password_reminder_date() {
+		$today         = current_datetime();
+		$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
+		return $today->modify( "-$reminder_days day" )->format( 'Y-m-d' );
 	}
 
 	/**

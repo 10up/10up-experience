@@ -80,8 +80,9 @@ class PasswordPolicy extends Singleton {
 				'description' => __( 'The number of past passwords a user can repeat.', 'tenup' ),
 			],
 			'reminder_email' => [
-				'label' => __( 'Reminder Email', 'tenup' ),
-				'type'  => 'tinymce',
+				'label'       => __( 'Reminder Email', 'tenup' ),
+				'description' => __( '###USERNAME###, ###ADMIN_EMAIL###, ###EMAIL###, ###SITENAME###, ###SITEURL###, ###DAYSLEFT###, and ###EXPIRATIONDATE### are replacement tags that can be used to populate the reminder email with dynamic information.', 'tenup' ),
+				'type'        => 'tinymce',
 			],
 		];
 

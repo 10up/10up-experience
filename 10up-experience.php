@@ -72,7 +72,6 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 }
 
 API\API::instance()->setup();
-AdminCustomizations\PasswordPolicy::instance()->setup();
 Authentication\Usernames::instance()->setup();
 Authors\Authors::instance()->setup();
 Gutenberg\Gutenberg::instance()->setup();
@@ -84,8 +83,10 @@ SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
 Notifications\Welcome::instance()->setup();
 
-if ( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ) {
-	Authentication\PastPasswords::instance()->setup();
+if( ( ! defined( 'TENUP_DISABLE_PAST_PASSWORDS' ) || ! TENUP_DISABLE_PAST_PASSWORDS ) ){
+	if ( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ) {
+		Authentication\PastPasswords::instance()->setup();
+	}
 }
 
 /**

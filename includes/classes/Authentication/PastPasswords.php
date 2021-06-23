@@ -93,8 +93,10 @@ class PastPasswords extends Singleton {
 	public function validate_password_reset( $errors, $user ) {
 		$new_password         = filter_input( INPUT_POST, 'pass1', FILTER_SANITIZE_STRING );
 		$new_password_confirm = filter_input( INPUT_POST, 'pass2', FILTER_SANITIZE_STRING );
-
-		if ( ! empty( $new_password ) && $new_password === $new_password_confirm && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
+		$max_password  = (int) PasswordPolicy::instance()->get_setting( 'past_passwords' );
+		$user = get_userdata($user->ID );
+		
+		if ( $max_password > 0 && ! empty( $new_password ) && $new_password === $new_password_confirm && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			if ( $this->invalid_duplicate( $user, $new_password ) ) {
 				$errors->add( 'duplicate_password', __( 'This password has previously been used, you must select a unique password', 'tenup' ) );
 			}
@@ -145,19 +147,24 @@ class PastPasswords extends Singleton {
 	private function save_current_password( $user ) {
 		if ( is_object( $user ) && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			$max_password  = (int) PasswordPolicy::instance()->get_setting( 'past_passwords' );
-			$old_passwords = (array) get_user_meta( $user->ID, self::METAKEY_PASSWORD, true );
 
-			$old_passwords[]    = $this->get_current_password( $user );
-			$old_passwords      = array_filter( $old_passwords );
-			$old_password_count = count( $old_passwords );
+			// only save past passwords if the pass password setting is greater than 1 
+			if( $max_password > 0 ) {
+				$old_passwords = (array) get_user_meta( $user->ID, self::METAKEY_PASSWORD, true );
 
-			// Limit the old password based on the password policy setting
-			if ( $old_password_count > $max_password ) {
-				array_splice( $old_passwords, $old_password_count - $max_password );
+				$old_passwords[]    = $this->get_current_password( $user );
+				$old_passwords      = array_filter( $old_passwords );
+				$old_password_count = count( $old_passwords );
+	
+				// Limit the old password based on the password policy setting
+				if ( $old_password_count > $max_password ) {
+					array_splice( $old_passwords, $old_password_count - $max_password );
+				}
+	
+				update_user_meta( $user->ID, self::METAKEY_PASSWORD, $old_passwords );
+				update_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, current_datetime()->format( 'Y-m-d' ) );
 			}
-
-			update_user_meta( $user->ID, self::METAKEY_PASSWORD, $old_passwords );
-			update_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, current_datetime()->format( 'Y-m-d' ) );
+			
 		}
 	}
 
@@ -172,8 +179,9 @@ class PastPasswords extends Singleton {
 	public function prevent_login_for_expired_passwords( $user, $password ) {
 		$last_updated_password = get_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, true );
 		$password_expiration   = $this->get_password_expired_date();
+		$days_password_is_good_for = (int) PasswordPolicy::instance()->get_setting( 'expires' );
 
-		if ( empty( $last_updated_password ) || $password_expiration > $last_updated_password && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
+		if ( $days_password_is_good_for > 0 && ( empty( $last_updated_password ) || $password_expiration > $last_updated_password ) && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			return new \WP_Error(
 				'Password Expired',
 				// translators: URL to the reset password screen
@@ -191,6 +199,11 @@ class PastPasswords extends Singleton {
 	 */
 	public function notify_expired_passwords() {
 		$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
+
+		// reminder days needs to be greater than 1 to run
+		if( $reminder_days < 1 ){
+			return;
+		}
 
 		$users = new \WP_User_Query(
 			array(

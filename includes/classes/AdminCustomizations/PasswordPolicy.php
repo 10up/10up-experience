@@ -72,7 +72,7 @@ class PasswordPolicy extends Singleton {
 			'reminder'       => [
 				'label'       => __( 'Send Password Reminder', 'tenup' ),
 				'type'        => 'number',
-				'description' => __( 'The number of days before a password need to be changed to send a reminder email.', 'tenup' ),
+				'description' => __( 'The number of days before a password expires to send an email reminder.', 'tenup' ),
 			],
 			'past_passwords' => [
 				'label'       => __( 'Past Passwords', 'tenup' ),

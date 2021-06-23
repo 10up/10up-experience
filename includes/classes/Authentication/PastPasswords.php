@@ -173,7 +173,7 @@ class PastPasswords extends Singleton {
 		$last_updated_password = get_user_meta( $user->ID, self::METAKEY_PASSWORD_EXPIRE, true );
 		$password_expiration   = $this->get_password_expired_date();
 
-		if ( empty( $last_updated_password ) || $last_updated_password > $password_expiration && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
+		if ( empty( $last_updated_password ) || $password_expiration > $last_updated_password && is_array( $user->roles ) && ! empty( array_intersect( $user->roles, $this->get_password_expire_roles() ) ) ) {
 			return new \WP_Error(
 				'Password Expired',
 				// translators: URL to the reset password screen
@@ -190,13 +190,7 @@ class PastPasswords extends Singleton {
 	 * @return void
 	 */
 	public function notify_expired_passwords() {
-		$today         = current_datetime();
-		$reminder_date = $this->get_password_reminder_date();
 		$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
-
-		if ( (int) $today->diff( new \DateTime( $reminder_date ) )->format( '%a' ) !== $reminder_days ) {
-			return;
-		}
 
 		$users = new \WP_User_Query(
 			array(
@@ -204,7 +198,7 @@ class PastPasswords extends Singleton {
 				'meta_query' => array(
 					array(
 						'key'     => self::METAKEY_PASSWORD_EXPIRE,
-						'value'   => $this->get_password_expired_date(),
+						'value'   => $this->get_password_reminder_date(),
 						'compare' => '=',
 					),
 				),
@@ -264,9 +258,11 @@ class PastPasswords extends Singleton {
 	 * @return string
 	 */
 	private function get_password_reminder_date() {
-		$today         = current_datetime();
-		$reminder_days = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
-		return $today->modify( "-$reminder_days day" )->format( 'Y-m-d' );
+		$today                     = current_datetime();
+		$reminder_days             = (int) PasswordPolicy::instance()->get_setting( 'reminder' );
+		$days_password_is_good_for = (int) PasswordPolicy::instance()->get_setting( 'expires' );
+		$days_till_reminder        = $days_password_is_good_for - $reminder_days;
+		return $today->modify( "-$days_till_reminder day" )->format( 'Y-m-d' );
 	}
 
 	/**

@@ -84,7 +84,7 @@ SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
 Notifications\Welcome::instance()->setup();
 
-if( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ){
+if ( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ) {
 	Authentication\PastPasswords::instance()->setup();
 }
 
@@ -101,9 +101,12 @@ add_action(
 /**
  * Clean up when plugin is deactivated
  */
-register_deactivation_hook( __FILE__, function(){
-	Authentication\PastPasswords::instance()->deactivate();
-} );
+register_deactivation_hook(
+	__FILE__,
+	function() {
+		Authentication\PastPasswords::instance()->deactivate();
+	}
+);
 
 /**
  * Disable plugin/theme editor

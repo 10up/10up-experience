@@ -61,7 +61,7 @@
 
 	*Configured in `Users > Password Policy`
 
-  *Note:* Password Policy can be disabled by defining the constant `TENUP_DISABLE_PAST_POLICY` as `true`.
+  *Note:* Password Policy can be disabled by defining the constant `TENUP_DISABLE_PASSWORD_POLICY` as `true`.
 
 * __Headers__
 

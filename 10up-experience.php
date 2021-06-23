@@ -83,7 +83,7 @@ SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
 Notifications\Welcome::instance()->setup();
 
-if( ( ! defined( 'TENUP_DISABLE_PAST_POLICY' ) || ! TENUP_DISABLE_PAST_POLICY ) ){
+if( ( ! defined( 'TENUP_DISABLE_PASSWORD_POLICY' ) || ! TENUP_DISABLE_PASSWORD_POLICY ) ){
 	if ( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ) {
 		Authentication\PastPasswords::instance()->setup();
 	}

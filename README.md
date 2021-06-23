@@ -55,6 +55,14 @@
 
 	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
 
+  * __Password Policy__
+
+  Enable site wide Password Policy for administrator, editors and authors. Control how long passwords are good for, prevent users from repeating passwords and configure when to send reminder emails to users whose password will be expiring soon. The reminder email can be fully customized and dynamic information can be added via a set of replacement tags. Once a password is expired the user will be prompted to reset their password before they can login.
+
+	*Configured in `Users > Password Policy`
+
+  *Note:* Password Policy can be disabled by defining the constant `TENUP_DISABLE_PAST_POLICY` as `true`.
+
 * __Headers__
 
   `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.

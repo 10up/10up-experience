@@ -2,7 +2,7 @@
 /**
  * Plugin Name: 10up Experience
  * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.8.0
+ * Version:     1.9.0
  * Author:      10up
  * Author URI:  https://10up.com
  * License:     GPLv2 or later
@@ -83,7 +83,7 @@ SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
 Notifications\Welcome::instance()->setup();
 
-if( ( ! defined( 'TENUP_DISABLE_PAST_PASSWORDS' ) || ! TENUP_DISABLE_PAST_PASSWORDS ) ){
+if( ( ! defined( 'TENUP_DISABLE_PAST_POLICY' ) || ! TENUP_DISABLE_PAST_POLICY ) ){
 	if ( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ) {
 		Authentication\PastPasswords::instance()->setup();
 	}

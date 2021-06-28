@@ -1,22 +1,24 @@
 <?php
 /**
- * Plugin Name: 10up Experience
- * Description: The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:     1.8.0
- * Author:      10up
- * Author URI:  https://10up.com
- * License:     GPLv2 or later
- * Text Domain: tenup
- * Domain Path: /languages/
+ * Plugin Name:       10up Experience
+ * Plugin URI:        https://github.com/10up/10up-experience
+ * Description:       The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
+ * Version:           1.8.1
+ * Author:            10up
+ * Author URI:        https://10up.com
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       tenup
+ * Domain Path:       /languages/
  *
- * @package 10up-experience
+ * @package           10up-experience
  */
 
 namespace TenUpExperience;
 
 use Puc_v4_Factory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.8.0' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.8.1' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 

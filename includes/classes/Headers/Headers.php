@@ -26,6 +26,13 @@ class Headers extends Singleton {
 	 * @param string $headers Headers
 	 */
 	public function maybe_set_frame_option_header( $headers ) {
+
+		// Allow omission of this header
+		if ( true === apply_filters( 'tenup_experience_disable_x_frame_options', false ) ) {
+			return $headers;
+		}
+
+		// Valid header values are `SAMEORIGIN` (allow iframe on same domain) | `DENY` (do not allow anywhere)
 		$header_value               = apply_filters( 'tenup_experience_x_frame_options', 'SAMEORIGIN' );
 		$headers['X-Frame-Options'] = $header_value;
 		return $headers;

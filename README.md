@@ -61,6 +61,10 @@
 
 *Note:* 10up admin branding can be disabled by defining the constant `TENUP_DISABLE_BRANDING` as `true`.
 
+There are 2 filters available here:
+- `tenup_experience_x_frame_options` - (default value) `SAMEORIGIN` can be changed to `DENY`.
+- `tenup_experience_disable_x_frame_options` - (default value) `FALSE` can be changed to `TRUE` - doing so will omit the header.
+
 ## Support Level
 
 **Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.

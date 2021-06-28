@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
-## [1.7.3] - 2020-07-15
+## [1.8.0] - 2020-12-08
+### Added
+* Improves detection of object cache drop-ins. Props [christianc1](https://github.com/christianc1).
+* Adds themes to support monitor reporting. Props [tylercherpak](https://github.com/tylercherpak).
+* Adds web vitals to support monitor reporting. Props [christianc1](https://github.com/christianc1).
+
+## [1.7.3] - 2020-07-20
+### Fixed
+* Fix how we retrieve WP version.
+* Improve how we generate message ID for Support Monitor
+
 ### Added
 - Show welcome admin notification
 - Change API restriction to default to only restricting the users endpoint.

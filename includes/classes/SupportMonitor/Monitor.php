@@ -41,7 +41,6 @@ class Monitor extends Singleton {
 	 */
 	public function ms_save_settings() {
 		global $pagenow;
-
 		if ( ! is_network_admin() ) {
 			return;
 		}
@@ -445,11 +444,12 @@ class Monitor extends Singleton {
 
 		$messages = [
 			$this->format_message( $this->get_plugin_report(), 'notice', 'plugins' ),
+			$this->format_message( $this->get_theme_report(), 'notice', 'themes' ),
 			$this->format_message(
 				[
 					'wp_version'           => $this->get_wp_version(),
 					'wp_cache'             => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-					'object_cache_enabled' => wp_using_ext_object_cache(),
+					'object_cache_enabled' => $this->get_is_using_object_cache(),
 					'db_version'           => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
 					'wp_debug'             => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 					'disallow_file_mods'   => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
@@ -471,6 +471,17 @@ class Monitor extends Singleton {
 				'users'
 			),
 		];
+
+		// If this is production, request that a web vitals insight also be generated.
+		if ( 'yes' === $setting['production_environment'] ) {
+			$messages[] = $this->format_message(
+				[
+					'url' => home_url(),
+				],
+				'notice',
+				'webvitals'
+			);
+		}
 
 		$this->send_request( $messages );
 	}
@@ -571,6 +582,28 @@ class Monitor extends Singleton {
 			];
 		}
 		return $plugins;
+	}
+
+	/**
+	 * Get WP themes
+	 *
+	 * @since  1.7
+	 * @return array
+	 */
+	public function get_theme_report() {
+
+		$themes = [];
+
+		$_themes = wp_get_themes();
+		foreach ( $_themes as $key => $theme ) {
+			$themes[] = [
+				'slug'    => $key,
+				'name'    => $theme['Name'],
+				'status'  => $theme['Status'],
+				'version' => $theme['Version'],
+			];
+		}
+		return $themes;
 	}
 
 	/**
@@ -685,5 +718,18 @@ class Monitor extends Singleton {
 		}
 
 		return $report;
+	}
+
+	/**
+	 * Check if the site is using an external object cache.
+	 *
+	 * @return bool
+	 */
+	public function get_is_using_object_cache() {
+		if ( wp_using_ext_object_cache() ) {
+			return true;
+		}
+
+		return file_exists( WP_CONTENT_DIR . '/object-cache.php' );
 	}
 }

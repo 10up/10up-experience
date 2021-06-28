@@ -19,7 +19,6 @@ class Plugins extends Singleton {
 	 * @since 1.7
 	 */
 	public function setup() {
-		add_action( 'admin_init', [ $this, 'plugin_customizations' ] );
 		add_filter( 'install_plugins_tabs', [ $this, 'tenup_plugin_install_link' ] );
 		add_filter( 'install_plugins_table_api_args_tenup', [ $this, 'filter_install_plugin_args' ] );
 
@@ -48,41 +47,6 @@ class Plugins extends Singleton {
 			add_action( 'network_admin_menu', [ $this, 'set_plugin_menu_update_count' ], 99 );
 			add_filter( 'show_advanced_plugins', [ $this, 'set_global_plugin_data' ], 10 );
 			add_filter( 'show_network_active_plugins', [ $this, 'set_global_plugin_data' ], 10 );
-		}
-	}
-
-	/**
-	 * Start plugin customizations
-	 */
-	public function plugin_customizations() {
-
-		/**
-		 * Stream
-		 */
-
-		/**
-		 * Filters whether to remove stream menu item.
-		 *
-		 * @since 1.1.0
-		 *
-		 * @param bool $tenup_experience_remove_stream_menu_item Whether to remove menu item. Default is true.
-		 */
-		$remove_menu_item = apply_filters( 'tenup_experience_remove_stream_menu_item', true );
-
-		if ( is_plugin_active( 'stream/stream.php' ) && $remove_menu_item ) {
-
-			add_action(
-				'admin_init',
-				function() {
-					// Don't proceed if doing admin ajax as "remove_menu_page" produces a Invalid argument supplied for foreach() warning
-					if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-						return;
-					}
-
-					remove_menu_page( 'wp_stream' );
-				},
-				11
-			);
 		}
 	}
 

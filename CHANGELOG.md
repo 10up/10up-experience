@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.8.1] - 2021-06-28
+### Fixed
+* Fix Filtering WP List Table Views by 10up Author
+* Unhide Stream menu
+* Add filter around disabling X Frame header. Props [jamesmorrison](https://github.com/jamesmorrison).
+
 ## [1.8.0] - 2020-12-08
 ### Added
 * Improves detection of object cache drop-ins. Props [christianc1](https://github.com/christianc1).

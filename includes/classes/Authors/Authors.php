@@ -27,7 +27,7 @@ class Authors extends Singleton {
 	 */
 	public function maybe_disable_author_archive() {
 
-		if ( ! is_author() ) {
+		if ( ! is_author() || is_admin() ) {
 			return;
 		}
 

@@ -90,5 +90,8 @@ class Gutenberg extends Singleton {
 
 		// Gutenberg plugin
 		add_filter( 'gutenberg_can_edit_post', '__return_false' );
+
+		// Disable Widgets block editor, by default it is enabled in WordPress 5.8
+		add_filter( 'use_widgets_block_editor', '__return_false' );
 	}
 }

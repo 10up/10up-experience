@@ -20,14 +20,14 @@ composer require 10up/10up-experience
 ```
 
 ### Git
-Clone the plugin into `wp-content/plugins` and install the dependencies.
+For development purposes, you can clone the plugin into `wp-content/plugins` and install the dependencies.
 
 ```
 git clone git@github.com:10up/10up-experience.git && composer install && npm install
 ```
 
 ### Archive
-[Download](https://github.com/10up/10up-experience/archive/master.zip) and extract the plugin into `wp-content/plugins`. Make sure you use the `master` branch which contains the latest stable release.
+If you need a built version of the plugin to install via the dashboard, [download](https://github.com/10up/10up-experience/archive/master.zip) and extract the plugin into `wp-content/plugins`. Make sure you use the `master` branch which contains the latest stable release.
 ## Activation
 
 Activate the plugin via the dashboard or WP-CLI.

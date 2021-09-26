@@ -23,7 +23,7 @@ composer require 10up/10up-experience
 For development purposes, you can clone the plugin into `wp-content/plugins` and install the dependencies.
 
 ```
-git clone git@github.com:10up/10up-experience.git && composer install && npm install
+git clone git@github.com:10up/10up-experience.git && cd 10up-experience && composer install && npm install
 ```
 
 ### Archive

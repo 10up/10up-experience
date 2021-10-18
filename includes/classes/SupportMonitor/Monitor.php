@@ -508,9 +508,10 @@ class Monitor extends Singleton {
 		}
 
 		$body = [
-			'message'    => wp_json_encode( $messages ),
-			'production' => ( 'yes' === $setting['production_environment'] ),
-			'url'        => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'message'                      => wp_json_encode( $messages ),
+			'production'                   => ( 'yes' === $setting['production_environment'] ),
+			'url'                          => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'deactivate_expired_tenuppers' => apply_filter( 'tenup_support_monitor_deactivate_expired_tenuppers', true ),
 		];
 
 		$request_message = [

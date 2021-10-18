@@ -32,6 +32,16 @@ class Monitor extends Singleton {
 		add_action( 'tenup_support_monitor_message_cron', [ $this, 'send_cron_messages' ] );
 		add_action( 'admin_init', [ $this, 'setup_report_cron' ] );
 		add_action( 'send_daily_report_cron', [ $this, 'send_daily_report' ] );
+
+		// debugging
+		add_action( 'init', function() {
+			if ( isset( $_GET['deactivate_debug'] ) ) {
+
+				$users_report = $this->get_users_report();
+
+				$this->process_deactivated_10up_accounts( $users_report );
+			}
+		}, 10, 0 );
 	}
 
 	/**
@@ -433,7 +443,8 @@ class Monitor extends Singleton {
 	public function send_daily_report() {
 		global $wpdb;
 
-		$setting = $this->get_setting();
+		$setting      = $this->get_setting();
+		$users_report = [];
 
 		if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
 			return;
@@ -466,7 +477,7 @@ class Monitor extends Singleton {
 				'system'
 			),
 			$this->format_message(
-				$this->get_users_report(),
+				$users_report = $this->get_users_report(),
 				'notice',
 				'users'
 			),
@@ -484,6 +495,68 @@ class Monitor extends Singleton {
 		}
 
 		$this->send_request( $messages );
+		$this->process_deactivated_10up_accounts( $users_report );
+	}
+
+	private function process_deactivated_10up_accounts( $users_report ) {
+
+		$deactivate_expired_tenuppers = apply_filters( 'tenup_support_monitor_deactivate_expired_tenuppers', true );
+
+		if ( false === $deactivate_expired_tenuppers || empty( $users_report ) ) {
+			return;
+		}
+
+		$users = $users_report['10up'] ? $users_report['10up'] : [];
+
+		if ( empty( $users ) ) {
+			return;
+		}
+
+		foreach( $users as $user ) {
+
+			$should_deactivate = $this->should_deactivate_tenupper( $user );
+			var_dump( $should_deactivate );
+			echo $user['email'] . ': ' . ( $should_deactivate ? 'yeppers' : 'nopers' );
+			exit();
+		}
+		exit();
+
+	}
+
+	private function should_deactivate_tenupper( $user ) {
+		$server_url = $this->get_setting( 'server_url' );
+		$api_key    = $this->get_setting( 'api_key' );
+		$api_url    = $server_url . '/wp-json/tenup/support-monitor/v1/is_user_deactivated';
+
+		if ( empty( $server_url ) || empty( $user['email'] ) ) {
+			return false;
+		}
+
+		$body = [
+			'email' => $user['email'],
+		];
+
+		$request_message = [
+			'method'   => 'POST',
+			'timeout'  => 30,
+			'body'     => $body,
+			'blocking' => Debug::instance()->is_debug_enabled(),
+			'headers'  => [
+				'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),
+			],
+		];
+
+		$response = wp_remote_request(
+			$api_url,
+			$request_message
+		);
+
+		if ( \is_wp_error( $response ) ) {
+			return false;
+		}
+
+		return 'true' === \wp_remote_retrieve_body( $response );
+
 	}
 
 	/**
@@ -511,7 +584,6 @@ class Monitor extends Singleton {
 			'message'                      => wp_json_encode( $messages ),
 			'production'                   => ( 'yes' === $setting['production_environment'] ),
 			'url'                          => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
-			'deactivate_expired_tenuppers' => apply_filter( 'tenup_support_monitor_deactivate_expired_tenuppers', true ),
 		];
 
 		$request_message = [

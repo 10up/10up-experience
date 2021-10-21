@@ -515,9 +515,9 @@ class Monitor extends Singleton {
 		}
 
 		$body = [
-			'message'                      => wp_json_encode( $messages ),
-			'production'                   => ( 'yes' === $setting['production_environment'] ),
-			'url'                          => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'message'    => wp_json_encode( $messages ),
+			'production' => ( 'yes' === $setting['production_environment'] ),
+			'url'        => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
 		];
 
 		$request_message = [
@@ -743,10 +743,9 @@ class Monitor extends Singleton {
 	/**
 	 * "Deactivates" a WordPress user that matches the passed e-mail address.
 	 *
-	 * E-mail address must contain 10up.com or get10up.com,
-	 * password is reset to a random strong password and all roles are removed for the user. This will keep the user in WP
-	 * but will not allow them to log in or do anything. Keeping the user in WP will prevent any possible issues with content that
-	 * isn't attributed to a user.
+	 * E-mail address must contain 10up.com or get10up.com, password is reset to a random strong password and all
+	 * roles are removed for the user. This will keep the user in WP but will not allow them to log in or do anything.
+	 * Keeping the user in WP will prevent any possible issues with content being unattributed to a valid user.
 	 *
 	 * @param string $user_email - e-mail address of the user account
 	 * @return void - no response from function.
@@ -769,7 +768,7 @@ class Monitor extends Singleton {
 		// Remove all roles so the user isn't able to access anything
 		if ( ! empty( $roles ) ) {
 			foreach( $roles as $role ) {
-				\remove_role( $role );
+				$user->remove_role( $role );
 			}
 		}
 
@@ -800,7 +799,7 @@ class Monitor extends Singleton {
 
 		// Only check users who have a 10up e-mail address
 		if ( false === stripos( $user_email, '10up.com' ) ) {
-			return;
+			return false;
 		}
 
 		// If a user doesn't have any roles and already deactivated, no need to check API endpoint

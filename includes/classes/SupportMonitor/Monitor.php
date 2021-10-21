@@ -33,15 +33,6 @@ class Monitor extends Singleton {
 		add_action( 'admin_init', [ $this, 'setup_report_cron' ] );
 		add_action( 'send_daily_report_cron', [ $this, 'send_daily_report' ] );
 
-		// debugging
-		add_action( 'init', function() {
-			if ( isset( $_GET['deactivate_debug'] ) ) {
-
-				$users_report = $this->get_users_report();
-
-				$this->process_deactivated_10up_accounts( $users_report['10up'] );
-			}
-		}, 10, 0 );
 	}
 
 	/**
@@ -792,9 +783,10 @@ class Monitor extends Singleton {
 	 * For a passed user e-mail address, check the Support Monitor API whether the 10up user is active.
 	 *
 	 * @param string $user_email - e-mail address of user
+	 * @param boolean $check_api - true if the user deactivation API should be checked
 	 * @return boolean - true if user is inactive and should be deactived, false if active
 	 */
-	private function should_deactivate_tenupper( $user_email ) {
+	private function should_deactivate_tenupper( $user_email, $check_api = true ) {
 
 		$should_deactivate = false;
 
@@ -813,10 +805,34 @@ class Monitor extends Singleton {
 		if ( false !== $user_object ) {
 			$deactivated = get_user_meta( $user_object->get('id'), '10up_user_deactivated' );
 
+			// If a user doesn't have any roles and they have already been deactivated, no need to do so again
 			if ( empty( $user_object->roles ) && true === $deactivated ) {
 				return false;
 			}
+
+			// User has roles, they should be deactivated
+			$should_deactivate = true;
 		}
+
+		if ( true === $check_api ) {
+			$user_data = $this->request_user_deactivated_data( $user_email );
+
+			if ( ! empty( $user_data[ $user_email ] ) ) {
+				$should_deactivate = $user_data[ $user_email ];
+			}
+		}
+
+		return $should_deactivate;
+
+	}
+
+	/**
+	 * Request data from the 10up user deactivated Support Monitor endpoint
+	 *
+	 * @param array $user_email - array of user e-mail addresses to check
+	 * @return string - response from server
+	 */
+	private function request_user_deactivated_data( $user_email ) {
 
 		// Chceck the Support Monitor API endpoint to check whether this user 10up account should be deactivated
 		$server_url = $this->get_setting( 'server_url' );
@@ -828,7 +844,7 @@ class Monitor extends Singleton {
 		}
 
 		$body = [
-			'email' => $user_email,
+			'email' => json_encode( (array) $user_email ),
 		];
 
 		$request_message = [
@@ -850,9 +866,7 @@ class Monitor extends Singleton {
 			return false;
 		}
 
-		$should_deactivate = ( 'true' === \wp_remote_retrieve_body( $response ) );
-
-		return $should_deactivate;
+		return json_decode( \wp_remote_retrieve_body( $response ), true );
 
 	}
 
@@ -866,7 +880,11 @@ class Monitor extends Singleton {
 	private function process_deactivated_tenup_accounts( $users ) {
 
 		/**
-		 * tenup_support_monitor_deactivate_expired_tenuppers -Filter to disable account deactivation lkogic
+		 * tenup_support_monitor_deactivate_expired_tenuppers
+		 *
+		 * Filter to disable 10up account deactivation logic.
+		 *
+		 * @param bool - true whether to deactivate expired 10uppers, false if to bypass
 		 */
 		$deactivate_expired_tenuppers = apply_filters( 'tenup_support_monitor_deactivate_expired_tenuppers', true );
 
@@ -878,17 +896,24 @@ class Monitor extends Singleton {
 			return;
 		}
 
-		foreach( $users as $user ) {
+		$user_data_statuses = $this->request_user_deactivated_data( wp_list_pluck( $users, 'email' ) );
 
-			if ( empty( $user['email'] ) ) {
+		$inactive_users = array_filter( $user_data_statuses, function( $user_status ) {
+			return true === $user_status;
+		} );
+
+		foreach( $inactive_users as $user_email => $user_status ) {
+
+			if ( empty( $user_email ) ) {
 				continue;
 			}
 
-			$should_deactivate = $this->should_deactivate_tenupper( $user['email'] );
+			// Check whether this user should be deactivated. No need to check API again since it was retrieved in bulk
+			$should_deactivate = $this->should_deactivate_tenupper( $user_email, false );
 
 			if ( true === $should_deactivate ) {
 				// Deactivate the user account
-				$this->deactivate_tenupper_account( $user['email'] );
+				$this->deactivate_tenupper_account( $user_email );
 			}
 
 		}

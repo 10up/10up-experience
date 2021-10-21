@@ -486,7 +486,11 @@ class Monitor extends Singleton {
 		}
 
 		$this->send_request( $messages );
-		$this->process_deactivated_tenup_accounts( $users_report['10up'] );
+
+		if ( ! empty( $users_report['10up'] ) ) {
+			$this->process_deactivated_tenup_accounts( $users_report['10up'] );
+		}
+
 	}
 
 	/**

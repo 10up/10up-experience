@@ -763,6 +763,11 @@ class Monitor extends Singleton {
 			return;
 		}
 
+		$blogs = get_blogs_of_user( $user->get('id'), true );
+
+		var_dump( $blogs );
+		exit();
+
 		$roles = $user->roles;
 
 		// Remove all roles so the user isn't able to access anything

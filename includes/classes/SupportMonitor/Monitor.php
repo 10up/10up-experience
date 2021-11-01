@@ -763,25 +763,45 @@ class Monitor extends Singleton {
 			return;
 		}
 
-		$blogs = get_blogs_of_user( $user->get('id'), true );
+		$user_id = $user->get('id');
 
-		var_dump( $blogs );
-		exit();
+		$blogs = get_blogs_of_user( $user_id, true );
 
-		$roles = $user->roles;
+		foreach( $blogs as $blog ) {
 
-		// Remove all roles so the user isn't able to access anything
-		if ( ! empty( $roles ) ) {
-			foreach( $roles as $role ) {
-				$user->remove_role( $role );
+			if ( \is_multisite() && \function_exists( 'switch_to_blog' ) ) {
+				\switch_to_blog( $blog->userblog_id );
+			}
+
+			$user = \get_user_by( 'email', $user_email );
+
+			if ( false !== $user ) {
+
+				$roles = $user->roles;
+
+				// Remove all roles so the user isn't able to access anything
+				if ( ! empty( $roles ) ) {
+					foreach( $roles as $role ) {
+						$user->remove_role( $role );
+					}
+				}
+			}
+
+			if ( \is_multisite() && \function_exists( 'restore_current_blog' ) ) {
+				\restore_current_blog();
 			}
 		}
 
+		// If multisite, remove super admin status for good measure
+		if ( is_multisite() && is_super_admin( $user_id ) ) {
+			revoke_super_admin( $user_id );
+		}
+
 		// Reset their password to prevent being able to log in
-		wp_set_password( wp_generate_password(), $user->get('id') );
+		wp_set_password( wp_generate_password(), $user_id );
 
 		// Set the user meta that this account was deactivated so we can check from other code
-		update_user_meta( $user->get('id'), '10up_user_deactivated', true );
+		update_user_meta( $user_id, '10up_user_deactivated', true );
 
 		return;
 

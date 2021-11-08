@@ -70,19 +70,19 @@ $network_activated = Utils\is_network_activated( plugin_basename( __FILE__ ) );
 define( 'TENUP_EXPERIENCE_IS_NETWORK', (bool) $network_activated );
 
 if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
-	AdminCustomizations\Customizations::instance()->setup();
+	AdminCustomizations\Customizations::instance();
 }
 
-API\API::instance()->setup();
-Authentication\Usernames::instance()->setup();
-Authors\Authors::instance()->setup();
-Gutenberg\Gutenberg::instance()->setup();
-Headers\Headers::instance()->setup();
-Plugins\Plugins::instance()->setup();
-PostPasswords\PostPasswords::instance()->setup();
-SupportMonitor\Monitor::instance()->setup();
-SupportMonitor\Debug::instance()->setup();
-Notifications\Welcome::instance()->setup();
+API\API::instance();
+Authentication\Usernames::instance();
+Authors\Authors::instance();
+Gutenberg\Gutenberg::instance();
+Headers\Headers::instance();
+Plugins\Plugins::instance();
+PostPasswords\PostPasswords::instance();
+SupportMonitor\Monitor::instance();
+SupportMonitor\Debug::instance();
+Notifications\Welcome::instance();
 
 /**
  * We load this later to make sure there are no conflicts with other plugins.
@@ -90,7 +90,7 @@ Notifications\Welcome::instance()->setup();
 add_action(
 	'plugins_loaded',
 	function() {
-		Authentication\Passwords::instance()->setup();
+		Authentication\Passwords::instance();
 	}
 );
 

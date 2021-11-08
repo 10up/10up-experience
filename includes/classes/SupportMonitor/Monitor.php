@@ -16,11 +16,21 @@ use TenUpExperience\Singleton;
  */
 class Monitor extends Singleton {
 	/**
+	 * The DBQueryMonitor instance.
+	 *
+	 * @since x.x
+	 * @var DBQueryMonitor
+	 */
+	protected $db_query_monitor;
+
+	/**
 	 * Setup module
 	 *
 	 * @since 1.7
 	 */
 	public function setup() {
+		$this->db_query_monitor = new DBQueryMonitor();
+		$this->db_query_monitor->setup();
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 			add_action( 'wpmu_options', [ $this, 'ms_settings' ] );
@@ -461,6 +471,7 @@ class Monitor extends Singleton {
 			$this->format_message(
 				[
 					'php_version' => $this->get_php_version(),
+					'db_queries'  => $this->db_query_monitor->get_report(),
 				],
 				'notice',
 				'system'

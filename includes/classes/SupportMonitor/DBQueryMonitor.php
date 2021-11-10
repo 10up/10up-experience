@@ -122,7 +122,7 @@ class DBQueryMonitor {
 			$stored_queries[ $current_date ][ $key ]['count']++;
 		} else {
 			$stored_queries[ $current_date ][ $key ] = [
-				'query' => $query,
+				'query' => stripslashes( $query ),
 				'file'  => $main_caller['file'],
 				'line'  => $main_caller['line'],
 				'count' => 1,

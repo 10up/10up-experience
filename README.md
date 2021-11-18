@@ -54,6 +54,9 @@
   By default, all users must use a medium or greater strength password. This can be turned off in general settings (or network settings if network activated). Reserved usernames such as `admin` are prevented from being used.
 
 	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
+  
+  **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
+
 
 * __Headers__
 

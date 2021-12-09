@@ -10,6 +10,7 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       tenup
  * Domain Path:       /languages/
+ * Update URI:        https://github.com/10up/10up-experience
  *
  * @package           10up-experience
  */

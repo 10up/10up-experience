@@ -2,8 +2,9 @@
 /**
  * Database Queries Monitor. A submodule of Support Monitor to report heavy SQL queries executed on staging.
  *
- * This feature is turned off in production environments but can be enabled
- * using `add_filter( 'tenup_experience_enable_query_monitor', '__return_true' );`
+ * This feature is turned off by default.
+ * For performance reasons, it is only available in production environments by default, but that
+ * can be changed using `add_filter( 'tenup_experience_disable_query_monitor', '__return_false' );`
  *
  * The original purpose of this feature is to log any heavy SQL query performed, for example,
  * during a plugins upgrade. These are the queries logged:
@@ -43,20 +44,9 @@ class DBQueryMonitor {
 	 * Setup module
 	 */
 	public function setup() {
-		$production_environment = Monitor::instance()->get_setting( 'production_environment' );
+		$is_enabled = 'yes' === Monitor::instance()->get_setting( 'enable_db_query_monitor' );
 
-		/**
-		 * Filter if the Query Monitor should be enabled. Defaults to true on non-production environments.
-		 *
-		 * Having it as true does not mean all queries will be logged, as they will be checked as being
-		 * heavy or not first.
-		 *
-		 * @since  x.x
-		 * @hook tenup_experience_enable_query_monitor
-		 * @param  {bool} $should_log Whether Query Monitor should be enabled.
-		 * @return {bool} New value
-		 */
-		if ( ! apply_filters( 'tenup_experience_enable_query_monitor', 'no' === $production_environment ) ) {
+		if ( ! $this->is_available() || ! $is_enabled ) {
 			return;
 		}
 
@@ -69,6 +59,29 @@ class DBQueryMonitor {
 		add_action( 'admin_init', [ $this, 'empty_queries' ] );
 
 		add_filter( 'query', [ $this, 'maybe_log_query' ] );
+	}
+
+	/**
+	 * Utilitary function to check if the feature is available to be enabled or not.
+	 *
+	 * @return boolean
+	 */
+	public function is_available() {
+		$is_production = 'no' === Monitor::instance()->get_setting( 'production_environment' );
+
+		/**
+		 * Filter if the Query Monitor should be available. Defaults to false on non-production environments.
+		 *
+		 * If it is available, it's still needed to enable the feature in the dashboard. Having it enabled
+		 * does not mean all queries will be logged, as they will be checked as being
+		 * heavy or not first.
+		 *
+		 * @since  x.x
+		 * @hook tenup_experience_disable_query_monitor
+		 * @param  {bool} $should_log Whether Query Monitor should be enabled.
+		 * @return {bool} New value
+		 */
+		return apply_filters( 'tenup_experience_disable_query_monitor', $is_production );
 	}
 
 	/**
@@ -263,7 +276,7 @@ class DBQueryMonitor {
 	protected function log_query( $query ) {
 		static $stored_queries;
 		if ( empty( $stored_queries ) ) {
-			$stored_queries = get_transient( self::TRANSIENT_NAME ) ?? [];
+			$stored_queries = $this->get_transient( self::TRANSIENT_NAME ) ?? [];
 		}
 
 		$current_date = date_i18n( 'Y-m-d' );

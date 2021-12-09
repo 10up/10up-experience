@@ -89,6 +89,12 @@ class Monitor extends Singleton {
 			$setting['server_url'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['server_url'] );
 		}
 
+		if ( ! $this->db_query_monitor->is_available() || ! isset( $_POST['tenup_support_monitor_settings']['enable_db_query_monitor'] ) ) {
+			$setting['enable_db_query_monitor'] = 'no';
+		} else {
+			$setting['enable_db_query_monitor'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['enable_db_query_monitor'] );
+		}
+
 		update_site_option( 'tenup_support_monitor_settings', $setting );
 	}
 
@@ -134,6 +140,14 @@ class Monitor extends Singleton {
 						</td>
 					</tr>
 				<?php endif; ?>
+				<?php if ( $this->db_query_monitor->is_available() ) : ?>
+					<tr>
+						<th scope="row"><?php esc_html_e( 'DB Query Monitor', 'tenup' ); ?></th>
+						<td>
+							<?php $this->enable_db_query_monitor_field(); ?>
+						</td>
+					</tr>
+				<?php endif; ?>
 			</tbody>
 		</table>
 		<?php
@@ -148,10 +162,11 @@ class Monitor extends Singleton {
 	 */
 	public function get_setting( $setting_key = null ) {
 		$defaults = [
-			'enable_support_monitor' => 'no',
-			'api_key'                => '',
-			'server_url'             => 'https://supportmonitor.10up.com',
-			'production_environment' => 'no',
+			'enable_support_monitor'  => 'no',
+			'api_key'                 => '',
+			'server_url'              => 'https://supportmonitor.10up.com',
+			'production_environment'  => 'no',
+			'enable_db_query_monitor' => 'no',
 		];
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
@@ -277,6 +292,15 @@ class Monitor extends Singleton {
 			);
 		}
 
+		if ( $this->db_query_monitor->is_available() ) {
+			add_settings_field(
+				'enable_db_query_monitor',
+				esc_html__( 'DB Query Monitor', 'tenup' ),
+				[ $this, 'enable_db_query_monitor_field' ],
+				'general',
+				'tenup_support_monitor'
+			);
+		}
 	}
 
 	/**
@@ -345,6 +369,21 @@ class Monitor extends Singleton {
 		<?php
 	}
 
+	/**
+	 * Output production environment field
+	 *
+	 * @since x.x
+	 */
+	public function enable_db_query_monitor_field() {
+		$value = $this->get_setting( 'enable_db_query_monitor' );
+		?>
+		<input name="tenup_support_monitor_settings[enable_db_query_monitor]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_enable_db_query_monitor_yes" value="yes"> <label for="tenup_enable_db_query_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+		<input name="tenup_support_monitor_settings[enable_db_query_monitor]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_enable_db_query_monitor_no" value="no"> <label for="tenup_enable_db_query_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+		<p class="description">
+			<?php esc_html_e( 'Log heavy SQL queries. For performance reasons, only available in non-production environments.', 'tenup' ); ?>
+		</p>
+		<?php
+	}
 
 	/**
 	 * Sends a message async one time

@@ -297,7 +297,7 @@ class DBQueryMonitor {
 			$stored_queries[ $current_date ][ $key ]['count']++;
 		} else {
 			$stored_queries[ $current_date ][ $key ] = [
-				'query' => $query,
+				'query' => $this->escape_query( $query ),
 				'file'  => $main_caller['file'],
 				'line'  => $main_caller['line'],
 				'count' => 1,
@@ -344,6 +344,25 @@ class DBQueryMonitor {
 		}
 
 		return $main_caller;
+	}
+
+	/**
+	 * Escape queries to avoid storing sensitive info.
+	 *
+	 * This function takes INSERTs and UPDATEs and replace all parameter values
+	 * between the `'` and `"` chars with `?`
+	 *
+	 * @param string $query The SQL query.
+	 * @return string
+	 */
+	protected function escape_query( $query ) {
+		if ( ! preg_match( '/UPDATE|INSERT/', $query ) ) {
+			return $query;
+		}
+
+		$query = preg_replace( "/[\"'](.*?)[\"']/", '?', $query );
+
+		return $query;
 	}
 
 	/**

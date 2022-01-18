@@ -84,6 +84,13 @@ PostPasswords\PostPasswords::instance()->setup();
 SupportMonitor\Monitor::instance()->setup();
 SupportMonitor\Debug::instance()->setup();
 Notifications\Welcome::instance()->setup();
+Notifications\Welcome::instance()->setup();
+
+if( ( ! defined( 'TENUP_DISABLE_PASSWORD_POLICY' ) || ! TENUP_DISABLE_PASSWORD_POLICY ) ){
+	if ( AdminCustomizations\PasswordPolicy::instance()->is_enabled() ) {
+		Authentication\PastPasswords::instance()->setup();
+	}
+}
 
 /**
  * We load this later to make sure there are no conflicts with other plugins.
@@ -92,6 +99,16 @@ add_action(
 	'plugins_loaded',
 	function() {
 		Authentication\Passwords::instance()->setup();
+	}
+);
+
+/**
+ * Clean up when plugin is deactivated
+ */
+register_deactivation_hook(
+	__FILE__,
+	function() {
+		Authentication\PastPasswords::instance()->deactivate();
 	}
 );
 

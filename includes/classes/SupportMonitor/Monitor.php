@@ -509,8 +509,7 @@ class Monitor extends Singleton {
 			),
 			$this->format_message(
 				[
-					'php_version'          => $this->get_php_version(),
-					'had_heavy_db_queries' => $this->db_query_monitor->get_report(),
+					'php_version' => $this->get_php_version(),
 				],
 				'notice',
 				'system'
@@ -530,6 +529,14 @@ class Monitor extends Singleton {
 				],
 				'notice',
 				'webvitals'
+			);
+		}
+
+		if ( $this->db_query_monitor->is_enabled() ) {
+			$messages[] = $this->format_message(
+				$this->db_query_monitor->get_report(),
+				'notice',
+				'db_queries'
 			);
 		}
 

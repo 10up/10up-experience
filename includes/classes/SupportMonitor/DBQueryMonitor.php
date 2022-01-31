@@ -41,12 +41,20 @@ class DBQueryMonitor {
 	const CUD_QUERY_SIZE = 20000;
 
 	/**
+	 * Max. size of the data stored.
+	 */
+	const STORE_MAX_SIZE = MB_IN_BYTES;
+
+	/**
+	 * Max. size of the data to be sent to the API.
+	 */
+	const SEND_API_MAX_SIZE = MB_IN_BYTES;
+
+	/**
 	 * Setup module
 	 */
 	public function setup() {
-		$is_enabled = 'yes' === Monitor::instance()->get_setting( 'enable_db_query_monitor' );
-
-		if ( ! $this->is_available() || ! $is_enabled ) {
+		if ( ! $this->is_enabled() ) {
 			return;
 		}
 
@@ -82,6 +90,17 @@ class DBQueryMonitor {
 		 * @return {bool} New value
 		 */
 		return apply_filters( 'tenup_experience_disable_query_monitor', $is_production );
+	}
+
+	/**
+	 * Return whether the submodule is enabled or not.
+	 *
+	 * @return boolean
+	 */
+	public function is_enabled() {
+		$is_enabled = 'yes' === Monitor::instance()->get_setting( 'enable_db_query_monitor' );
+
+		return $this->is_available() && $is_enabled;
 	}
 
 	/**
@@ -233,9 +252,23 @@ class DBQueryMonitor {
 	public function get_report() {
 		$this->cleanup_queries();
 
-		$queries_per_date = $this->get_transient();
+		$all_queries_stored = $this->get_transient();
+		$queries_to_send    = $all_queries_stored;
+		$response           = [
+			'trimmed' => false,
+			'queries' => [],
+		];
 
-		return ( ! empty( $queries_per_date ) );
+		$queries_str = wp_json_encode( $all_queries_stored );
+		while ( mb_strlen( $queries_str ) > self::SEND_API_MAX_SIZE ) {
+			array_shift( $queries_to_send );
+			$response['trimmed'] = true;
+			$queries_str         = wp_json_encode( $queries_to_send );
+		}
+
+		$response['queries'] = $all_queries_stored;
+
+		return $response;
 	}
 
 	/**
@@ -377,7 +410,9 @@ class DBQueryMonitor {
 			$transient = get_transient( self::TRANSIENT_NAME );
 		}
 
-		if ( ! is_array( $transient ) ) {
+		$transient = json_decode( $transient, true );
+
+		if ( ! is_array( $transient ) || JSON_ERROR_NONE !== json_last_error() ) {
 			$transient = [];
 		}
 
@@ -390,10 +425,21 @@ class DBQueryMonitor {
 	 * @param array $queries Queries to be stored.
 	 */
 	protected function set_transient( $queries ) {
+		// Order the array, so older entries will be at the start.
+		ksort( $queries );
+
+		// JSON objects will be smaller than PHP serialized() ones.
+		$queries_str = wp_json_encode( $queries );
+
+		while ( mb_strlen( $queries_str ) > self::STORE_MAX_SIZE ) {
+			array_shift( $queries );
+			$queries_str = wp_json_encode( $queries );
+		}
+
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
-			set_site_transient( self::TRANSIENT_NAME, $queries );
+			set_site_transient( self::TRANSIENT_NAME, $queries_str );
 		} else {
-			set_transient( self::TRANSIENT_NAME, $queries );
+			set_transient( self::TRANSIENT_NAME, $queries_str );
 		}
 	}
 }

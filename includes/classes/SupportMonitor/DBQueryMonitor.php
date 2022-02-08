@@ -51,6 +51,15 @@ class DBQueryMonitor {
 	const SEND_API_MAX_SIZE = MB_IN_BYTES;
 
 	/**
+	 * Category/score of a query.
+	 */
+	const QUERY_CATEGORIES = [
+		'high'   => 1,
+		'medium' => 2,
+		'low'    => 3,
+	];
+
+	/**
 	 * Setup module
 	 */
 	public function setup() {
@@ -141,7 +150,8 @@ class DBQueryMonitor {
 	 * @since x.x
 	 */
 	public function queries_list_screen() {
-		$queries_per_date = $this->get_transient();
+		$queries_per_date = $this->get_categorized_queries();
+		$status_names     = array_flip( self::QUERY_CATEGORIES );
 		?>
 
 		<div class="wrap">
@@ -156,6 +166,7 @@ class DBQueryMonitor {
 					<h3><?php echo esc_html( date_i18n( 'F j, Y', strtotime( $date ) ) ); ?></h3>
 					<?php foreach ( $queries as $query ) : ?>
 						<div>
+							<strong><?php esc_html_e( 'Category:', 'tenup' ); ?></strong> <?php echo esc_html( $status_names[ $query['status'] ] ); ?><br>
 							<strong><?php esc_html_e( 'Query:', 'tenup' ); ?></strong> <code><?php echo esc_html( $query['query'] ); ?></code><br>
 							<strong><?php esc_html_e( 'File:', 'tenup' ); ?></strong> <?php echo esc_html( $query['file'] ); ?><br>
 							<strong><?php esc_html_e( 'Line:', 'tenup' ); ?></strong> <?php echo esc_html( $query['line'] ); ?><br>
@@ -252,7 +263,7 @@ class DBQueryMonitor {
 	public function get_report() {
 		$this->cleanup_queries();
 
-		$all_queries_stored = $this->get_transient();
+		$all_queries_stored = $this->get_categorized_queries();
 		$queries_to_send    = $all_queries_stored;
 		$response           = [
 			'trimmed' => false,
@@ -396,6 +407,46 @@ class DBQueryMonitor {
 		$query = preg_replace( "/[\"'](.*?)[\"']/", '?', $query );
 
 		return $query;
+	}
+
+	/**
+	 * Get the categorized and ordered queries list.
+	 *
+	 * Depending on the query, it may be more or less resource expensive. This function gets all
+	 * queries and return them ordered from the more expensive to the less, and then from the ones
+	 * with higher count to the fewer ones.
+	 *
+	 * @return string
+	 */
+	protected function get_categorized_queries() {
+		$queries_per_date = $this->get_transient();
+		foreach ( $queries_per_date as &$queries_in_day ) {
+			array_walk(
+				$queries_in_day,
+				function( &$query ) {
+					if ( preg_match( '/^\s*(create|alter|truncate|drop)\s/i', $query['query'] ) ) {
+						$query['status'] = self::QUERY_CATEGORIES['medium'];
+
+						if ( $query['count'] > 1 ) {
+							$query['status'] = self::QUERY_CATEGORIES['high'];
+						}
+					} else {
+						$query['status'] = self::QUERY_CATEGORIES['low'];
+					}
+				}
+			);
+			uasort(
+				$queries_in_day,
+				function ( $a, $b ) {
+					if ( $a['status'] === $b['status'] ) {
+						return $a['count'] >= $b['count'] ? -1 : 1;
+					}
+					return $a['status'] <= $b['status'] ? -1 : 1;
+				}
+			);
+		}
+
+		return $queries_per_date;
 	}
 
 	/**

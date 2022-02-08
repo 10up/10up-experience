@@ -1,9 +1,8 @@
 {
   "name": "10up-experience",
-  "version": "1.7.3",
+  "version": "1.8.1",
   "description": "The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.",
   "homepage": "https://10up.com",
-  "version": "1.8.1ß",
   "repository": {
     "type": "git",
     "url": "https://github.com/10up/10up-experience"

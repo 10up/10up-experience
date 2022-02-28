@@ -316,13 +316,16 @@ class Passwords extends Singleton {
 
 		// Enforce?
 		if ( $enforce ) {
-			$zxcvbn = new Zxcvbn();
+			// Zxcbn requires the mbstring PHP extension, so we'll need to check for it before using
+			if ( function_exists( 'mb_ord' ) ) {
+				$zxcvbn = new Zxcvbn();
 
-			$pw = $zxcvbn->passwordStrength( $_POST['pass1'] );
-
-			if ( 3 > (int) $pw['score'] ) {
-				$password_ok = false;
-			}
+				$pw = $zxcvbn->passwordStrength( $_POST['pass1'] );
+	
+				if ( 3 > (int) $pw['score'] ) {
+					$password_ok = false;
+				}
+			}			
 		}
 
 		if ( ! $password_ok && is_wp_error( $errors ) ) {

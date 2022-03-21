@@ -79,7 +79,7 @@ Updates use the built-in WordPress update system to pull from GitHub releases.
   By default, all users must use a medium or greater strength password. This can be turned off in general settings (or network settings if network activated). Reserved usernames such as `admin` are prevented from being used.
 
 	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
-  
+
   **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
 
 
@@ -92,6 +92,13 @@ Updates use the built-in WordPress update system to pull from GitHub releases.
 There are 2 filters available here:
 - `tenup_experience_x_frame_options` - (default value) `SAMEORIGIN` can be changed to `DENY`.
 - `tenup_experience_disable_x_frame_options` - (default value) `FALSE` can be changed to `TRUE` - doing so will omit the header.
+
+* __SSO__
+
+10up Experience includes 10up SSO functionality. There are some useful constants related to this functionality:
+
+- `TENUPSSO_DISABLE` - Define this as `true` to disable SSO.
+- `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
 
 ## Support Level
 

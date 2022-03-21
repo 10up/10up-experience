@@ -3,7 +3,7 @@
  * Plugin Name:       10up Experience
  * Plugin URI:        https://github.com/10up/10up-experience
  * Description:       The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:           1.8.2
+ * Version:           1.9.0
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPLv2 or later
@@ -19,9 +19,13 @@ namespace TenUpExperience;
 
 use Puc_v4_Factory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.8.2' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.9.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
+
+if ( ! defined( 'TENUPSSO_PROXY_URL' ) ) {
+	define( 'TENUPSSO_PROXY_URL', 'https://ssoproxy.10uplabs.com/wp-login.php' );
+}
 
 require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 
@@ -92,6 +96,7 @@ add_action(
 	'plugins_loaded',
 	function() {
 		Authentication\Passwords::instance()->setup();
+		SSO\SSO::instance()->setup();
 	}
 );
 

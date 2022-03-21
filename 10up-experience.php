@@ -23,6 +23,10 @@ define( 'TENUP_EXPERIENCE_VERSION', '1.8.2' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
+if ( ! defined( 'TENUPSSO_PROXY_URL' ) ) {
+	define( 'TENUPSSO_PROXY_URL', 'https://ssoproxy.10uplabs.com/wp-login.php' );
+}
+
 require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update-checker.php';
 
 require_once __DIR__ . '/includes/utils.php';
@@ -92,6 +96,7 @@ add_action(
 	'plugins_loaded',
 	function() {
 		Authentication\Passwords::instance()->setup();
+		SSO\SSO::instance()->setup();
 	}
 );
 

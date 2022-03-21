@@ -103,7 +103,7 @@ class SSO extends Singleton {
 			if ( ! $user ) {
 				$default_role = defined( 'TENUPSSO_DEFAULT_ROLE' )
 					? TENUPSSO_DEFAULT_ROLE
-					: 'administrator';
+					: 'subscriber';
 
 				$user_id = wp_insert_user(
 					array(
@@ -330,7 +330,7 @@ class SSO extends Singleton {
 		if ( is_multisite() ) {
 			$default_role = defined( 'TENUPSSO_DEFAULT_ROLE' )
 					? TENUPSSO_DEFAULT_ROLE
-					: 'administrator';
+					: 'subscriber';
 
 			add_user_to_blog( $current_blog, $user_id, $default_role );
 			wp_cache_delete( $user_id, 'user_meta' );

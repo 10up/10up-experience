@@ -80,9 +80,10 @@ class SSO extends Singleton {
 		} elseif ( ! empty( $email ) ) {
 			$verify = add_query_arg(
 				array(
-					'action' => '10up-verify',
-					'email'  => urlencode( $email ),
-					'nonce'  => urlencode( filter_input( INPUT_GET, 'nonce' ) ),
+					'action'      => '10up-verify',
+					'email'       => urlencode( $email ),
+					'sso_version' => TENUP_EXPERIENCE_VERSION,
+					'nonce'       => urlencode( filter_input( INPUT_GET, 'nonce' ) ),
 				),
 				TENUPSSO_PROXY_URL
 			);
@@ -175,8 +176,9 @@ class SSO extends Singleton {
 
 			$proxy_url = add_query_arg(
 				array(
-					'action'   => '10up-login',
-					'redirect' => urlencode( $redirect_url ),
+					'action'      => '10up-login',
+					'redirect'    => urlencode( $redirect_url ),
+					'sso_version' => TENUP_EXPERIENCE_VERSION,
 				),
 				TENUPSSO_PROXY_URL
 			);
@@ -237,7 +239,7 @@ class SSO extends Singleton {
 				margin-top: 0;
 				border-top: 0;
 				position: relative;
-				top: -15px;
+				top: -17px;
 				padding-top: 0;
 			}
 

@@ -24,6 +24,14 @@ class SSO extends Singleton {
 			return;
 		}
 
+		if ( defined( 'TENUPSSO_DISABLE' ) && TENUPSSO_DISABLE ) {
+			return;
+		}
+
+		if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) {
+			add_filter( 'allow_password_reset', '__return_false' );
+		}
+
 		add_filter( 'wp_login_errors', [ $this, 'add_login_errors' ] );
 		add_action( 'login_form_10up-login', [ $this, 'process_client_login' ] );
 		add_action( 'login_form', [ $this, 'update_login_form' ] );
@@ -65,10 +73,6 @@ class SSO extends Singleton {
 	public function process_client_login() {
 		global $tenup_login_failed;
 
-		if ( ! defined( 'TENUPSSO_PROXY_URL' ) ) {
-			return;
-		}
-
 		$email = filter_input( INPUT_GET, 'email', FILTER_VALIDATE_EMAIL );
 
 		if ( ! empty( $_GET['error'] ) ) {
@@ -82,9 +86,6 @@ class SSO extends Singleton {
 				),
 				TENUPSSO_PROXY_URL
 			);
-
-			var_dump($verify);
-			exit;
 
 			$response = wp_remote_get( $verify );
 			if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
@@ -197,7 +198,7 @@ class SSO extends Singleton {
 		?><script type="text/javascript">
 			(function() {
 				document.getElementById('loginform').insertAdjacentHTML(
-					'afterbegin',
+					'beforebegin',
 					'<div id="tenup_sso" class="tenup-sso">' +
 						'<a href="<?php echo esc_url( $google_login ); ?>" class="button button-hero button-primary">' +
 							'<?php esc_html_e( 'Login with 10up account', 'tenup' ); ?>' +
@@ -217,10 +218,27 @@ class SSO extends Singleton {
 		?>
 		<style>
 			.tenup-sso {
-				margin-bottom: 1em;
 				font-weight: normal;
 				overflow: hidden;
 				text-align: center;
+
+				margin-top: 20px;
+				margin-left: 0;
+				padding: 26px 24px 26px;
+				font-weight: 400;
+				overflow: hidden;
+				background: #fff;
+				border: 1px solid #c3c4c7;
+				box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
+
+			}
+
+			#loginform {
+				margin-top: 0;
+				border-top: 0;
+				position: relative;
+				top: -15px;
+				padding-top: 0;
 			}
 
 			.tenup-sso .button-primary {
@@ -244,6 +262,14 @@ class SSO extends Singleton {
 				padding: 0 1em;
 				color: #72777c;
 			}
+
+			<?php if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) : ?>
+				#loginform,
+				#nav,
+				.tenup-sso-or {
+					display: none;
+				}
+			<?php endif; ?>
 		</style>
 		<?php
 	}
@@ -256,9 +282,8 @@ class SSO extends Singleton {
 	 * @return WP_User
 	 */
 	public function prevent_standard_login_for_sso_user( $user ) {
-		// do nothing if proxy URL is not provided or direct login is allowed
-		if ( ! defined( 'TENUPSSO_PROXY_URL' ) || defined( 'TENUPSSO_ALLOW_DIRECT_LOGIN' ) ) {
-			return $user;
+		if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) {
+			return new WP_Error( 'tenup-sso', esc_html__( 'Username/password authentication is disabled', 'tenup' ) );
 		}
 
 		// Check if user was created with SSO. If so, they must use SSO.

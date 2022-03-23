@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.9.0] - 2022-03-21
+### Added
+* Bundled 10up SSO plugin into 10up Experience
+
+## [1.8.2] - 2022-02-28
+### Fixed
+* Ensure mbstring exists before using password strength checker.
+* If Gutenberg is disabled, also make sure widget editor doesn't use Gutenberg.
+
 ## [1.8.1] - 2021-06-28
 ### Fixed
 * Fix Filtering WP List Table Views by 10up Author

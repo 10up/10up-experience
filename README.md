@@ -2,18 +2,43 @@
 
 > The 10up Experience plugin configures WordPress to better protect and inform our clients, aligned to 10up’s best practices. It is not meant as a general-distribution plugin and does not have an open development process, but is available for public perusal.
 
-[![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience) [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/v/tag/10up/10up-experience?label=release)](https://github.com/10up/10up-experience/tags) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v4.7%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/10up-experience.svg)](https://github.com/10up/10up-experience/blob/develop/LICENSE.md)
+[![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience) [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/v/tag/10up/10up-experience?label=release)](https://github.com/10up/10up-experience/tags) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.9%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/10up-experience.svg)](https://github.com/10up/10up-experience/blob/develop/LICENSE.md)
 
 ## Requirements
 
 * PHP 5.3+
 * [WordPress](http://wordpress.org) 4.7+
 
-## Install
+## Installation
 
-1. Clone or [download](https://github.com/10up/10up-experience/archive/master.zip) and extract the plugin into `wp-content/plugins`. Make sure you use the `master` branch which contains the latest stable release.
-1. Activate the plugin via the dashboard or WP-CLI.
-1. Updates use the built-in WordPress update system to pull from GitHub releases.
+### Composer
+
+The recommended way to use this plugin is with Composer.
+
+```
+composer require 10up/10up-experience
+```
+
+### Git
+For development purposes, you can clone the plugin into `wp-content/plugins` and install the dependencies.
+
+```
+git clone git@github.com:10up/10up-experience.git && cd 10up-experience && composer install && npm install
+```
+
+### Archive
+If you need a built version of the plugin to install via the dashboard, [download](https://github.com/10up/10up-experience/archive/master.zip) and extract the plugin into `wp-content/plugins`. Make sure you use the `master` branch which contains the latest stable release.
+## Activation
+
+Activate the plugin via the dashboard or WP-CLI.
+
+```
+wp plugin activate 10up-experience
+```
+
+## Updates
+
+Updates use the built-in WordPress update system to pull from GitHub releases.
 
 ## Functionality
 
@@ -55,6 +80,9 @@
 
 	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
 
+  **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
+
+
 * __Headers__
 
   `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.
@@ -64,6 +92,13 @@
 There are 2 filters available here:
 - `tenup_experience_x_frame_options` - (default value) `SAMEORIGIN` can be changed to `DENY`.
 - `tenup_experience_disable_x_frame_options` - (default value) `FALSE` can be changed to `TRUE` - doing so will omit the header.
+
+* __SSO__
+
+10up Experience includes 10up SSO functionality. There are some useful constants related to this functionality:
+
+- `TENUPSSO_DISABLE` - Define this as `true` to disable SSO.
+- `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
 
 ## Support Level
 

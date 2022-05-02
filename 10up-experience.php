@@ -87,6 +87,7 @@ Plugins\Plugins::instance()->setup();
 PostPasswords\PostPasswords::instance()->setup();
 SupportMonitor\Monitor::instance()->setup();
 SupportMonitor\Debug::instance()->setup();
+SupportMonitor\ActivityLogger::instance()->setup();
 Notifications\Welcome::instance()->setup();
 
 /**

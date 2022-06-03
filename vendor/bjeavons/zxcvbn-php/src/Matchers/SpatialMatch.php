@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZxcvbnPhp\Matchers;
 
+use JetBrains\PhpStorm\ArrayShape;
 use ZxcvbnPhp\Matcher;
+use ZxcvbnPhp\Math\Binomial;
 
-class SpatialMatch extends Match
+class SpatialMatch extends BaseMatch
 {
     public const SHIFTED_CHARACTERS = '~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?';
 
@@ -36,7 +40,7 @@ class SpatialMatch extends Match
      * @param array $graphs
      * @return SpatialMatch[]
      */
-    public static function match($password, array $userInputs = [], array $graphs = [])
+    public static function match(string $password, array $userInputs = [], array $graphs = []): array
     {
 
         $matches = [];
@@ -54,7 +58,8 @@ class SpatialMatch extends Match
         return $matches;
     }
 
-    public function getFeedback($isSoleMatch)
+    #[ArrayShape(['warning' => 'string', 'suggestions' => 'string[]'])]
+    public function getFeedback(bool $isSoleMatch): array
     {
         $warning = $this->turns == 1
             ? 'Straight rows of keys are easy to guess'
@@ -75,13 +80,13 @@ class SpatialMatch extends Match
      * @param string $token
      * @param array $params An array with keys: [graph (required), shifted_count, turns].
      */
-    public function __construct($password, $begin, $end, $token, $params = [])
+    public function __construct(string $password, int $begin, int $end, string $token, array $params = [])
     {
         parent::__construct($password, $begin, $end, $token);
         $this->graph = $params['graph'];
         if (!empty($params)) {
-            $this->shiftedCount = isset($params['shifted_count']) ? $params['shifted_count'] : null;
-            $this->turns = isset($params['turns']) ? $params['turns'] : null;
+            $this->shiftedCount = $params['shifted_count'] ?? null;
+            $this->turns = $params['turns'] ?? null;
         }
     }
 
@@ -92,7 +97,7 @@ class SpatialMatch extends Match
      * @param string $graphName
      * @return array
      */
-    protected static function graphMatch($password, $graph, $graphName)
+    protected static function graphMatch(string $password, array $graph, string $graphName): array
     {
         $result = [];
         $i = 0;
@@ -116,15 +121,18 @@ class SpatialMatch extends Match
                 $prevChar = mb_substr($password, $j - 1, 1);
                 $found = false;
                 $curDirection = -1;
-                $adjacents = isset($graph[$prevChar]) ? $graph[$prevChar] : [];
+                $adjacents = $graph[$prevChar] ?? [];
 
                 // Consider growing pattern by one character if j hasn't gone over the edge.
                 if ($j < $passwordLength) {
                     $curChar = mb_substr($password, $j, 1);
                     foreach ($adjacents as $adj) {
                         $curDirection += 1;
+                        if ($adj === null) {
+                            continue;
+                        }
                         $curCharPos = static::indexOf($adj, $curChar);
-                        if ($adj !== null && $curCharPos !== -1) {
+                        if ($curCharPos !== -1) {
                             $found = true;
                             $foundDirection = $curDirection;
 
@@ -150,7 +158,7 @@ class SpatialMatch extends Match
                     $j += 1;
                 } else {
                     // otherwise push the pattern discovered so far, if any...
-                    
+
                     // Ignore length 1 or 2 chains.
                     if ($j - $i > 2) {
                         $result[] = [
@@ -179,7 +187,7 @@ class SpatialMatch extends Match
      *
      * @return int
      */
-    protected static function indexOf($string, $char)
+    protected static function indexOf(string $string, string $char): int
     {
         $pos = mb_strpos($string, $char);
         return ($pos === false ? -1 : $pos);
@@ -190,7 +198,7 @@ class SpatialMatch extends Match
      *
      * @return array
      */
-    public static function getAdjacencyGraphs()
+    public static function getAdjacencyGraphs(): array
     {
         if (empty(self::$adjacencyGraphs)) {
             $json = file_get_contents(dirname(__FILE__) . '/adjacency_graphs.json');
@@ -211,7 +219,7 @@ class SpatialMatch extends Match
         return self::$adjacencyGraphs;
     }
 
-    protected function getRawGuesses()
+    protected function getRawGuesses(): float
     {
         if ($this->graph === 'qwerty' || $this->graph === 'dvorak') {
             $startingPosition = self::KEYBOARD_STARTING_POSITION;
@@ -229,7 +237,7 @@ class SpatialMatch extends Match
         for ($i = 2; $i <= $length; $i++) {
             $possibleTurns = min($turns, $i - 1);
             for ($j = 1; $j <= $possibleTurns; $j++) {
-                $guesses += static::binom($i - 1, $j - 1) * $startingPosition * pow($averageDegree, $j);
+                $guesses += Binomial::binom($i - 1, $j - 1) * $startingPosition * pow($averageDegree, $j);
             }
         }
 
@@ -239,12 +247,12 @@ class SpatialMatch extends Match
             $shifted = $this->shiftedCount;
             $unshifted = $length - $shifted;
 
-            if ($shifted === 0 || $unshifted === 0) {
+            if ($unshifted === 0) {
                 $guesses *= 2;
             } else {
                 $variations = 0;
                 for ($i = 1; $i <= min($shifted, $unshifted); $i++) {
-                    $variations += static::binom($shifted + $unshifted, $i);
+                    $variations += Binomial::binom($shifted + $unshifted, $i);
                 }
                 $guesses *= $variations;
             }

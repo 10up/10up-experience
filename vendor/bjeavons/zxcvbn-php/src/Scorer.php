@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ZxcvbnPhp;
 
 use ZxcvbnPhp\Matchers\Bruteforce;
-use ZxcvbnPhp\Matchers\Match;
+use ZxcvbnPhp\Matchers\BaseMatch;
+use ZxcvbnPhp\Matchers\MatchInterface;
 
 /**
  * scorer - takes a list of potential matches, ranks and evaluates them,
@@ -54,11 +57,11 @@ class Scorer
      *    D^(l-1) approximates Sum(D^i for i in [1..l-1]
      *
      * @param string $password
-     * @param Match[] $matches
+     * @param MatchInterface[] $matches
      * @param bool $excludeAdditive
      * @return array Returns an array with these keys: [password, guesses, guesses_log10, sequence]
      */
-    public function getMostGuessableMatchSequence($password, $matches, $excludeAdditive = false)
+    public function getMostGuessableMatchSequence(string $password, array $matches, bool $excludeAdditive = false): array
     {
         $this->password = $password;
         $this->excludeAdditive = $excludeAdditive;
@@ -75,8 +78,8 @@ class Scorer
         // small detail: for deterministic output, sort each sublist by i.
         foreach ($matchesByEndIndex as &$matches) {
             usort($matches, function ($a, $b) {
-                /** @var $a Match */
-                /** @var $b Match */
+                /** @var $a BaseMatch */
+                /** @var $b BaseMatch */
                 return $a->begin - $b->begin;
             });
         }
@@ -97,7 +100,7 @@ class Scorer
         ];
 
         for ($k = 0; $k < $length; $k++) {
-            /** @var Match $match */
+            /** @var BaseMatch $match */
             foreach ($matchesByEndIndex[$k] as $match) {
                 if ($match->begin > 0) {
                     foreach ($this->optimal['m'][$match->begin - 1] as $l => $null) {
@@ -113,7 +116,7 @@ class Scorer
 
 
         if ($length === 0) {
-            $guesses = 1;
+            $guesses = 1.0;
             $optimalSequence = [];
         } else {
             $optimalSequence = $this->unwind($length);
@@ -132,10 +135,10 @@ class Scorer
     /**
      * helper: considers whether a length-l sequence ending at match m is better (fewer guesses)
      * than previously encountered sequences, updating state if so.
-     * @param Match $match
+     * @param BaseMatch $match
      * @param int $length
      */
-    protected function update($match, $length)
+    protected function update(BaseMatch $match, int $length): void
     {
         $k = $match->end;
 
@@ -183,7 +186,7 @@ class Scorer
      * helper: evaluate bruteforce matches ending at k
      * @param int $end
      */
-    protected function bruteforceUpdate($end)
+    protected function bruteforceUpdate(int $end): void
     {
         // see if a single bruteforce match spanning the k-prefix is optimal.
         $match = $this->makeBruteforceMatch(0, $end);
@@ -216,7 +219,7 @@ class Scorer
      * @param int $end
      * @return Bruteforce
      */
-    protected function makeBruteforceMatch($begin, $end)
+    protected function makeBruteforceMatch(int $begin, int $end): Bruteforce
     {
         return new Bruteforce($this->password, $begin, $end, mb_substr($this->password, $begin, $end - $begin + 1));
     }
@@ -224,9 +227,9 @@ class Scorer
     /**
      * helper: step backwards through optimal.m starting at the end, constructing the final optimal match sequence.
      * @param int $n
-     * @return Match[] array
+     * @return MatchInterface[]
      */
-    protected function unwind($n)
+    protected function unwind(int $n): array
     {
         $optimalSequence = [];
         $k = $n - 1;
@@ -257,7 +260,7 @@ class Scorer
      * @param int $n
      * @return int
      */
-    protected function factorial($n)
+    protected function factorial(int $n): int
     {
         if ($n < 2) {
             return 1;

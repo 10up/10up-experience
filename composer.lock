@@ -4966,12 +4966,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "d0ddfc92cbbf7d21d190b9c2c58b23db0c422a1f"
+                "reference": "7ace12dc3c64bc559cb70a04b56ca9dd88e4ea2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/d0ddfc92cbbf7d21d190b9c2c58b23db0c422a1f",
-                "reference": "d0ddfc92cbbf7d21d190b9c2c58b23db0c422a1f",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/7ace12dc3c64bc559cb70a04b56ca9dd88e4ea2f",
+                "reference": "7ace12dc3c64bc559cb70a04b56ca9dd88e4ea2f",
                 "shasum": ""
             },
             "require": {
@@ -5058,7 +5058,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-05-31T15:00:22+00:00"
+            "time": "2022-06-05T18:50:38+00:00"
         },
         {
             "name": "symfony/service-contracts",
@@ -5312,16 +5312,16 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "dev-master",
+            "version": "1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "dc96b6775d038bfa31a240150ad8505bfb856c2d"
+                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/dc96b6775d038bfa31a240150ad8505bfb856c2d",
-                "reference": "dc96b6775d038bfa31a240150ad8505bfb856c2d",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/11cb2199493b2f8a3b53e7f19068fc6aac760991",
+                "reference": "11cb2199493b2f8a3b53e7f19068fc6aac760991",
                 "shasum": ""
             },
             "require": {
@@ -5362,7 +5362,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2022-04-18T06:42:29+00:00"
+            "time": "2022-06-03T18:03:27+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",

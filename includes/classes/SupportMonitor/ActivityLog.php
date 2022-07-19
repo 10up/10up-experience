@@ -2,7 +2,7 @@
 /**
  * Logs critical user activities inside Support Monitor
  *
- * @since  1.9
+ * @since  2.0
  * @package 10up-experience
  */
 
@@ -22,6 +22,13 @@ class ActivityLog extends Singleton {
 	public function setup() {
 
 		add_action( 'profile_update', [ $this, 'profile_update' ], 10, 3 );
+		add_action( 'user_register', [ $this, 'user_register' ], 10, 2 );
+		add_action( 'deleted_user', [ $this, 'deleted_user' ], 10 );
+
+		add_action( 'activated_plugin', [ $this, 'activated_plugin' ], 10, 2 );
+		add_action( 'deactivated_plugin', [ $this, 'deactivated_plugin' ], 10, 2 );
+
+		add_action( 'switch_theme', [ $this, 'switch_theme' ], 10, 3 );
 	}
 
 	/**
@@ -33,8 +40,85 @@ class ActivityLog extends Singleton {
 	 */
 	public function profile_update( $user_id, $old_user_data, $userdata ) {
 		Monitor::instance()->log(
-			'User ' . $user_id . ' updated their profile.',
-			'profile'
+			'User ' . $user_id . ' profile updated.',
+			'users'
+		);
+	}
+
+	/**
+	 * New user created
+	 *
+	 * @param int   $user_id  User ID.
+	 * @param array $userdata The raw array of data passed to wp_insert_user().
+	 */
+	public function user_register( $user_id, $userdata ) {
+		Monitor::instance()->log(
+			'User ' . $user_id . ' created.',
+			'users'
+		);
+	}
+
+	/**
+	 * User deleted
+	 *
+	 * @param int $user_id  User ID.
+	 */
+	public function deleted_user( $user_id ) {
+		Monitor::instance()->log(
+			'User ' . $user_id . ' deleted.',
+			'users'
+		);
+	}
+
+	/**
+	 * Plugin is activated
+	 *
+	 * @param string  $plugin Plugin path
+	 * @param boolean $network_wide Whether the plugin is activated network wide
+	 */
+	public function activated_plugin( $plugin, $network_wide ) {
+		$msg = 'Plugin ' . $plugin . ' is activated';
+
+		if ( $network_wide ) {
+			$msg .= ' network-wide';
+		}
+
+		Monitor::instance()->log(
+			$msg,
+			'plugins'
+		);
+	}
+
+	/**
+	 * Plugin is deactivated
+	 *
+	 * @param string  $plugin Plugin path
+	 * @param boolean $network_wide Whether the plugin is deactivated network wide
+	 */
+	public function deactivated_plugin( $plugin, $network_wide ) {
+		$msg = 'Plugin `' . $plugin . '` is deactivated';
+
+		if ( $network_wide ) {
+			$msg .= ' network-wide';
+		}
+
+		Monitor::instance()->log(
+			$msg,
+			'plugins'
+		);
+	}
+
+	/**
+	 * Switch theme
+	 *
+	 * @param string   $new_name  Name of the new theme.
+	 * @param WP_Theme $new_theme WP_Theme instance of the new theme.
+	 * @param WP_Theme $old_theme WP_Theme instance of the old theme.
+	 */
+	public function switch_theme( $new_name, $new_theme, $old_theme ) {
+		Monitor::instance()->log(
+			'Theme switched to `' . $new_name . '` from `' . $old_theme->get( 'Name' ) .'`',
+			'themes'
 		);
 	}
 }

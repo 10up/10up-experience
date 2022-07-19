@@ -408,9 +408,9 @@ class Monitor extends Singleton {
 			return;
 		}
 
-		$current_logs = get_option( 'tenup_support_monitor_logs', [] );
+		$current_logs = get_option( 'tenup_support_monitor_activity_logs', [] );
 
-		if ( apply_filters( 'tenup_support_monitor_max_log_count', 100 ) <= count( $current_logs ) ) {
+		if ( apply_filters( 'tenup_support_monitor_max_activity_log_count', 100 ) <= count( $current_logs ) ) {
 			return;
 		}
 
@@ -423,7 +423,7 @@ class Monitor extends Singleton {
 
 		$current_logs[] = $log_item;
 
-		update_option( 'tenup_support_monitor_logs', $current_logs );
+		update_option( 'tenup_support_monitor_activity_logs', $current_logs );
 	}
 
 	/**
@@ -522,16 +522,16 @@ class Monitor extends Singleton {
 		}
 
 		if ( $this->logging_enabled() ) {
-			$logs = get_option( 'tenup_support_monitor_logs', [] );
+			$logs = get_option( 'tenup_support_monitor_activity_logs', [] );
 
 			if ( ! empty( $logs ) ) {
 				$messages[] = $this->format_message(
 					$logs,
 					'log',
-					'audit'
+					'activity'
 				);
 
-				update_option( 'tenup_support_monitor_logs', [] );
+				update_option( 'tenup_support_monitor_activity_logs', [] );
 			}
 		}
 

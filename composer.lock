@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cc203d3fccda829dd244872bc8fcb1ba",
+    "content-hash": "35ba26be240939acba1949855bfd5221",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
@@ -139,25 +139,26 @@
         },
         {
             "name": "yahnis-elsts/plugin-update-checker",
-            "version": "v4.8.1",
+            "version": "v4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/YahnisElsts/plugin-update-checker.git",
-                "reference": "908249c92e81c46cb66e4d81632c5e917dc879ae"
+                "reference": "6eb27a6911e0e0880d09e5b11f577d3f688f7da7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/908249c92e81c46cb66e4d81632c5e917dc879ae",
-                "reference": "908249c92e81c46cb66e4d81632c5e917dc879ae",
+                "url": "https://api.github.com/repos/YahnisElsts/plugin-update-checker/zipball/6eb27a6911e0e0880d09e5b11f577d3f688f7da7",
+                "reference": "6eb27a6911e0e0880d09e5b11f577d3f688f7da7",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "php": ">=5.2.0"
             },
             "type": "library",
             "autoload": {
                 "files": [
-                    "load-v4p8.php"
+                    "load-v4p13.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -180,7 +181,11 @@
                 "theme updates",
                 "wordpress"
             ],
-            "time": "2019-10-08T12:15:30+00:00"
+            "support": {
+                "issues": "https://github.com/YahnisElsts/plugin-update-checker/issues",
+                "source": "https://github.com/YahnisElsts/plugin-update-checker/tree/v4.13"
+            },
+            "time": "2022-07-29T12:36:25+00:00"
         }
     ],
     "packages-dev": [
@@ -5421,5 +5426,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.3.0"
 }

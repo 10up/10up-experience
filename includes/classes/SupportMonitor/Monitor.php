@@ -402,8 +402,9 @@ class Monitor extends Singleton {
 	 *
 	 * @param string $summary  Data to log
 	 * @param string $subgroup Sub group
+	 * @param string $action   The action being logged.
 	 */
-	public function log( $summary, $subgroup = null ) {
+	public function log( $summary, $subgroup = null, $action = null ) {
 		if ( ! $this->logging_enabled() ) {
 			return;
 		}
@@ -413,8 +414,9 @@ class Monitor extends Singleton {
 		 *
 		 * @param string $summary  Data to log.
 		 * @param string $subgroup Sub group.
+		 * @param string $action   The action being logged.
 		 */
-		if ( ! apply_filters( 'tenup_support_monitor_log_item', $summary, $subgroup ) ) {
+		if ( ! apply_filters( 'tenup_support_monitor_log_item', $summary, $subgroup, $action ) ) {
 			return;
 		}
 

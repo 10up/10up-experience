@@ -41,7 +41,8 @@ class ActivityLog extends Singleton {
 	public function profile_update( $user_id, $old_user_data, $userdata ) {
 		Monitor::instance()->log(
 			'User ' . $user_id . ' profile updated.',
-			'users'
+			'users',
+			'profile_update'
 		);
 	}
 
@@ -54,7 +55,8 @@ class ActivityLog extends Singleton {
 	public function user_register( $user_id, $userdata ) {
 		Monitor::instance()->log(
 			'User ' . $user_id . ' created.',
-			'users'
+			'users',
+			'user_register'
 		);
 	}
 
@@ -66,7 +68,8 @@ class ActivityLog extends Singleton {
 	public function deleted_user( $user_id ) {
 		Monitor::instance()->log(
 			'User ' . $user_id . ' deleted.',
-			'users'
+			'users',
+			'deleted_user'
 		);
 	}
 
@@ -85,7 +88,8 @@ class ActivityLog extends Singleton {
 
 		Monitor::instance()->log(
 			$msg,
-			'plugins'
+			'plugins',
+			'activated_plugin'
 		);
 	}
 
@@ -104,7 +108,8 @@ class ActivityLog extends Singleton {
 
 		Monitor::instance()->log(
 			$msg,
-			'plugins'
+			'plugins',
+			'deactivated_plugin'
 		);
 	}
 
@@ -117,8 +122,9 @@ class ActivityLog extends Singleton {
 	 */
 	public function switch_theme( $new_name, $new_theme, $old_theme ) {
 		Monitor::instance()->log(
-			'Theme switched to `' . $new_name . '` from `' . $old_theme->get( 'Name' ) .'`',
-			'themes'
+			'Theme switched to `' . $new_name . '` from `' . $old_theme->get( 'Name' ) . '`',
+			'themes',
+			'switch_theme'
 		);
 	}
 }

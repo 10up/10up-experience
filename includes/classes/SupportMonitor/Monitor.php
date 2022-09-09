@@ -422,7 +422,7 @@ class Monitor extends Singleton {
 
 		$current_logs = get_option( 'tenup_support_monitor_activity_logs', [] );
 
-		if ( apply_filters( 'tenup_support_monitor_max_activity_log_count', 100 ) <= count( $current_logs ) ) {
+		if ( apply_filters( 'tenup_support_monitor_max_activity_log_count', 500 ) <= count( $current_logs ) ) {
 			return;
 		}
 
@@ -435,7 +435,7 @@ class Monitor extends Singleton {
 
 		$current_logs[] = $log_item;
 
-		update_option( 'tenup_support_monitor_activity_logs', $current_logs );
+		update_option( 'tenup_support_monitor_activity_logs', $current_logs, false );
 	}
 
 	/**

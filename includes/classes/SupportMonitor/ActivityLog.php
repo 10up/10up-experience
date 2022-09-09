@@ -22,6 +22,7 @@ class ActivityLog extends Singleton {
 	public function setup() {
 
 		add_action( 'profile_update', [ $this, 'profile_update' ], 10, 3 );
+		add_action( 'set_user_role', [ $this, 'set_user_role' ], 10, 3 );
 		add_action( 'user_register', [ $this, 'user_register' ], 10, 2 );
 		add_action( 'deleted_user', [ $this, 'deleted_user' ], 10 );
 		add_action( 'wp_login', [ $this, 'wp_login' ], 10, 2 );
@@ -45,10 +46,32 @@ class ActivityLog extends Singleton {
 	 * @param array   $userdata      The raw array of data passed to wp_insert_user(
 	 */
 	public function profile_update( $user_id, $old_user_data, $userdata ) {
+		$changed_keys = [];
+		foreach ( $userdata as $key => $value ) {
+			if ( isset( $old_user_data->data->$key ) && $old_user_data->data->$key !== $value ) {
+				$changed_keys[] = $key;
+			}
+		}
+
 		Monitor::instance()->log(
-			'User ' . $user_id . ' profile updated.',
+			'User ' . $user_id . ' profile updated.' . ( ! empty( $changed_keys ) ? ' Changed: ' . implode( ', ', $changed_keys ) : '' ),
 			'users',
 			'profile_update'
+		);
+	}
+
+	/**
+	 * Log user role change
+	 *
+	 * @param int    $user_id User ID.
+	 * @param string $role    Role name.
+	 * @param array  $old_roles Old roles.
+	 */
+	public function set_user_role( $user_id, $role, $old_roles ) {
+		Monitor::instance()->log(
+			'User ' . $user_id . ' role changed from ' . implode( ', ', $old_roles ) . ' to ' . $role,
+			'users',
+			'set_user_role'
 		);
 	}
 

@@ -55,9 +55,11 @@ class ActivityLog extends Singleton {
 		}
 
 		Monitor::instance()->log(
-			'User ' . $user_id . ' profile updated.' . ( ! empty( $changed_keys ) ? ' Changed: ' . implode( ', ', $changed_keys ) : '' ),
-			'users',
-			'profile_update'
+			[
+				'action'  => 'profile_update',
+				'summary' => 'User ' . $user_id . ' profile updated.' . ( ! empty( $changed_keys ) ? ' Changed: ' . implode( ', ', $changed_keys ) : '' ),
+			],
+			'users'
 		);
 	}
 
@@ -69,11 +71,15 @@ class ActivityLog extends Singleton {
 	 * @param array  $old_roles Old roles.
 	 */
 	public function set_user_role( $user_id, $role, $old_roles ) {
-		Monitor::instance()->log(
-			'User ' . $user_id . ' role changed from ' . implode( ', ', $old_roles ) . ' to ' . $role,
-			'users',
-			'set_user_role'
-		);
+		if ( ! empty( $old_roles ) ) { // Don't log on user creation.
+			Monitor::instance()->log(
+				[
+					'action'  => 'set_user_role',
+					'summary' => 'User ' . $user_id . ' role changed from ' . implode( ', ', $old_roles ) . ' to ' . $role,
+				],
+				'users'
+			);
+		}
 	}
 
 	/**
@@ -108,9 +114,11 @@ class ActivityLog extends Singleton {
 	public function updated_user_meta( $meta_id, $user_id, $meta_key ) {
 		if ( in_array( $meta_key, $this->get_user_meta_keys_to_log(), true ) ) {
 			Monitor::instance()->log(
-				'User ' . $user_id . ' meta updated. Key: ' . $meta_key,
-				'users',
-				'update_user_meta'
+				[
+					'action'  => 'updated_user_meta',
+					'summary' => 'User ' . $user_id . ' meta updated. Key: ' . $meta_key,
+				],
+				'users'
 			);
 		}
 	}
@@ -123,9 +131,11 @@ class ActivityLog extends Singleton {
 	 */
 	public function user_register( $user_id, $userdata ) {
 		Monitor::instance()->log(
-			'User ' . $user_id . ' created.',
-			'users',
-			'user_register'
+			[
+				'action'  => 'user_register',
+				'summary' => 'User ' . $user_id . ' created with role ' . $userdata['role'],
+			],
+			'users'
 		);
 	}
 
@@ -136,9 +146,11 @@ class ActivityLog extends Singleton {
 	 */
 	public function deleted_user( $user_id ) {
 		Monitor::instance()->log(
-			'User ' . $user_id . ' deleted.',
-			'users',
-			'deleted_user'
+			[
+				'action'  => 'deleted_user',
+				'summary' => 'User ' . $user_id . ' deleted.',
+			],
+			'users'
 		);
 	}
 
@@ -150,9 +162,11 @@ class ActivityLog extends Singleton {
 	 */
 	public function wp_login( $user_login, $user ) {
 		Monitor::instance()->log(
-			'User ' . $user->ID . ' logged in.',
-			'users',
-			'wp_login'
+			[
+				'action'  => 'wp_login',
+				'summary' => 'User ' . $user->ID . ' logged in.',
+			],
+			'users'
 		);
 	}
 
@@ -170,9 +184,11 @@ class ActivityLog extends Singleton {
 		}
 
 		Monitor::instance()->log(
-			$msg,
-			'plugins',
-			'activated_plugin'
+			[
+				'action'  => 'activated_plugin',
+				'summary' => $msg,
+			],
+			'plugins'
 		);
 	}
 
@@ -190,9 +206,11 @@ class ActivityLog extends Singleton {
 		}
 
 		Monitor::instance()->log(
-			$msg,
-			'plugins',
-			'deactivated_plugin'
+			[
+				'action'  => 'deactivated_plugin',
+				'summary' => $msg,
+			],
+			'plugins'
 		);
 	}
 
@@ -205,9 +223,11 @@ class ActivityLog extends Singleton {
 		$msg = 'Plugin `' . $plugin . '` is deleted';
 
 		Monitor::instance()->log(
-			$msg,
-			'plugins',
-			'delete_plugin'
+			[
+				'action'  => 'delete_plugin',
+				'summary' => $msg,
+			],
+			'plugins'
 		);
 	}
 
@@ -220,9 +240,11 @@ class ActivityLog extends Singleton {
 	 */
 	public function switch_theme( $new_name, $new_theme, $old_theme ) {
 		Monitor::instance()->log(
-			'Theme switched to `' . $new_name . '` from `' . $old_theme->get( 'Name' ) . '`',
-			'themes',
-			'switch_theme'
+			[
+				'action'  => 'switch_theme',
+				'summary' => 'Theme switched to `' . $new_name . '` from `' . $old_theme->get( 'Name' ) . '`',
+			],
+			'themes'
 		);
 	}
 
@@ -235,9 +257,11 @@ class ActivityLog extends Singleton {
 	public function deleted_theme( $stylesheet, $deleted ) {
 		if ( $deleted ) {
 			Monitor::instance()->log(
-				'Theme `' . $stylesheet . '` is deleted',
-				'themes',
-				'deleted_theme'
+				[
+					'action'  => 'deleted_theme',
+					'summary' => 'Theme `' . $stylesheet . '` is deleted',
+				],
+				'themes'
 			);
 		}
 	}
@@ -285,9 +309,11 @@ class ActivityLog extends Singleton {
 	public function updated_option( $option ) {
 		if ( in_array( $option, $this->get_option_changes_to_log(), true ) ) {
 			Monitor::instance()->log(
-				'Option `' . $option . '` is updated',
-				'options',
-				'updated_option'
+				[
+					'action'  => 'updated_option',
+					'summary' => 'Option `' . $option . '` is updated',
+				],
+				'options'
 			);
 		}
 	}
@@ -300,9 +326,11 @@ class ActivityLog extends Singleton {
 	public function added_option( $option ) {
 		if ( in_array( $option, $this->get_option_changes_to_log(), true ) ) {
 			Monitor::instance()->log(
-				'Option `' . $option . '` is added',
-				'options',
-				'added_option'
+				[
+					'action'  => 'added_option',
+					'summary' => 'Option `' . $option . '` is added',
+				],
+				'options'
 			);
 		}
 	}

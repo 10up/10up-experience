@@ -400,11 +400,10 @@ class Monitor extends Singleton {
 	/**
 	 * Create a log entry
 	 *
-	 * @param string $summary  Data to log
+	 * @param array  $data   Data related to the action..
 	 * @param string $subgroup Sub group
-	 * @param string $action   The action being logged.
 	 */
-	public function log( $summary, $subgroup = null, $action = null ) {
+	public function log( $data = [], $subgroup = null ) {
 		if ( ! $this->logging_enabled() ) {
 			return;
 		}
@@ -412,11 +411,10 @@ class Monitor extends Singleton {
 		/**
 		 * Filters whether to log the message.
 		 *
-		 * @param string $summary  Data to log.
+		 * @param string $data   Data related to the action.
 		 * @param string $subgroup Sub group.
-		 * @param string $action   The action being logged.
 		 */
-		if ( ! apply_filters( 'tenup_support_monitor_log_item', $summary, $subgroup, $action ) ) {
+		if ( ! apply_filters( 'tenup_support_monitor_log_item', $data, $subgroup ) ) {
 			return;
 		}
 
@@ -428,7 +426,7 @@ class Monitor extends Singleton {
 
 		$log_item = [
 			'date'     => time(),
-			'summary'  => $summary,
+			'summary'  => $data['summary'],
 			'subgroup' => $subgroup,
 			'user_id'  => get_current_user_id(),
 		];

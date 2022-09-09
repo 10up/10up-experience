@@ -408,6 +408,16 @@ class Monitor extends Singleton {
 			return;
 		}
 
+		/**
+		 * Filters whether to log the message.
+		 *
+		 * @param string $summary  Data to log.
+		 * @param string $subgroup Sub group.
+		 */
+		if ( ! apply_filters( 'tenup_support_monitor_log_item', $summary, $subgroup ) ) {
+			return;
+		}
+
 		$current_logs = get_option( 'tenup_support_monitor_activity_logs', [] );
 
 		if ( apply_filters( 'tenup_support_monitor_max_activity_log_count', 100 ) <= count( $current_logs ) ) {

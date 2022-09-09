@@ -23,6 +23,7 @@ class ActivityLog extends Singleton {
 
 		add_action( 'profile_update', [ $this, 'profile_update' ], 10, 3 );
 		add_action( 'set_user_role', [ $this, 'set_user_role' ], 10, 3 );
+		add_action( 'updated_user_meta', [ $this, 'updated_user_meta' ], 10, 3 );
 		add_action( 'user_register', [ $this, 'user_register' ], 10, 2 );
 		add_action( 'deleted_user', [ $this, 'deleted_user' ], 10 );
 		add_action( 'wp_login', [ $this, 'wp_login' ], 10, 2 );
@@ -48,7 +49,7 @@ class ActivityLog extends Singleton {
 	public function profile_update( $user_id, $old_user_data, $userdata ) {
 		$changed_keys = [];
 		foreach ( $userdata as $key => $value ) {
-			if ( isset( $old_user_data->data->$key ) && $old_user_data->data->$key !== $value ) {
+			if ( isset( $old_user_data->data->$key ) && (string) $old_user_data->data->$key !== (string) $value ) {
 				$changed_keys[] = $key;
 			}
 		}
@@ -73,6 +74,45 @@ class ActivityLog extends Singleton {
 			'users',
 			'set_user_role'
 		);
+	}
+
+	/**
+	 * Provides keys of user meta changes to log.
+	 *
+	 * @return array
+	 */
+	private function get_user_meta_keys_to_log() {
+		$user_meta_keys_to_log = [
+			'nickname',
+			'first_name',
+			'last_name',
+			'description',
+		];
+
+		/**
+		 * Filters the user meta keys to log.
+		 *
+		 * @param array $user_meta_keys_to_log
+		 */
+		return apply_filters( 'tenup_experience_logged_user_meta_changes', $user_meta_keys_to_log );
+	}
+
+
+	/**
+	 * Log user meta update
+	 *
+	 * @param int    $meta_id    ID of updated metadata entry.
+	 * @param int    $user_id    User ID.
+	 * @param string $meta_key   Metadata key.
+	 */
+	public function updated_user_meta( $meta_id, $user_id, $meta_key ) {
+		if ( in_array( $meta_key, $this->get_user_meta_keys_to_log(), true ) ) {
+			Monitor::instance()->log(
+				'User ' . $user_id . ' meta updated. Key: ' . $meta_key,
+				'users',
+				'update_user_meta'
+			);
+		}
 	}
 
 	/**

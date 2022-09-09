@@ -24,7 +24,7 @@ class ActivityLog extends Singleton {
 		add_action( 'profile_update', [ $this, 'profile_update' ], 10, 3 );
 		add_action( 'user_register', [ $this, 'user_register' ], 10, 2 );
 		add_action( 'deleted_user', [ $this, 'deleted_user' ], 10 );
-		add_action( 'wp_login', [ $this, 'wp_login' ] );
+		add_action( 'wp_login', [ $this, 'wp_login' ], 10, 2 );
 
 		add_action( 'activated_plugin', [ $this, 'activated_plugin' ], 10, 2 );
 		add_action( 'deactivated_plugin', [ $this, 'deactivated_plugin' ], 10, 2 );
@@ -81,10 +81,13 @@ class ActivityLog extends Singleton {
 
 	/**
 	 * User logged in
+	 *
+	 * @param string $user_login Username.
+	 * @param object $user       WP_User object of the logged-in user.
 	 */
-	public function wp_login() {
+	public function wp_login( $user_login, $user ) {
 		Monitor::instance()->log(
-			'User logged in.',
+			'User ' . $user->ID . ' logged in.',
 			'users',
 			'wp_login'
 		);

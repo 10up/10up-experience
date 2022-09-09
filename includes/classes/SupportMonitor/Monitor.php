@@ -543,7 +543,7 @@ class Monitor extends Singleton {
 					'activity'
 				);
 
-				update_option( 'tenup_support_monitor_activity_logs', [] );
+				update_option( 'tenup_support_monitor_activity_logs', [], false );
 			}
 		}
 

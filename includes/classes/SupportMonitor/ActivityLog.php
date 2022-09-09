@@ -89,10 +89,10 @@ class ActivityLog extends Singleton {
 	 */
 	private function get_user_meta_keys_to_log() {
 		$user_meta_keys_to_log = [
-			'nickname',
+			'description',
 			'first_name',
 			'last_name',
-			'description',
+			'nickname',
 		];
 
 		/**
@@ -177,7 +177,7 @@ class ActivityLog extends Singleton {
 	 * @param boolean $network_wide Whether the plugin is activated network wide
 	 */
 	public function activated_plugin( $plugin, $network_wide ) {
-		$msg = 'Plugin ' . $plugin . ' is activated';
+		$msg = 'Plugin `' . $plugin . '` is activated';
 
 		if ( $network_wide ) {
 			$msg .= ' network-wide';
@@ -275,22 +275,23 @@ class ActivityLog extends Singleton {
 	private function get_option_changes_to_log() {
 		$options_to_log = [
 			'admin_email',
+			'adminhash',
+			'blog_public',
 			'blogname',
+			'category_base',
+			'default_comment_status',
 			'default_role',
 			'home',
+			'page_for_posts',
+			'page_on_front',
+			'permalink_structure',
+			'posts_per_page',
+			'show_on_front',
 			'siteurl',
-			'users_can_Register',
+			'tag_base',
 			'upload_path',
 			'upload_url_path',
-			'permalink_structure',
-			'category_base',
-			'tag_base',
-			'blog_public',
-			'page_on_front',
-			'page_for_posts',
-			'default_comment_status',
-			'show_on_front',
-			'posts_per_page',
+			'users_can_register',
 		];
 
 		/**

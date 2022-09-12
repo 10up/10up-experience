@@ -337,7 +337,7 @@ class Monitor extends Singleton {
 
 
 	/**
-	 * Sends a message async one time
+	 * Format a message to send
 	 *
 	 * @param  array  $data Arbitrary data
 	 * @param  string $type Message type. Can be notice, warning, or error.
@@ -386,6 +386,54 @@ class Monitor extends Singleton {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Check if loggin is enabled
+	 *
+	 * @return boolean
+	 */
+	public function logging_enabled() {
+		return ( ! defined( 'TENUP_DISABLE_ACTIVITYLOG' ) || ! TENUP_DISABLE_ACTIVITYLOG );
+	}
+
+	/**
+	 * Create a log entry
+	 *
+	 * @param array  $data   Data related to the action..
+	 * @param string $subgroup Sub group
+	 */
+	public function log( $data = [], $subgroup = null ) {
+		if ( ! $this->logging_enabled() ) {
+			return;
+		}
+
+		/**
+		 * Filters whether to log the message.
+		 *
+		 * @param string $data   Data related to the action.
+		 * @param string $subgroup Sub group.
+		 */
+		if ( ! apply_filters( 'tenup_support_monitor_log_item', $data, $subgroup ) ) {
+			return;
+		}
+
+		$current_logs = get_option( 'tenup_support_monitor_activity_logs', [] );
+
+		if ( apply_filters( 'tenup_support_monitor_max_activity_log_count', 500 ) <= count( $current_logs ) ) {
+			return;
+		}
+
+		$log_item = [
+			'date'     => time(),
+			'summary'  => $data['summary'],
+			'subgroup' => $subgroup,
+			'user_id'  => get_current_user_id(),
+		];
+
+		$current_logs[] = $log_item;
+
+		update_option( 'tenup_support_monitor_activity_logs', $current_logs, false );
 	}
 
 	/**
@@ -481,6 +529,20 @@ class Monitor extends Singleton {
 				'notice',
 				'webvitals'
 			);
+		}
+
+		if ( $this->logging_enabled() ) {
+			$logs = get_option( 'tenup_support_monitor_activity_logs', [] );
+
+			if ( ! empty( $logs ) ) {
+				$messages[] = $this->format_message(
+					$logs,
+					'log',
+					'activity'
+				);
+
+				update_option( 'tenup_support_monitor_activity_logs', [], false );
+			}
 		}
 
 		$this->send_request( $messages );

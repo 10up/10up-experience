@@ -14,7 +14,10 @@ use TenUpExperience\Singleton;
 /**
  * Monitor class
  */
-class Monitor extends Singleton {
+class Monitor {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

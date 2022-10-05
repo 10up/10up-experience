@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Admin Customizations class
  */
-class Customizations extends Singleton {
+class Customizations {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Authors class
  */
-class Authors extends Singleton {
+class Authors {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

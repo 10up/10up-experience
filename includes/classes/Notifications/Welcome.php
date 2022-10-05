@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Welcome notification class
  */
-class Welcome extends Singleton {
+class Welcome {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

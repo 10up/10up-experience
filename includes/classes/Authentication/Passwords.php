@@ -13,7 +13,9 @@ use ZxcvbnPhp\Zxcvbn;
 /**
  * Password extension functionality
  */
-class Passwords extends Singleton {
+class Passwords {
+
+	use Singleton;
 	/**
 	 * Setup hooks
 	 *

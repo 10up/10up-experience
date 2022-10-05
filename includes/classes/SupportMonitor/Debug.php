@@ -14,7 +14,9 @@ use TenUpExperience\Singleton;
 /**
  * Gutenberg class
  */
-class Debug extends Singleton {
+class Debug {
+
+	use Singleton;
 
 	/**
 	 * Setup module

@@ -11,7 +11,9 @@ use TenUpExperience\Singleton;
 /**
  * Username extension functionality
  */
-class Usernames extends Singleton {
+class Usernames {
+
+	use Singleton;
 
 	/**
 	 * Setup hooks

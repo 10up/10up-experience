@@ -104,8 +104,8 @@ There are 2 filters available here:
 
 The Activity Log tracks key actions taken by logged in users and stores them in Support Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
 
-[Logged Actions]
-​
+__Logged Actions__
+
 - `profile_update` Runs when a user profile is updated. Example log message: "User 1 profile updated."
 - `set_user_role` Runs when a user's role has changed. Example log message: "User 1 role changed from editor to administator."
 - `updated_user_meta` Runs when certain user metadata has changed. Example log message: "User 1 meta updated. Key: nickname."
@@ -122,28 +122,20 @@ The Activity Log tracks key actions taken by logged in users and stores them in 
 __Filters__
 
 - `tenup_experience_logged_user_meta_changes`
-Filters the user meta keys whose changes should be logged.
 
-@param array $meta_keys The user meta keys to log.
+Filters the user meta keys whose changes should be logged.
 
 - `tenup_support_monitor_logged_option_changes`
 
 Filters the option keys whose changes should be logged.
 
-@param array $option_keys The option keys to log.
-
 - `tenup_support_monitor_log_item`
 
 Filters whether to log a message.
 
-@param array $data Associative array of data related to the action.
-@param string $subgroup String representing a group of logged actions, e.g. 'users' or 'plugins'.
-
 - `tenup_support_monitor_max_activity_log_count`
 
 Filters how many log items to store. Items are stored in array saved to the options table. Default is 500.
-
-@param int The number of log items to keep. Default 500.
 
 __Constants__
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Singleton class
+ * Singleton trait
  *
  * @since  1.7
  * @package  10up-experience
@@ -15,25 +15,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Abstract class
  */
-abstract class Singleton {
+trait Singleton {
+	/**
+	 * Instance.
+	 *
+	 * @var object
+	 */
+	protected static $instance;
+
 	/**
 	 * Return instance of class
 	 *
 	 * @return self
 	 */
 	public static function instance() {
-		static $instance;
-
-		if ( empty( $instance ) ) {
+		if ( empty( static::$instance ) ) {
 			$class = get_called_class();
 
-			$instance = new $class();
+			static::$instance = new $class();
 
-			if ( method_exists( $instance, 'setup' ) ) {
-				$instance->setup();
+			if ( method_exists( static::$instance, 'setup' ) ) {
+				static::$instance->setup();
 			}
 		}
 
-		return $instance;
+		return static::$instance;
 	}
 }

@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Headers class
  */
-class Headers extends Singleton {
+class Headers {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 */

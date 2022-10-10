@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Plugin class
  */
-class Plugins extends Singleton {
+class Plugins {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

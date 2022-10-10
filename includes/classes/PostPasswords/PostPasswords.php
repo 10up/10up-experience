@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Post passwords class
  */
-class PostPasswords extends Singleton {
+class PostPasswords {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

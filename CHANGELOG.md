@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.10.0] - 2022-09-13
+### Added
+* Added Activity Log
+* Support for PHP 8.1
+
 ## [1.9.0] - 2022-03-21
 ### Added
 * Bundled 10up SSO plugin into 10up Experience

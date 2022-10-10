@@ -3,7 +3,7 @@
  * Plugin Name:       10up Experience
  * Plugin URI:        https://github.com/10up/10up-experience
  * Description:       The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:           1.9.1
+ * Version:           1.10.0
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPLv2 or later
@@ -19,7 +19,7 @@ namespace TenUpExperience;
 
 use Puc_v4_Factory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.9.1' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.10.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
@@ -75,19 +75,20 @@ $network_activated = Utils\is_network_activated( plugin_basename( __FILE__ ) );
 define( 'TENUP_EXPERIENCE_IS_NETWORK', (bool) $network_activated );
 
 if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
-	AdminCustomizations\Customizations::instance()->setup();
+	AdminCustomizations\Customizations::instance();
 }
 
-API\API::instance()->setup();
-Authentication\Usernames::instance()->setup();
-Authors\Authors::instance()->setup();
-Gutenberg\Gutenberg::instance()->setup();
-Headers\Headers::instance()->setup();
-Plugins\Plugins::instance()->setup();
-PostPasswords\PostPasswords::instance()->setup();
-SupportMonitor\Monitor::instance()->setup();
-SupportMonitor\Debug::instance()->setup();
-Notifications\Welcome::instance()->setup();
+API\API::instance();
+Authentication\Usernames::instance();
+Authors\Authors::instance();
+Gutenberg\Gutenberg::instance();
+Headers\Headers::instance();
+Plugins\Plugins::instance();
+PostPasswords\PostPasswords::instance();
+SupportMonitor\Monitor::instance();
+SupportMonitor\Debug::instance();
+SupportMonitor\ActivityLog::instance();
+Notifications\Welcome::instance();
 
 /**
  * We load this later to make sure there are no conflicts with other plugins.
@@ -95,8 +96,8 @@ Notifications\Welcome::instance()->setup();
 add_action(
 	'plugins_loaded',
 	function() {
-		Authentication\Passwords::instance()->setup();
-		SSO\SSO::instance()->setup();
+		Authentication\Passwords::instance();
+		SSO\SSO::instance();
 	}
 );
 

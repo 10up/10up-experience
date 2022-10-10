@@ -12,7 +12,9 @@ use TenUpExperience\Singleton;
 /**
  * REST API customizations class
  */
-class API extends Singleton {
+class API {
+
+	use Singleton;
 
 	/**
 	 * Default value for API restriction

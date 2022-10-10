@@ -42,50 +42,50 @@ Updates use the built-in WordPress update system to pull from GitHub releases.
 
 ## Functionality
 
-* __REST API__
+### REST API
 
-  Adds an option to general settings to restrict REST API access. The options are: show REST API to everyone, only show REST API to logged in users, and show REST API to everyone except `/users` endpoint. By default, the plugin requires authentication for the `/users` endpoint.
+Adds an option to general settings to restrict REST API access. The options are: show REST API to everyone, only show REST API to logged in users, and show REST API to everyone except `/users` endpoint. By default, the plugin requires authentication for the `/users` endpoint.
 
-	*Configured in `Settings > Reading`.*
+*Configured in `Settings > Reading`.*
 
-* __Authors__
+### Authors
 
-  Removes 10up user author archives so they aren't mistakenly indexed by search engines.
+Removes 10up user author archives so they aren't mistakenly indexed by search engines.
 
-* __Gutenberg__
+### Gutenberg
 
-  Adds an option in writing to switch back to Classic Editor.
+Adds an option in writing to switch back to Classic Editor.
 
-	*Configured in `Settings > Writing`.*
+*Configured in `Settings > Writing`.*
 
-* __Plugins__
+### Plugins
 
-  Adds a 10up Suggested Plugins section to the plugins screen. Warns users who attempt to deactivate the 10up Experience plugin. Outputs a notice on non-suggested plugins tabs warning users from installing non-approved plugins. If `DISALLOW_FILE_MODS` is on, update notices will be shown in the plugins table.
+ Adds a 10up Suggested Plugins section to the plugins screen. Warns users who attempt to deactivate the 10up Experience plugin. Outputs a notice on non-suggested plugins tabs warning users from installing non-approved plugins. If `DISALLOW_FILE_MODS` is on, update notices will be shown in the plugins table.
 
-* __Post Passwords__
+### Post Passwords
 
-  Password protecting post functionality is removed both in Gutenberg and the classic editor. This can be disabled in the writing section of the admin.
+Password protecting post functionality is removed both in Gutenberg and the classic editor. This can be disabled in the writing section of the admin.
 
-	*Configured in `Settings > Writing`.*
+*Configured in `Settings > Writing`.*
 
-* __Support Monitor__
+### Support Monitor
 
-  Sends non-PII information about the website back to 10up including plugins installed, constants defined in `wp-config.php`, 10up user accounts, and more.
+Sends non-PII information about the website back to 10up including plugins installed, constants defined in `wp-config.php`, 10up user accounts, and more.
 
-	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
+*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
 
-* __Authentication__
+### Authentication
 
-  By default, all users must use a medium or greater strength password. This can be turned off in general settings (or network settings if network activated). Reserved usernames such as `admin` are prevented from being used.
+By default, all users must use a medium or greater strength password. This can be turned off in general settings (or network settings if network activated). Reserved usernames such as `admin` are prevented from being used.
 
-	*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
+*Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
 
-  **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
+ **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
 
 
-* __Headers__
+### Headers
 
-  `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.
+`X-Frame-Origins` is set to `sameorigin` to prevent click jacking.
 
 *Note:* 10up admin branding can be disabled by defining the constant `TENUP_DISABLE_BRANDING` as `true`.
 
@@ -93,18 +93,18 @@ There are 2 filters available here:
 - `tenup_experience_x_frame_options` - (default value) `SAMEORIGIN` can be changed to `DENY`.
 - `tenup_experience_disable_x_frame_options` - (default value) `FALSE` can be changed to `TRUE` - doing so will omit the header.
 
-* __SSO__
+### SSO
 
 10up Experience includes 10up SSO functionality. There are some useful constants related to this functionality:
 
 - `TENUPSSO_DISABLE` - Define this as `true` to disable SSO.
 - `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
 
-* __Activity Log__
+### Activity Log
 
 The Activity Log tracks key actions taken by logged in users and stores them in Support Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
 
-__Logged Actions__
+#### Logged Actions
 
 - `profile_update` Runs when a user profile is updated. Example log message: "User 1 profile updated."
 - `set_user_role` Runs when a user's role has changed. Example log message: "User 1 role changed from editor to administator."
@@ -119,7 +119,7 @@ __Logged Actions__
 - `updated_option` Runs when one of a specified set of core options changes. Example log message: "Option `users_can_register` is updated."
 - `added_option` Runs when one of a specified set of core options is added. Example log message: "Option `users_can_register` is added."
 
-__Filters__
+#### Filters
 
 - `tenup_experience_logged_user_meta_changes`
 
@@ -137,7 +137,7 @@ Filters whether to log a message.
 
 Filters how many log items to store. Items are stored in array saved to the options table. Default is 500.
 
-__Constants__
+#### Constants
 
 - `TENUP_DISABLE_ACTIVITYLOG`
 

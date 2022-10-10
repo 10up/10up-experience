@@ -12,7 +12,10 @@ use TenUpExperience\Singleton;
 /**
  * Gutenberg class
  */
-class Gutenberg extends Singleton {
+class Gutenberg {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *

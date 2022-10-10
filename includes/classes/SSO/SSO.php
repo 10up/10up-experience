@@ -13,12 +13,15 @@ use WP_Error;
 /**
  * SSO class
  */
-class SSO extends Singleton {
+class SSO {
+
+	use Singleton;
 
 	/**
 	 * Setup SSO
 	 */
 	public function setup() {
+
 		// If using the old SSO plugin, do nothing.
 		if ( function_exists( 'tenup_sso_add_login_errors' ) ) {
 			return;

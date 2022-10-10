@@ -13,7 +13,10 @@ use TenUpExperience\Singleton;
 /**
  * Activity log class
  */
-class ActivityLog extends Singleton {
+class ActivityLog {
+
+	use Singleton;
+
 	/**
 	 * Setup module
 	 *
@@ -48,6 +51,7 @@ class ActivityLog extends Singleton {
 	 */
 	public function profile_update( $user_id, $old_user_data, $userdata ) {
 		$changed_keys = [];
+
 		foreach ( $userdata as $key => $value ) {
 			if ( isset( $old_user_data->data->$key ) && (string) $old_user_data->data->$key !== (string) $value ) {
 				$changed_keys[] = $key;

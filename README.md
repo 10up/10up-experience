@@ -119,7 +119,8 @@ The Activity Log tracks key actions taken by logged in users and stores them in 
 - `updated_option` Runs when one of a specified set of core options changes. Example log message: "Option `users_can_register` is updated."
 - `added_option` Runs when one of a specified set of core options is added. Example log message: "Option `users_can_register` is added."
 ​
-[Filters]
+__Filters__
+
 - `tenup_experience_logged_user_meta_changes`
 Filters the user meta keys whose changes should be logged.
 
@@ -144,7 +145,7 @@ Filters how many log items to store. Items are stored in array saved to the opti
 
 @param int The number of log items to keep. Default 500.
 
-[Constants]
+__Constants__
 
 - `TENUP_DISABLE_ACTIVITYLOG`
 

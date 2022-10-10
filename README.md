@@ -118,7 +118,7 @@ The Activity Log tracks key actions taken by logged in users and stores them in 
 - `deleted_theme` Runs when a theme is deleted from the site. Example log message: "Theme twentytwentyone is deleted."
 - `updated_option` Runs when one of a specified set of core options changes. Example log message: "Option `users_can_register` is updated."
 - `added_option` Runs when one of a specified set of core options is added. Example log message: "Option `users_can_register` is added."
-​
+
 __Filters__
 
 - `tenup_experience_logged_user_meta_changes`

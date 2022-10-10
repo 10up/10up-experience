@@ -6,7 +6,7 @@
 
 ## Requirements
 
-* PHP 5.3+
+* PHP 5.4+
 * [WordPress](http://wordpress.org) 4.7+
 
 ## Installation
@@ -102,7 +102,7 @@ There are 2 filters available here:
 
 * __Activity Log__
 
-The Activity Log tracks key actions taken by logged in users. Note that no PII is stored. This feature can be disabled as well as the tracked activities modified.
+The Activity Log tracks key actions taken by logged in users and stores them in Support Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
 
 ## Logged Actions
 ​
@@ -145,6 +145,12 @@ Filters whether to log a message.
 Filters how many log items to store. Items are stored in array saved to the options table. Default is 500.
 ​
 @param int The number of log items to keep. Default 500.
+
+## Constants
+
+### TENUP_DISABLE_ACTIVITYLOG
+
+Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
 
 ## Support Level
 

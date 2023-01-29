@@ -63,10 +63,7 @@ class Passwords {
 			esc_html__( 'Require Strong Passwords', 'tenup' ),
 			[ $this, 'settings_ui' ],
 			'general',
-			'default',
-			array(
-				'label_for' => 'require-strong-passwords',
-			)
+			'default'
 		);
 	}
 
@@ -132,12 +129,22 @@ class Passwords {
 			<tbody>
 				<tr>
 					<th scope="row">
-						<label for="require-strong-passwords"><?php esc_html_e( 'Require Strong Passwords', 'tenup' ); ?></label>
+						<?php esc_html_e( 'Require Strong Passwords', 'tenup' ); ?>
 					</th>
 					<td>
-						<input name="tenup_require_strong_passwords" <?php checked( 1, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-yes" value="1"> <label for="require-strong-passwords-yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-						<input name="tenup_require_strong_passwords" <?php checked( 0, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-no" value="0"> <label for="require-strong-passwords-no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
-						<p class="description"><?php esc_html_e( 'Require all users to use strong passwords.', 'tenup' ); ?></p>
+						<fieldset>
+							<legend class="screen-reader-text"><span><?php esc_html_e( 'Require Strong Passwords', 'tenup' ); ?></span></legend>
+							<label for="require-strong-passwords-yes">
+								<input name="tenup_require_strong_passwords" <?php checked( 1, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-yes" value="1">
+								<?php esc_html_e( 'Yes', 'tenup' ); ?>
+							</label><br>
+							<label for="require-strong-passwords-no">
+								<input name="tenup_require_strong_passwords" <?php checked( 0, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-no" value="0">
+								<?php esc_html_e( 'No', 'tenup' ); ?>
+							</label>
+							</label>
+							<p class="description"><?php esc_html_e( 'Require all users to use strong passwords.', 'tenup' ); ?></p>
+						</fieldset>
 					</td>
 				</tr>
 			</tbody>
@@ -154,9 +161,19 @@ class Passwords {
 		$require_strong_passwords = $this->require_strong_passwords();
 
 		?>
-		<input name="tenup_require_strong_passwords" <?php checked( 1, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-yes" value="1"> <label for="require-strong-passwords-yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-		<input name="tenup_require_strong_passwords" <?php checked( 0, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-no" value="0"> <label for="require-strong-passwords-no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
-		<p class="description"><?php esc_html_e( 'Require all users to use strong passwords.', 'tenup' ); ?></p>
+		<fieldset>
+			<legend class="screen-reader-text"><span><?php esc_html_e( 'Require Strong Passwords', 'tenup' ); ?></span></legend>
+			<label for="require-strong-passwords-yes">
+				<input name="tenup_require_strong_passwords" <?php checked( 1, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-yes" value="1">
+				<?php esc_html_e( 'Yes', 'tenup' ); ?>
+			</label><br>
+			<label for="require-strong-passwords-no">
+				<input name="tenup_require_strong_passwords" <?php checked( 0, $require_strong_passwords ); ?> type="radio" id="require-strong-passwords-no" value="0">
+				<?php esc_html_e( 'No', 'tenup' ); ?>
+			</label>
+			</label>
+			<p class="description"><?php esc_html_e( 'Require all users to use strong passwords.', 'tenup' ); ?></p>
+		</fieldset>
 		<?php
 	}
 

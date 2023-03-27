@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.10.1] - 2022-09-13
+### Fixed
+* Fix bug allowing admin username user to authenticate
+
 ## [1.10.0] - 2022-09-13
 ### Added
 * Added Activity Log

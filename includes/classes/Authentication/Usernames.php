@@ -36,7 +36,7 @@ class Usernames {
 		$test_tlds = array( 'test', 'local', '' );
 		$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
 
-		if ( in_array( ! $tld, $test_tlds, true ) && in_array( strtolower( trim( $username ) ), $this->reserved_usernames(), true ) ) {
+		if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $username ) ), $this->reserved_usernames(), true ) ) {
 			return new \WP_Error(
 				'Auth Error',
 				__( 'Please have an administor change your username in order to meet current security measures.', 'tenup' )

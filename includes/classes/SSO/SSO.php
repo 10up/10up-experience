@@ -31,6 +31,17 @@ class SSO {
 			return;
 		}
 
+		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			add_action( 'wpmu_options', [ $this, 'ms_settings' ] );
+			add_action( 'admin_init', [ $this, 'ms_save_settings' ] );
+		} else {
+			add_action( 'admin_init', [ $this, 'single_site_setting' ] );
+		}
+
+		if ( 'yes' !== $this->get_setting() ) {
+			return;
+		}
+
 		if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) {
 			add_filter( 'allow_password_reset', '__return_false' );
 		}
@@ -41,6 +52,119 @@ class SSO {
 		add_action( 'login_head', [ $this, 'render_login_form_styles' ] );
 		add_filter( 'authenticate', [ $this, 'prevent_standard_login_for_sso_user' ], 999 );
 		add_action( 'admin_page_access_denied', [ $this, 'check_user_blog' ] );
+	}
+
+	/**
+	 * Set options in multisite
+	 */
+	public function ms_save_settings() {
+		global $pagenow;
+		if ( ! is_network_admin() ) {
+			return;
+		}
+
+		if ( 'settings.php' !== $pagenow ) {
+			return;
+		}
+
+		if ( ! is_super_admin() ) {
+			return;
+		}
+
+		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'siteoptions' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_POST['tenup_allow_sso'] ) ) {
+			return;
+		}
+
+		$setting = $this->validate_sso_setting( $_POST['tenup_allow_sso'] );
+
+		update_site_option( 'tenup_allow_sso', $setting );
+	}
+
+	/**
+	 * Output multisite settings
+	 */
+	public function ms_settings() {
+		$setting = $this->get_setting();
+		?>
+		<h2><?php esc_html_e( '10up SSO', 'tenup' ); ?></h2>
+		<p><?php esc_html_e( 'This allows members of 10up on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
+		<table class="form-table" role="presentation">
+			<tbody>
+				<tr>
+					<th scope="row"><?php esc_html_e( 'Allow 10up SSO', 'tenup' ); ?></th>
+					<td>
+						<input name="tenup_allow_sso" <?php checked( 'yes', $setting ); ?> type="radio" id="tenup_allow_sso_yes" value="yes"> <label for="tenup_allow_sso_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+						<input name="tenup_allow_sso" <?php checked( 'no', $setting ); ?> type="radio" id="tenup_allow_sso_no" value="no"> <label for="tenup_allow_sso_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Get setting
+	 *
+	 * @return array
+	 */
+	public function get_setting() {
+		$setting = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_allow_sso', 'yes' ) : get_option( 'tenup_allow_sso', 'yes' );
+
+		return $setting;
+	}
+
+	/**
+	 * Register restrict REST API setting.
+	 */
+	public function single_site_setting() {
+
+		$settings_args = array(
+			'type'              => 'string',
+			'sanitize_callback' => [ $this, 'validate_sso_setting' ],
+		);
+
+		register_setting( 'general', 'tenup_allow_sso', $settings_args );
+		add_settings_field( 'tenup_allow_sso', esc_html__( 'Allow 10up SSO', 'tenup' ), [ $this, 'sso_setting_field_output' ], 'general' );
+	}
+
+	/**
+	 * Validate sso setting.
+	 *
+	 * @param  string $value Current restriction.
+	 * @return string
+	 */
+	public function validate_sso_setting( $value ) {
+		if ( in_array( $value, array( 'yes', 'no' ), true ) ) {
+			return $value;
+		}
+
+		return 'yes';
+	}
+
+	/**
+	 * Display UI for restrict REST API setting.
+	 *
+	 * @return void
+	 */
+	public function sso_setting_field_output() {
+		$allow_sso = $this->get_setting();
+		?>
+
+		<input id="tenup-allow-sso-yes" name="tenup_allow_sso" type="radio" value="yes"<?php checked( $allow_sso, 'yes' ); ?> />
+		<label for="tenup-allow-sso-yes">
+			<?php esc_html_e( 'Yes', 'tenup' ); ?>
+		</label><br>
+
+		<input id="tenup-allow-sso-no" name="tenup_allow_sso" type="radio" value="no"<?php checked( $allow_sso, 'no' ); ?> />
+		<label for="tenup-allow-sso-no">
+			<?php esc_html_e( 'No', 'tenup' ); ?>
+		</label>
+		<p class="description"><?php esc_html_e( 'This allows members of 10up on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
+		<?php
 	}
 
 	/**

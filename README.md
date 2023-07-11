@@ -95,9 +95,9 @@ There are 2 filters available here:
 
 ### SSO
 
-10up Experience includes 10up SSO functionality. There are some useful constants related to this functionality:
+10up Experience includes 10up SSO functionality. This feature can be enabled or disabled in `Settings > General`. It is enabled by default. There are some useful constants related to this functionality:
 
-- `TENUPSSO_DISABLE` - Define this as `true` to disable SSO.
+- `TENUPSSO_DISABLE` - Define this as `true` to force disable SSO.
 - `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
 
 ### Activity Log

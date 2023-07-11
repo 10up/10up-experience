@@ -84,16 +84,16 @@ class SSO {
 			$verify = add_query_arg(
 				array(
 					'action'      => '10up-verify',
-					'email'       => urlencode( $email ),
+					'email'       => rawurlencode( $email ),
 					'sso_version' => TENUP_EXPERIENCE_VERSION,
-					'nonce'       => urlencode( filter_input( INPUT_GET, 'nonce' ) ),
+					'nonce'       => rawurlencode( filter_input( INPUT_GET, 'nonce' ) ),
 				),
 				TENUPSSO_PROXY_URL
 			);
 
 			$response = wp_remote_get( $verify );
 			if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
-				wp_redirect( wp_login_url() );
+				wp_safe_redirect( wp_login_url() );
 				exit;
 			}
 
@@ -174,13 +174,13 @@ class SSO {
 		} else {
 			$redirect_url = wp_login_url();
 			if ( isset( $_REQUEST['redirect_to'] ) ) {
-				$redirect_url = add_query_arg( 'redirect_to', urlencode( $_REQUEST['redirect_to'] ), $redirect_url );
+				$redirect_url = add_query_arg( 'redirect_to', rawurlencode( $_REQUEST['redirect_to'] ), $redirect_url );
 			}
 
 			$proxy_url = add_query_arg(
 				array(
 					'action'      => '10up-login',
-					'redirect'    => urlencode( $redirect_url ),
+					'redirect'    => rawurlencode( $redirect_url ),
 					'sso_version' => TENUP_EXPERIENCE_VERSION,
 				),
 				TENUPSSO_PROXY_URL
@@ -197,7 +197,7 @@ class SSO {
 	public function update_login_form() {
 		$google_login = add_query_arg( 'action', '10up-login', wp_login_url() );
 		if ( isset( $_REQUEST['redirect_to'] ) ) {
-			$google_login = add_query_arg( 'redirect_to', urlencode( $_REQUEST['redirect_to'] ), $google_login );
+			$google_login = add_query_arg( 'redirect_to', rawurlencode( $_REQUEST['redirect_to'] ), $google_login );
 		}
 
 		?><script type="text/javascript">

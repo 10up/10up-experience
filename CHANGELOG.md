@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.10.2] - 2023-07-11
+
+* Remove WP Acceptance
+* Upgrade build process to 10up Toolkit
+* Upgrade Plugin Update Checker
+
 ## [1.10.1] - 2022-09-13
 ### Fixed
 * Fix bug allowing admin username user to authenticate

@@ -6,7 +6,7 @@
 
 ## Requirements
 
-* PHP 5.4+
+* PHP 7.2+
 * [WordPress](http://wordpress.org) 4.7+
 
 ## Installation

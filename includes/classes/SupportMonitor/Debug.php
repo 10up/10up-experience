@@ -94,6 +94,8 @@ class Debug {
 
 			wp_safe_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
 		}
+
+		exit;
 	}
 
 	/**
@@ -113,6 +115,8 @@ class Debug {
 		} else {
 			wp_safe_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
 		}
+
+		exit;
 	}
 
 	/**

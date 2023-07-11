@@ -1,0 +1,52 @@
+name: Linting
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+  push:
+    branches:
+      - master
+      - develop
+jobs:
+  stylelint:
+    name: stylelint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: stylelint
+        uses: reviewdog/action-stylelint@v1
+        with:
+          reporter: github-pr-review
+          stylelint_input: '**/*.css'
+          stylelint_config: 'stylelint.config.js'
+          fail_on_error: true
+  eslint:
+    name: eslint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: eslint
+        uses: reviewdog/action-eslint@v1
+        with:
+          reporter: github-pr-review
+          fail_on_error: true
+  phpcs:
+    name: phpcs
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set PHP version
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.3'
+        coverage: none
+        tools: composer:v2
+    - name: composer install
+      run: composer install
+    - name: PHPCS check
+      run: ./vendor/bin/phpcs .

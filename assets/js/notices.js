@@ -1,5 +1,6 @@
-import { tenupWelcome, ajaxurl } from 'window'; /* eslint-disable-line import/no-unresolved */
 import jQuery from 'jquery'; /* eslint-disable-line import/no-unresolved */
+
+const { tenupWelcome, ajaxurl } = window;
 
 const dismiss = document.querySelector('.notice-10up-experience-welcome');
 

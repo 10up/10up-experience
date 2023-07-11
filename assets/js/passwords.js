@@ -1,4 +1,4 @@
-import { tenupPasswords } from 'window'; /* eslint-disable-line import/no-unresolved */
+const { tenupPasswords } = window;
 
 const passwordWrapper = document.querySelectorAll('#your-profile .wp-pwd, #resetpassform .wp-pwd');
 

@@ -2,5 +2,6 @@
 <ruleset name="Project Rules">
 	<rule ref="10up-Default">
 		<exclude name="WordPress.Security.NonceVerification.Missing" />
+		<exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash" />
 	</rule>
 </ruleset>

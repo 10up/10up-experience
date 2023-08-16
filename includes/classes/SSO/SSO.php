@@ -297,7 +297,7 @@ class SSO {
 			$tenup_login_failed = true;
 		} else {
 			$redirect_url = wp_login_url();
-			if ( isset( $_REQUEST['redirect_to'] ) ) {
+			if ( isset( $_REQUEST['redirect_to'] ) && is_string( $_REQUEST['redirect_to'] ) ) {
 				$redirect_url = add_query_arg( 'redirect_to', rawurlencode( $_REQUEST['redirect_to'] ), $redirect_url );
 			}
 

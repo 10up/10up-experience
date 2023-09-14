@@ -193,7 +193,7 @@ class Debug {
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 			update_site_option( 'tenup_support_monitor_log', $log );
 		} else {
-			update_option( 'tenup_support_monitor_log', $log );
+			update_option( 'tenup_support_monitor_log', $log, false );
 		}
 	}
 

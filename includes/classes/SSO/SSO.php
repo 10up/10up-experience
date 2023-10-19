@@ -47,7 +47,7 @@ class SSO {
 		}
 
 		add_filter( 'wp_login_errors', [ $this, 'add_login_errors' ] );
-		add_action( 'login_form_sso', [ $this, 'process_client_login' ] );
+		add_action( 'login_form_10up-login', [ $this, 'process_client_login' ] );
 		add_action( 'login_form', [ $this, 'update_login_form' ] );
 		add_action( 'login_head', [ $this, 'render_login_form_styles' ] );
 		add_filter( 'authenticate', [ $this, 'prevent_standard_login_for_sso_user' ], 999 );
@@ -320,7 +320,7 @@ class SSO {
 	 * Insert login button into login form
 	 */
 	public function update_login_form() {
-		$google_login = add_query_arg( 'action', 'sso', wp_login_url() );
+		$google_login = add_query_arg( 'action', '10up-login', wp_login_url() );
 		if ( isset( $_REQUEST['redirect_to'] ) ) {
 			$google_login = add_query_arg( 'redirect_to', rawurlencode( $_REQUEST['redirect_to'] ), $google_login );
 		}

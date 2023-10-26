@@ -19,7 +19,7 @@ jobs:
         with:
           reporter: github-pr-review
           stylelint_input: '**/*.css'
-          stylelint_config: 'stylelint.config.js'
+          stylelint_config: '.stylelintrc.js'
           fail_on_error: true
   eslint:
     name: eslint

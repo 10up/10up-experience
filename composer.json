@@ -35,7 +35,7 @@
     "squizlabs/php_codesniffer": "3.*"
   },
   "scripts": {
-    "lint": "phpcs .",
+    "lint": "phpcs --extensions=php --warning-severity=8 -s .",
     "lint-fix": "phpcbf ."
   },
   "config": {

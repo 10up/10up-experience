@@ -71,15 +71,19 @@ class SSO {
 			return;
 		}
 
+		// We're only checking if the nonce exists here, so no need to sanitize.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'siteoptions' ) ) {
 			return;
 		}
 
+		// We're only checking if the var exists here, so no need to sanitize.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( ! isset( $_POST['tenup_allow_sso'] ) ) {
 			return;
 		}
 
-		$setting = $this->validate_sso_setting( $_POST['tenup_allow_sso'] );
+		$setting = $this->validate_sso_setting( sanitize_text_field( $_POST['tenup_allow_sso'] ) );
 
 		update_site_option( 'tenup_allow_sso', $setting );
 	}
@@ -270,9 +274,11 @@ class SSO {
 				$redirect_to           = admin_url();
 				$requested_redirect_to = '';
 
+				// We're only checking if the var exists here, so no need to sanitize.
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 				if ( isset( $_REQUEST['redirect_to'] ) ) {
-					$redirect_to           = $_REQUEST['redirect_to'];
-					$requested_redirect_to = $_REQUEST['redirect_to'];
+					$redirect_to           = sanitize_text_field( $_REQUEST['redirect_to'] );
+					$requested_redirect_to = sanitize_text_field( $_REQUEST['redirect_to'] );
 				}
 
 				$redirect_to = apply_filters( 'login_redirect', $redirect_to, $requested_redirect_to, $user );
@@ -297,8 +303,8 @@ class SSO {
 			$tenup_login_failed = true;
 		} else {
 			$redirect_url = wp_login_url();
-			if ( isset( $_REQUEST['redirect_to'] ) && is_string( $_REQUEST['redirect_to'] ) ) {
-				$redirect_url = add_query_arg( 'redirect_to', rawurlencode( $_REQUEST['redirect_to'] ), $redirect_url );
+			if ( isset( $_REQUEST['redirect_to'] ) && is_string( sanitize_text_field( $_REQUEST['redirect_to'] ) ) ) {
+				$redirect_url = add_query_arg( 'redirect_to', rawurlencode( sanitize_text_field( $_REQUEST['redirect_to'] ) ), $redirect_url );
 			}
 
 			$proxy_url = add_query_arg(
@@ -321,10 +327,11 @@ class SSO {
 	public function update_login_form() {
 		$google_login = add_query_arg( 'action', '10up-login', wp_login_url() );
 		if ( isset( $_REQUEST['redirect_to'] ) ) {
-			$google_login = add_query_arg( 'redirect_to', rawurlencode( $_REQUEST['redirect_to'] ), $google_login );
+			$google_login = add_query_arg( 'redirect_to', rawurlencode( sanitize_text_field( $_REQUEST['redirect_to'] ) ), $google_login );
 		}
 
-		?><script type="text/javascript">
+		?>
+		<script type="text/javascript">
 			(function() {
 				document.getElementById('loginform').insertAdjacentHTML(
 					'beforebegin',

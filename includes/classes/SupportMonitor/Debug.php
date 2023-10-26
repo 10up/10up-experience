@@ -190,10 +190,21 @@ class Debug {
 
 		array_unshift( $log, $prepared );
 
+		// If mb_strlen is available, check the size of the log and ensure we keep it under 1mb.
+		if ( function_exists( 'mb_strlen' ) ) {
+			// 1mb in bytes
+			$max_size = apply_filters( 'tenup_support_monitor_max_debug_log_size', 1048576 );
+
+			// If the log is larger than 1mb, remove the oldest entry
+			while ( mb_strlen( serialize( (array) $log ), '8bit' ) > $max_size ) {
+				array_pop( $log );
+			}
+		}
+
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 			update_site_option( 'tenup_support_monitor_log', $log );
 		} else {
-			update_option( 'tenup_support_monitor_log', $log );
+			update_option( 'tenup_support_monitor_log', $log, false );
 		}
 	}
 

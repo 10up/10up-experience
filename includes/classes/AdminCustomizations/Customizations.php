@@ -34,7 +34,7 @@ class Customizations {
 	 * Register admin pages with output callbacks
 	 */
 	public function register_admin_pages() {
-		add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', [ $this, 'main_screen' ] );
+		add_submenu_page( 'admin.php', esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', [ $this, 'main_screen' ] );
 	}
 
 	/**

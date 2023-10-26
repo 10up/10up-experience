@@ -233,9 +233,22 @@ class SSO {
 					? TENUPSSO_DEFAULT_ROLE
 					: 'subscriber';
 
+				$username = current( explode( '@', $email ) );
+
+				if ( username_exists( $username ) ) {
+					// Turn periods into dashes.
+					$username = str_replace( '.', '-', $username );
+					// Add the domain onto the end, so it's more unique.
+					$username = sprintf(
+						'%s-%s',
+						$username,
+						explode( '.', explode( '@', $email )[1], 2 )[0]
+					);
+				}
+
 				$user_id = wp_insert_user(
 					array(
-						'user_login'   => current( explode( '@', $email ) ),
+						'user_login'   => $username,
 						'user_pass'    => wp_generate_password(),
 						'user_email'   => $email,
 						'display_name' => filter_input( INPUT_GET, 'full_name' ),

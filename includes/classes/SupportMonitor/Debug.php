@@ -81,6 +81,8 @@ class Debug {
 	 * @since 1.7
 	 */
 	public function empty_log() {
+		// We're only checking if the nonce exists here, so no need to sanitize.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $_GET['tenup_support_monitor_nonce'] ) || ! wp_verify_nonce( $_GET['tenup_support_monitor_nonce'], 'tenup_sm_empty_action' ) ) {
 			return;
 		}
@@ -89,13 +91,13 @@ class Debug {
 			delete_site_option( 'tenup_support_monitor_log' );
 
 			wp_safe_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
+			exit;
 		} else {
 			delete_option( 'tenup_support_monitor_log' );
 
 			wp_safe_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
+			exit;
 		}
-
-		exit;
 	}
 
 	/**
@@ -104,6 +106,8 @@ class Debug {
 	 * @since 1.7
 	 */
 	public function test_message() {
+		// We're only checking if the nonce exists here, so no need to sanitize.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $_GET['tenup_support_monitor_nonce'] ) || ! wp_verify_nonce( $_GET['tenup_support_monitor_nonce'], 'tenup_sm_test_message_action' ) ) {
 			return;
 		}
@@ -112,11 +116,11 @@ class Debug {
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 			wp_safe_redirect( network_admin_url( 'settings.php?page=tenup_support_monitor' ) );
+			exit;
 		} else {
 			wp_safe_redirect( admin_url( 'tools.php?page=tenup_support_monitor' ) );
+			exit;
 		}
-
-		exit;
 	}
 
 	/**

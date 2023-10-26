@@ -56,6 +56,8 @@ class Monitor {
 			return;
 		}
 
+		// We're only checking if the nonce exists here, so no need to sanitize.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		if ( empty( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'siteoptions' ) ) {
 			return;
 		}

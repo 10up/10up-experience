@@ -34,7 +34,7 @@ class Customizations {
 	 * Register admin pages with output callbacks
 	 */
 	public function register_admin_pages() {
-		add_submenu_page( null, esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', [ $this, 'main_screen' ] );
+		add_submenu_page( 'admin.php', esc_html__( 'About 10up', 'tenup' ), esc_html__( 'About 10up', 'tenup' ), 'edit_posts', '10up-about', [ $this, 'main_screen' ] );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class Customizations {
 				?>
 				</div>
 
-			<a class="tenup-badge" href="http://10up.com" target="_blank"><span aria-label="<?php esc_html_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
+			<a class="tenup-badge" href="http://10up.com" target="_blank"><span aria-label="<?php esc_attr_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
 
 			<div class="feature-section one-col">
 				<h2><?php esc_html_e( 'Thanks for working with team 10up!', 'tenup' ); ?></h2>

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.11.0] - 2023-10-27
+
+- Support Fueled SSO
+
 ## [1.10.3] - 2023-08-15
 
 - Make sure redirect_to is a string

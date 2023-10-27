@@ -187,16 +187,13 @@ if ( !class_exists('Ui', false) ):
 					}
 				}
 
-				// phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
-				wp_redirect(
-					add_query_arg(
-						array(
-							'puc_update_check_result' => $status,
-							'puc_slug'                => $this->updateChecker->slug,
-						),
-						self_admin_url('plugins.php')
-					)
-				);
+				wp_redirect(add_query_arg(
+					array(
+						'puc_update_check_result' => $status,
+						'puc_slug'                => $this->updateChecker->slug,
+					),
+					self_admin_url('plugins.php')
+				));
 				exit;
 			}
 		}

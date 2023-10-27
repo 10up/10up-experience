@@ -426,7 +426,7 @@ class SSO {
 			}
 
 			.sso .or {
-				margin: 1em 0 2em 0;
+				margin: .8em 0 2em 0;
 				width: 100%;
 				display: block;
 				border-bottom: 1px solid rgba(0,0,0,0.13);

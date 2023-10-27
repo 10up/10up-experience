@@ -394,7 +394,7 @@ class Monitor {
 	}
 
 	/**
-	 * Check if login is enabled
+	 * Check if logging is enabled
 	 *
 	 * @return boolean
 	 */

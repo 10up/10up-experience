@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [1.11.0] - 2023-10-27
 
 - Support Fueled SSO
+- Linting clean up
+- Ensure unique username
 
 ## [1.10.3] - 2023-08-15
 

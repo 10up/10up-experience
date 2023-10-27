@@ -358,7 +358,8 @@ class SSO {
 		$buttons_html .= '</div><span class="or"><span>or</span></span>';
 		$buttons_html .= '</div>';
 
-		?><script type="text/javascript">
+		?>
+		<script type="text/javascript">
 			(function() {
 				document.getElementById('loginform').insertAdjacentHTML(
 					'beforebegin',
@@ -475,7 +476,7 @@ class SSO {
 	 * @return WP_User
 	 */
 	public function prevent_standard_login_for_sso_user( $user ) {
-		if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) {
+		if ( ! is_wp_error( $user ) && defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) {
 			return new WP_Error( 'tenup-sso', esc_html__( 'Username/password authentication is disabled', 'tenup' ) );
 		}
 

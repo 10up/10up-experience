@@ -1,6 +1,6 @@
 <?php
 /**
- * 10up suppport monitor debugger. This can be enabled by setting the following in wp-config.php:
+ * 10up support monitor debugger. This can be enabled by setting the following in wp-config.php:
  * define( 'SUPPORT_MONITOR_DEBUG', true );
  *
  * @since  1.7

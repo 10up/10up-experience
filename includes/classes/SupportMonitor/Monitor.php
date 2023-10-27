@@ -1,6 +1,6 @@
 <?php
 /**
- * 10up suppport monitor code. This module lets us gather non-PII info from sites running
+ * 10up support monitor code. This module lets us gather non-PII info from sites running
  * the plugin e.g. plugin versions, WP version, etc.
  *
  * @since  1.7
@@ -394,7 +394,7 @@ class Monitor {
 	}
 
 	/**
-	 * Check if loggin is enabled
+	 * Check if login is enabled
 	 *
 	 * @return boolean
 	 */

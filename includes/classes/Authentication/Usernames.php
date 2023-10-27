@@ -39,7 +39,7 @@ class Usernames {
 		if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $username ) ), $this->reserved_usernames(), true ) ) {
 			return new \WP_Error(
 				'Auth Error',
-				__( 'Please have an administor change your username in order to meet current security measures.', 'tenup' )
+				__( 'Please have an administrator change your username in order to meet current security measures.', 'tenup' )
 			);
 		}
 

@@ -107,7 +107,7 @@ The Activity Log tracks key actions taken by logged in users and stores them in 
 #### Logged Actions
 
 - `profile_update` Runs when a user profile is updated. Example log message: "User 1 profile updated."
-- `set_user_role` Runs when a user's role has changed. Example log message: "User 1 role changed from editor to administator."
+- `set_user_role` Runs when a user's role has changed. Example log message: "User 1 role changed from editor to administrator."
 - `updated_user_meta` Runs when certain user metadata has changed. Example log message: "User 1 meta updated. Key: nickname."
 - `user_register` Runs when a new user is registered. Example log message: "User 1 registered."
 - `deleted_user` Runs when a user is deleted. Example log message: "User 1 deleted."

@@ -748,6 +748,7 @@ class Monitor {
 			'search'         => '*@get10up.com',
 			'search_columns' => [ 'user_email' ],
 			'number'         => '1000',
+			'ep_integrate'   => false,
 		];
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
@@ -768,6 +769,7 @@ class Monitor {
 			'search'         => '*@10up.com',
 			'search_columns' => [ 'user_email' ],
 			'number'         => '1000',
+			'ep_integrate'   => false,
 		];
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {

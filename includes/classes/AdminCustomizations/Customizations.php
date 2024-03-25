@@ -28,13 +28,6 @@ class Customizations {
 		add_action( 'admin_bar_menu', [ $this, 'add_about_menu' ], 11 );
 		add_action( 'admin_menu', [ $this, 'register_admin_pages' ] );
 		add_filter( 'admin_title', [ $this, 'admin_title_fix' ], 10, 2 );
-
-		// Remove comments support from posts and pages
-		add_action( 'init', [ $this, 'disable_comments_post_types_support' ] );
-
-		// Remove comments-related UI elements
-		add_action( 'admin_menu', [ $this, 'remove_comments_admin_menus' ] );
-		add_action( 'wp_before_admin_bar_render', [ $this, 'remove_comments_admin_bar_links' ] );
 	}
 
 	/**
@@ -201,39 +194,5 @@ class Customizations {
 	public function filter_admin_footer_text() {
 		$new_text = sprintf( __( 'Thank you for creating with <a href="https://wordpress.org">WordPress</a> and <a href="http://10up.com">10up</a>.', 'tenup' ) );
 		return $new_text;
-	}
-
-	/**
-	 * Remove comments support from posts and pages
-	 *
-	 * @return void
-	 */
-	public function disable_comments_post_types_support() {
-		$post_types = get_post_types();
-		foreach ( $post_types as $post_type ) {
-			if ( post_type_supports( $post_type, 'comments' ) ) {
-				remove_post_type_support( $post_type, 'comments' );
-				remove_post_type_support( $post_type, 'trackbacks' );
-			}
-		}
-	}
-
-	/**
-	 * Remove comments admin menus
-	 *
-	 * @return void
-	 */
-	public function remove_comments_admin_menus() {
-		remove_menu_page( 'edit-comments.php' );
-	}
-
-	/**
-	 * Remove comments admin bar links
-	 *
-	 * @return void
-	 */
-	public function remove_comments_admin_bar_links() {
-		global $wp_admin_bar;
-		$wp_admin_bar->remove_menu( 'comments' );
 	}
 }

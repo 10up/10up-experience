@@ -29,12 +29,21 @@ class Comments {
 			add_action( 'admin_init', [ $this, 'single_site_setting' ] );
 		}
 
+		if ( 'no' === $this->get_setting() ) {
+			return;
+		}
+
 		// Remove comments support from posts and pages
 		add_action( 'init', [ $this, 'disable_comments_post_types_support' ] );
 
 		// Remove comments-related UI elements
 		add_action( 'admin_menu', [ $this, 'remove_comments_admin_menus' ] );
 		add_action( 'wp_before_admin_bar_render', [ $this, 'remove_comments_admin_bar_links' ] );
+
+		// Hide any existing comments on front end
+		add_filter( 'comments_array', [ $this, 'disable_comments_hide_existing_comments' ], 10, 2 );
+		add_filter( 'comments_open', [ $this, 'disable_comments_status' ], 20, 2 );
+		add_filter( 'pings_open', [ $this, 'disable_comments_status' ], 20, 2 );
 	}
 
 	/**
@@ -54,10 +63,10 @@ class Comments {
 	 * @return void
 	 */
 	public function single_site_setting() {
-		$settings_args = array(
+		$settings_args = [
 			'type'              => 'string',
 			'sanitize_callback' => [ $this, 'validate_setting' ],
-		);
+		];
 
 		register_setting( 'general', 'tenup_disable_comments', $settings_args );
 		add_settings_field( 'tenup_disable_comments', esc_html__( 'Disable Comments', 'tenup' ), [ $this, 'diable_comments_setting_field_output' ], 'general' );
@@ -152,7 +161,7 @@ class Comments {
 	 * @return string
 	 */
 	public function validate_setting( $value ) {
-		if ( in_array( $value, array( 'yes', 'no' ), true ) ) {
+		if ( in_array( $value, [ 'yes', 'no' ], true ) ) {
 			return $value;
 		}
 
@@ -191,5 +200,23 @@ class Comments {
 	public function remove_comments_admin_bar_links() {
 		global $wp_admin_bar;
 		$wp_admin_bar->remove_menu( 'comments' );
+	}
+
+	/**
+	 * Hide any existing comments on front end
+	 *
+	 * @return array
+	 */
+	public function disable_comments_hide_existing_comments() {
+		return [];
+	}
+
+	/**
+	 * Disable commenting
+	 *
+	 * @return boolean
+	 */
+	public function disable_comments_status() {
+		return false;
 	}
 }

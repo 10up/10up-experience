@@ -84,7 +84,7 @@ class Customizations {
 				?>
 				</div>
 
-			<a class="tenup-badge" href="http://10up.com" target="_blank"><span aria-label="<?php esc_attr_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
+			<a class="tenup-badge" href="https://10up.com" target="_blank"><span aria-label="<?php esc_attr_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
 
 			<div class="feature-section one-col">
 				<h2><?php esc_html_e( 'Thanks for working with team 10up!', 'tenup' ); ?></h2>
@@ -192,7 +192,7 @@ class Customizations {
 	 * @return string
 	 */
 	public function filter_admin_footer_text() {
-		$new_text = sprintf( __( 'Thank you for creating with <a href="https://wordpress.org">WordPress</a> and <a href="http://10up.com">10up</a>.', 'tenup' ) );
+		$new_text = sprintf( __( 'Thank you for creating with <a href="https://wordpress.org">WordPress</a> and <a href="https://10up.com">10up</a>.', 'tenup' ) );
 		return $new_text;
 	}
 }

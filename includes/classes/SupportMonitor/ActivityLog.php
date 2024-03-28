@@ -134,7 +134,7 @@ class ActivityLog {
 	 * @param array $userdata The raw array of data passed to wp_insert_user().
 	 */
 	public function user_register( $user_id, $userdata ) {
-		$role = ( ! empty( $userdata['role'] ) ) ? $userdata['role'] : 'Subscriber';
+		$role = ( ! empty( $userdata['role'] ) ) ? $userdata['role'] : 'n/a';
 		Monitor::instance()->log(
 			[
 				'action'  => 'user_register',

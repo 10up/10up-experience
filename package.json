@@ -29,7 +29,7 @@
     "@10up/eslint-config": "^3.1.1",
     "@10up/stylelint-config": "^2.0.5",
     "@wordpress/eslint-plugin": "^13.10.4",
-    "10up-toolkit": "^5.2.0",
+    "10up-toolkit": "^6.0.1",
     "husky": "^8.0.3",
     "lint-staged": "^11.2.6",
     "prettier": "^2.8.8",

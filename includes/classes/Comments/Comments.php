@@ -90,7 +90,7 @@ class Comments {
 		<label for="tenup-disable-comments-no">
 			<?php esc_html_e( 'No', 'tenup' ); ?>
 		</label>
-		<p class="description"><?php esc_html_e( 'This will remove all the comments related Ui from the admin and frontend.', '10up' ); ?></p>
+		<p class="description"><?php esc_html_e( 'This will remove all the comments related Ui from the admin and frontend.', 'tenup' ); ?></p>
 		<?php
 	}
 
@@ -103,7 +103,7 @@ class Comments {
 		$setting = $this->get_setting();
 		?>
 		<h2><?php esc_html_e( 'Disable Comments', 'tenup' ); ?></h2>
-		<p><?php esc_html_e( 'This will remove all the comments related Ui from the admin and frontend.', '10up' ); ?></p>
+		<p><?php esc_html_e( 'This will remove all the comments related Ui from the admin and frontend.', 'tenup' ); ?></p>
 		<table class="form-table" role="presentation">
 			<tbody>
 				<tr>

@@ -16,6 +16,7 @@ use ZxcvbnPhp\Zxcvbn;
 class Passwords {
 
 	use Singleton;
+
 	/**
 	 * Setup hooks
 	 *
@@ -312,12 +313,8 @@ class Passwords {
 			// User ID specified.
 			$enforce = $this->enforce_for_user( $user_id );
 
-		} else {
-
-			// No ID yet, adding new user - omit check for "weaker" roles.
-			if ( $role && in_array( $role, apply_filters( 'tenup_experience_weak_roles', array( 'subscriber' ) ), true ) ) {
-				$enforce = false;
-			}
+		} elseif ( $role && in_array( $role, apply_filters( 'tenup_experience_weak_roles', array( 'subscriber' ) ), true ) ) {
+			$enforce = false;
 		}
 
 		// Enforce?

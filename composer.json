@@ -31,8 +31,7 @@
     "bjeavons/zxcvbn-php": "^1.0"
   },
   "require-dev": {
-    "10up/phpcs-composer": "dev-master",
-    "squizlabs/php_codesniffer": "3.*"
+    "10up/phpcs-composer": "dev-trunk"
   },
   "scripts": {
     "lint": "phpcs --extensions=php --warning-severity=8 -s .",

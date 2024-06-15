@@ -251,7 +251,6 @@ class Monitor {
 				'tenup_support_monitor'
 			);
 		}
-
 	}
 
 	/**
@@ -531,8 +530,8 @@ class Monitor {
 		}
 
 		$body = [
-			'message'    => wp_json_encode( $messages ),
-			'url'        => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'message' => wp_json_encode( $messages ),
+			'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
 		];
 
 		$request_message = [
@@ -556,7 +555,6 @@ class Monitor {
 			$messages,
 			wp_remote_retrieve_response_code( $response )
 		);
-
 	}
 
 	/**

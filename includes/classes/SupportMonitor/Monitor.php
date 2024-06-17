@@ -1,6 +1,6 @@
 <?php
 /**
- * 10up suppport monitor code. This module lets us gather non-PII info from sites running
+ * 10up support monitor code. This module lets us gather non-PII info from sites running
  * the plugin e.g. plugin versions, WP version, etc.
  *
  * @since  1.7
@@ -76,10 +76,6 @@ class Monitor {
 			$setting['enable_support_monitor'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['enable_support_monitor'] );
 		}
 
-		if ( isset( $_POST['tenup_support_monitor_settings']['production_environment'] ) ) {
-			$setting['production_environment'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['production_environment'] );
-		}
-
 		if ( isset( $_POST['tenup_support_monitor_settings']['server_url'] ) ) {
 			$setting['server_url'] = sanitize_text_field( $_POST['tenup_support_monitor_settings']['server_url'] );
 		}
@@ -114,13 +110,6 @@ class Monitor {
 						<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
 					</td>
 				</tr>
-				<tr>
-					<th scope="row"><?php esc_html_e( 'Production Environment', 'tenup' ); ?></th>
-					<td>
-						<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'yes', $setting['production_environment'] ); ?> type="radio" id="tenup_production_environment_yes" value="yes"> <label for="tenup_production_environment_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-						<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'no', $setting['production_environment'] ); ?> type="radio" id="tenup_production_environment_no" value="no"> <label for="tenup_production_environment_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
-					</td>
-				</tr>
 				<?php if ( Debug::instance()->is_debug_enabled() ) : ?>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
@@ -146,7 +135,6 @@ class Monitor {
 			'enable_support_monitor' => 'no',
 			'api_key'                => '',
 			'server_url'             => 'https://supportmonitor.10up.com',
-			'production_environment' => 'no',
 		];
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
@@ -254,14 +242,6 @@ class Monitor {
 			'tenup_support_monitor'
 		);
 
-		add_settings_field(
-			'production_environment',
-			esc_html__( 'Production Environment', 'tenup' ),
-			[ $this, 'production_environment_field' ],
-			'general',
-			'tenup_support_monitor'
-		);
-
 		if ( Debug::instance()->is_debug_enabled() ) {
 			add_settings_field(
 				'server_url',
@@ -271,7 +251,6 @@ class Monitor {
 				'tenup_support_monitor'
 			);
 		}
-
 	}
 
 	/**
@@ -299,19 +278,6 @@ class Monitor {
 		?>
 		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
 		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
-		<?php
-	}
-
-	/**
-	 * Output production environment field
-	 *
-	 * @since 1.7
-	 */
-	public function production_environment_field() {
-		$value = $this->get_setting( 'production_environment' );
-		?>
-		<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_production_environment_yes" value="yes"> <label for="tenup_production_environment_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-		<input name="tenup_support_monitor_settings[production_environment]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_production_environment_no" value="no"> <label for="tenup_production_environment_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 		<?php
 	}
 
@@ -394,7 +360,7 @@ class Monitor {
 	}
 
 	/**
-	 * Check if loggin is enabled
+	 * Check if logging is enabled
 	 *
 	 * @return boolean
 	 */
@@ -525,17 +491,6 @@ class Monitor {
 			),
 		];
 
-		// If this is production, request that a web vitals insight also be generated.
-		if ( 'yes' === $setting['production_environment'] ) {
-			$messages[] = $this->format_message(
-				[
-					'url' => home_url(),
-				],
-				'notice',
-				'webvitals'
-			);
-		}
-
 		if ( $this->logging_enabled() ) {
 			$logs = get_option( 'tenup_support_monitor_activity_logs', [] );
 
@@ -575,9 +530,8 @@ class Monitor {
 		}
 
 		$body = [
-			'message'    => wp_json_encode( $messages ),
-			'production' => ( 'yes' === $setting['production_environment'] ),
-			'url'        => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'message' => wp_json_encode( $messages ),
+			'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
 		];
 
 		$request_message = [
@@ -601,7 +555,6 @@ class Monitor {
 			$messages,
 			wp_remote_retrieve_response_code( $response )
 		);
-
 	}
 
 	/**
@@ -748,6 +701,7 @@ class Monitor {
 			'search'         => '*@get10up.com',
 			'search_columns' => [ 'user_email' ],
 			'number'         => '1000',
+			'ep_integrate'   => false,
 		];
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
@@ -768,6 +722,7 @@ class Monitor {
 			'search'         => '*@10up.com',
 			'search_columns' => [ 'user_email' ],
 			'number'         => '1000',
+			'ep_integrate'   => false,
 		];
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {

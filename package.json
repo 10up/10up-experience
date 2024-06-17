@@ -14,10 +14,10 @@
   },
   "scripts": {
     "build": "10up-toolkit build",
-    "dev": "10up-toolkit build --watch",
     "lint-js": "10up-toolkit lint-js",
     "lint-style": "10up-toolkit lint-style",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "start": "10up-toolkit watch"
   },
   "husky": {
     "hooks": {
@@ -26,14 +26,9 @@
   },
   "license": "GPL-2.0-or-later",
   "devDependencies": {
-    "@10up/eslint-config": "^3.1.1",
-    "@10up/stylelint-config": "^2.0.5",
-    "@wordpress/eslint-plugin": "^13.10.4",
-    "10up-toolkit": "^5.2.0",
+    "10up-toolkit": "^6.2.0",
     "husky": "^8.0.3",
-    "lint-staged": "^11.2.6",
-    "prettier": "^2.8.8",
-    "stylelint": "^14.16.1"
+    "lint-staged": "^11.2.6"
   },
   "dependencies": {
     "normalize.css": "^8.0.1"

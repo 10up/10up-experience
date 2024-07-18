@@ -26,9 +26,11 @@ class Monitor {
 	public function setup() {
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			add_filter( 'site_option_tenup_support_monitor_settings', [ $this, 'handle_settings' ] );
 			add_action( 'wpmu_options', [ $this, 'ms_settings' ] );
 			add_action( 'admin_init', [ $this, 'ms_save_settings' ] );
 		} else {
+			add_filter( 'option_tenup_support_monitor_settings', [ $this, 'handle_settings' ] );
 			add_action( 'admin_init', [ $this, 'register_settings' ] );
 		}
 
@@ -89,7 +91,6 @@ class Monitor {
 	 * @since 1.7
 	 */
 	public function ms_settings() {
-		$setting = $this->get_setting();
 		?>
 		<h2><?php esc_html_e( 'Support Monitor', 'tenup' ); ?></h2>
 
@@ -100,21 +101,20 @@ class Monitor {
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Enable', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-						<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+						<?php $this->enable_field(); ?>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'API Key', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
+						<?php $this->api_key_field(); ?>
 					</td>
 				</tr>
 				<?php if ( Debug::instance()->is_debug_enabled() ) : ?>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
 						<td>
-							<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
+							<?php $this->api_server_field(); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -140,7 +140,7 @@ class Monitor {
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
 		$settings = wp_parse_args( $settings, $defaults );
 
-		if ( ! Debug::instance()->is_debug_enabled() ) {
+		if ( ! Debug::instance()->is_debug_enabled() && ! defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
 			$settings['server_url'] = 'https://supportmonitor.10up.com';
 		}
 
@@ -206,6 +206,26 @@ class Monitor {
 	}
 
 	/**
+	 * Handle settings.
+	 *
+	 * @param  array $settings Support Monitor Settings.
+	 * @since  1.11.3
+	 * @return array
+	 */
+	public function handle_settings( $settings ) {
+		if ( defined( 'SUPPORT_MONITOR_ENABLE' ) ) {
+			$settings['enable_support_monitor'] = SUPPORT_MONITOR_ENABLE;
+		}
+		if ( defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
+			$settings['api_key'] = SUPPORT_MONITOR_API_KEY;
+		}
+		if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
+			$settings['server_url'] = SUPPORT_MONITOR_SERVER_URL;
+		}
+		return $settings;
+	}
+
+	/**
 	 * Register settings
 	 *
 	 * @since 1.7
@@ -261,6 +281,21 @@ class Monitor {
 	 * @return array
 	 */
 	public function sanitize_settings( $settings ) {
+		// Attempt to preserve value if using defined constants and if user value was already stored in the DB.
+		if ( defined( 'SUPPORT_MONITOR_ENABLE' ) || defined( 'SUPPORT_MONITOR_SERVER_URL' ) || defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
+			remove_filter( 'option_tenup_support_monitor_settings', [ $this, 'handle_settings' ] );
+			$original = get_option( 'tenup_support_monitor_settings' );
+			if ( defined( 'SUPPORT_MONITOR_ENABLE' ) ) {
+				$settings['enable_support_monitor'] = $original['enable_support_monitor'];
+			}
+			if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
+				$settings['server_url'] = $original['server_url'];
+			}
+			if ( defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
+				$settings['api_key'] = $original['api_key'];
+			}
+		}
+
 		foreach ( $settings as $key => $setting ) {
 			$settings[ $key ] = sanitize_text_field( $setting );
 		}
@@ -276,8 +311,8 @@ class Monitor {
 	public function enable_field() {
 		$value = $this->get_setting( 'enable_support_monitor' );
 		?>
-		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 		<?php
 	}
 
@@ -289,7 +324,7 @@ class Monitor {
 	public function api_key_field() {
 		$value = $this->get_setting( 'api_key' );
 		?>
-		<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
+		<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_API_KEY' ) ); ?> class="regular-text">
 		<?php
 	}
 
@@ -302,7 +337,7 @@ class Monitor {
 		$value = $this->get_setting( 'server_url' );
 
 		?>
-		<input placeholder="https://www.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
+		<input placeholder="https://www.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ); ?> class="regular-text">
 		<?php
 	}
 

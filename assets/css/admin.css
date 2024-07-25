@@ -10,3 +10,54 @@
 	height: 32px;
 	width: 20px;
 }
+
+/* Environment Indicator Styling */
+#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator {
+	color: #fff;
+	pointer-events: none;
+}
+
+#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-production {
+	background-color: #b92a2a;
+	color: #fff;
+	pointer-events: none;
+}
+
+#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-staging {
+	background-color: #d79d00;
+	color: #fff;
+	pointer-events: none;
+}
+
+#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-local,
+#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-development {
+	background-color: #34863b;
+	color: #fff;
+	pointer-events: none;
+}
+
+.tenup-experience-environment-indicator__icon {
+	position: absolute;
+	top: 10px;
+}
+
+#wp-admin-bar-tenup-experience-environment-indicator > div > .ab-icon::before {
+	content: "\f174";
+	top: 3px;
+}
+
+#wp-admin-bar-tenup-experience-environment-indicator.tenup-production > div > .ab-icon::before {
+	content: "\f319";
+	top: 3px;
+}
+
+#wp-admin-bar-tenup-experience-environment-indicator.tenup-staging > div > .ab-icon::before {
+	content: "\f111";
+	top: 3px;
+}
+
+#wp-admin-bar-tenup-experience-environment-indicator.tenup-development > div > .ab-icon::before,
+#wp-admin-bar-tenup-experience-environment-indicator.tenup-local > div > .ab-icon::before {
+	content: "\f107";
+	top: 3px;
+}

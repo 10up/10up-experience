@@ -40,7 +40,7 @@ class EnvironmentIndicator {
 				'parent' => 'top-secondary',
 				'title'  => '<span class="ab-icon" aria-hidden="true"></span><span class="ab-label">' . esc_html( $this->get_environment_label( $environment ) ) . '</span>',
 				'meta'    => [
-					'class' => "tenup-$environment",
+					'class' => esc_attr( "tenup-$environment" ),
 				],
 			]
 		);

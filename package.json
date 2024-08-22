@@ -30,9 +30,6 @@
     "husky": "^8.0.3",
     "lint-staged": "^11.2.6"
   },
-  "dependencies": {
-    "normalize.css": "^8.0.1"
-  },
   "10up-toolkit": {
     "entry": {
       "notices": "./assets/js/notices.js",

@@ -102,7 +102,7 @@ class Comments {
 		];
 
 		register_setting( 'general', 'tenup_disable_comments', $settings_args );
-		add_settings_field( 'tenup_disable_comments', esc_html__( 'Disable Comments', 'tenup' ), [ $this, 'diable_comments_setting_field_output' ], 'general' );
+		add_settings_field( 'tenup_disable_comments', esc_html__( 'Disable Comments', 'tenup' ), [ $this, 'disable_comments_setting_field_output' ], 'general' );
 	}
 
 	/**
@@ -110,7 +110,7 @@ class Comments {
 	 *
 	 * @return void
 	 */
-	public function diable_comments_setting_field_output() {
+	public function disable_comments_setting_field_output() {
 		$disable_comments = $this->comments_are_disabled();
 		?>
 

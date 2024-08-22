@@ -66,8 +66,8 @@ class Comments {
 	 */
 	public function comments_are_disabled() {
 		// If the constant is defined, use it.
-		if ( defined( 'TENUP_EXPERIENCE_DISABLE_COMMENTS' ) ) {
-			return boolval( TENUP_EXPERIENCE_DISABLE_COMMENTS );
+		if ( defined( 'TENUP_DISABLE_COMMENTS' ) ) {
+			return boolval( TENUP_DISABLE_COMMENTS );
 		}
 
 		// If the filter is set, use it.
@@ -87,7 +87,7 @@ class Comments {
 	 * @return boolean
 	 */
 	protected function is_ui_disabled() {
-		return defined( 'TENUP_EXPERIENCE_DISABLE_COMMENTS' ) || has_filter( 'tenup_experience_disable_comments' );
+		return defined( 'TENUP_DISABLE_COMMENTS' ) || has_filter( 'tenup_experience_disable_comments' );
 	}
 
 	/**

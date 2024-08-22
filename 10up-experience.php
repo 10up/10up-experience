@@ -73,6 +73,7 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 API\API::instance();
 Authentication\Usernames::instance();
 Authors\Authors::instance();
+Comments\Comments::instance();
 Gutenberg\Gutenberg::instance();
 Headers\Headers::instance();
 Plugins\Plugins::instance();

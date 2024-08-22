@@ -143,6 +143,52 @@ Filters how many log items to store. Items are stored in array saved to the opti
 
 Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
 
+### Comments
+
+10up Experience includes a feature to disable comments across the site. This feature can be enabled or disabled in `Settings > General`. It is disabled by default.
+
+On top of disabling the comment form, this feature removes the following:
+
+- Comments from the admin menu.
+- Comment blocks from the post editor.
+- Comments from the admin bar.
+
+#### Constants
+
+- `TENUP_DISABLE_COMMENTS`
+
+Define this as `true` to force disable comments or `false` to enable comments from a config file.
+Setting this constant will disable the UI for enabling/disabling comments in the admin.
+
+#### Filters
+
+- `tenup_experience_disable_comments`
+
+Filters whether to disable comments. Default is `false`.
+Defining this filter will disable the UI for enabling/disabling comments in the admin.
+
+- `tenup_experience_disable_comments_disallowed_blocks`
+
+Filters the list of blocks that should be disallowed when comments are disabled. This is useful when core adds new blocks that aren't covered by the default list.
+
+The default list of disallowed blocks is:
+
+- `core/comment-author-name`
+- `core/comment-content`
+- `core/comment-date`
+- `core/comment-edit-link`
+- `core/comment-reply-link`
+- `core/comment-template`
+- `core/comments`
+- `core/comments-pagination`
+- `core/comments-pagination-next`
+- `core/comments-pagination-numbers`
+- `core/comments-pagination-previous`
+- `core/comments-title`
+- `core/post-comments`
+- `core/post-comments-form`
+- `core/latest-comments`
+
 ## Support Level
 
 **Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.

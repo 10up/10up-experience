@@ -51,7 +51,7 @@ class API {
 
 		$restrict = get_option( 'tenup_restrict_rest_api', $this->option_default );
 
-		if ( 'all' === $restrict && ! $this->user_can_access_rest_api() ) {
+		if ( 'all' === $restrict && ! $this->can_access_rest_api() ) {
 			return new \WP_Error( 'rest_api_restricted', esc_html__( 'Authentication Required', 'tenup' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
@@ -71,7 +71,7 @@ class API {
 			return $endpoints;
 		}
 
-		if ( ! $this->user_can_access_rest_api() ) {
+		if ( ! $this->can_access_rest_api() ) {
 			$keys = preg_grep( '/\/wp\/v2\/users\b/', array_keys( $endpoints ) );
 
 			foreach ( $keys as $key ) {
@@ -143,8 +143,18 @@ class API {
 	 * @param  int $user_id User ID
 	 * @return bool         Whether the given user can access the REST API
 	 */
-	public function user_can_access_rest_api( $user_id = 0 ) {
-		return is_user_logged_in();
+	public function can_access_rest_api( $user_id = 0 ) {
+		global $wp;
+
+		$route = '';
+
+		if ( isset( $wp->query_vars['rest_route'] ) ) {
+			$route = $wp->query_vars['rest_route'];
+		}
+
+		$allowed_rest_routes_override = apply_filters( 'tenup_experience_rest_api_allowlist', [] );
+
+		return is_user_logged_in() || in_array( $route, $allowed_rest_routes_override, true );
 	}
 
 	/**

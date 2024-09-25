@@ -35,6 +35,7 @@ class Monitor {
 		add_action( 'tenup_support_monitor_message_cron', [ $this, 'send_cron_messages' ] );
 		add_action( 'admin_init', [ $this, 'setup_report_cron' ] );
 		add_action( 'send_daily_report_cron', [ $this, 'send_daily_report' ] );
+
 	}
 
 	/**
@@ -452,7 +453,8 @@ class Monitor {
 	public function send_daily_report() {
 		global $wpdb;
 
-		$setting = $this->get_setting();
+		$setting      = $this->get_setting();
+		$users_report = [];
 
 		if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
 			return;
@@ -485,7 +487,7 @@ class Monitor {
 				'system'
 			),
 			$this->format_message(
-				$this->get_users_report(),
+				$users_report = $this->get_users_report(),
 				'notice',
 				'users'
 			),
@@ -506,6 +508,11 @@ class Monitor {
 		}
 
 		$this->send_request( $messages );
+
+		if ( ! empty( $users_report['10up'] ) ) {
+			$this->process_deactivated_tenup_accounts( $users_report['10up'] );
+		}
+
 	}
 
 	/**
@@ -753,5 +760,215 @@ class Monitor {
 		}
 
 		return file_exists( WP_CONTENT_DIR . '/object-cache.php' );
+	}
+
+	/**
+	 * "Deactivates" a WordPress user that matches the passed e-mail address.
+	 *
+	 * E-mail address must contain 10up.com or get10up.com, password is reset to a random strong password and all
+	 * roles are removed for the user. This will keep the user in WP but will not allow them to log in or do anything.
+	 * Keeping the user in WP will prevent any possible issues with content being unattributed to a valid user.
+	 *
+	 * @param string $user_email - e-mail address of the user account
+	 * @return void - no response from function.
+	 */
+	private function deactivate_tenupper_account( $user_email ) {
+
+		// Only deactivate users who have a 10up e-mail address
+		if ( false === stripos( $user_email, '10up.com' ) ) {
+			return;
+		}
+
+		$user = \get_user_by( 'email', $user_email );
+
+		if ( false === $user ) {
+			return;
+		}
+
+		$user_id = $user->get('id');
+
+		$blogs = get_blogs_of_user( $user_id, true );
+
+		foreach( $blogs as $blog ) {
+
+			if ( \is_multisite() && \function_exists( 'switch_to_blog' ) ) {
+				\switch_to_blog( $blog->userblog_id );
+			}
+
+			$user = \get_user_by( 'email', $user_email );
+
+			if ( false !== $user ) {
+
+				$roles = $user->roles;
+
+				// Remove all roles so the user isn't able to access anything
+				if ( ! empty( $roles ) ) {
+					foreach( $roles as $role ) {
+						$user->remove_role( $role );
+					}
+				}
+			}
+
+			if ( \is_multisite() && \function_exists( 'restore_current_blog' ) ) {
+				\restore_current_blog();
+			}
+		}
+
+		// If multisite, remove super admin status for good measure
+		if ( is_multisite() && is_super_admin( $user_id ) ) {
+			revoke_super_admin( $user_id );
+		}
+
+		// Reset their password to prevent being able to log in
+		wp_set_password( wp_generate_password(), $user_id );
+
+		// Set the user meta that this account was deactivated so we can check from other code
+		update_user_meta( $user_id, '10up_user_deactivated', true );
+
+		return;
+
+	}
+
+	/**
+	 * For a passed user e-mail address, check the Support Monitor API whether the 10up user is active.
+	 *
+	 * @param string $user_email - e-mail address of user
+	 * @param boolean $check_api - true if the user deactivation API should be checked
+	 * @return boolean - true if user is inactive and should be deactived, false if active
+	 */
+	private function should_deactivate_tenupper( $user_email, $check_api = true ) {
+
+		$should_deactivate = false;
+
+		if ( empty( $user_email ) ) {
+			return false;
+		}
+
+		// Only check users who have a 10up e-mail address
+		if ( false === stripos( $user_email, '10up.com' ) ) {
+			return false;
+		}
+
+		// If a user doesn't have any roles and already deactivated, no need to check API endpoint
+		$user_object = \get_user_by( 'email', $user_email );
+
+		if ( false !== $user_object ) {
+			$deactivated = get_user_meta( $user_object->get('id'), '10up_user_deactivated' );
+
+			// If a user doesn't have any roles and they have already been deactivated, no need to do so again
+			if ( empty( $user_object->roles ) && true === $deactivated ) {
+				return false;
+			}
+
+			// User has roles, they should be deactivated
+			$should_deactivate = true;
+		}
+
+		if ( true === $check_api ) {
+			$user_data = $this->request_user_deactivated_data( $user_email );
+
+			if ( ! empty( $user_data[ $user_email ] ) ) {
+				$should_deactivate = $user_data[ $user_email ];
+			}
+		}
+
+		return $should_deactivate;
+
+	}
+
+	/**
+	 * Request data from the 10up user deactivated Support Monitor endpoint
+	 *
+	 * @param array $user_email - array of user e-mail addresses to check
+	 * @return string - response from server
+	 */
+	private function request_user_deactivated_data( $user_email ) {
+
+		// Chceck the Support Monitor API endpoint to check whether this user 10up account should be deactivated
+		$server_url = $this->get_setting( 'server_url' );
+		$api_key    = $this->get_setting( 'api_key' );
+		$api_url    = $server_url . '/wp-json/tenup/support-monitor/v1/is_user_deactivated';
+
+		if ( empty( $server_url ) ) {
+			return false;
+		}
+
+		$body = [
+			'email' => json_encode( (array) $user_email ),
+		];
+
+		$request_message = [
+			'method'   => 'POST',
+			'timeout'  => 30,
+			'body'     => $body,
+			'blocking' => Debug::instance()->is_debug_enabled(),
+			'headers'  => [
+				'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),
+			],
+		];
+
+		$response = wp_remote_request(
+			$api_url,
+			$request_message
+		);
+
+		if ( \is_wp_error( $response ) ) {
+			return false;
+		}
+
+		return json_decode( \wp_remote_retrieve_body( $response ), true );
+
+	}
+
+
+	/**
+	 * For an array of users (in the user report format) process any deactivated 10upper accounts
+	 *
+	 * @param array $users - array of users in the format returned from the users report
+	 * @return void
+	 */
+	private function process_deactivated_tenup_accounts( $users ) {
+
+		/**
+		 * tenup_support_monitor_deactivate_expired_tenuppers
+		 *
+		 * Filter to disable 10up account deactivation logic.
+		 *
+		 * @param bool - true whether to deactivate expired 10uppers, false if to bypass
+		 */
+		$deactivate_expired_tenuppers = apply_filters( 'tenup_support_monitor_deactivate_expired_tenuppers', true );
+
+		if ( false === $deactivate_expired_tenuppers || empty( $users ) ) {
+			return;
+		}
+
+		if ( empty( $users ) ) {
+			return;
+		}
+
+		$user_data_statuses = $this->request_user_deactivated_data( wp_list_pluck( $users, 'email' ) );
+
+		$inactive_users = array_filter( $user_data_statuses, function( $user_status ) {
+			return true === $user_status;
+		} );
+
+		foreach( $inactive_users as $user_email => $user_status ) {
+
+			if ( empty( $user_email ) ) {
+				continue;
+			}
+
+			// Check whether this user should be deactivated. No need to check API again since it was retrieved in bulk
+			$should_deactivate = $this->should_deactivate_tenupper( $user_email, false );
+
+			if ( true === $should_deactivate ) {
+				// Deactivate the user account
+				$this->deactivate_tenupper_account( $user_email );
+			}
+
+		}
+
+		return;
+
 	}
 }

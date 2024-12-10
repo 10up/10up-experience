@@ -18,6 +18,11 @@ class Passwords {
 	use Singleton;
 
 	/**
+	 * Stores the Have I Been Pwned API URL
+	 */
+	const API_URL = 'https://api.pwnedpasswords.com/range/';
+
+	/**
 	 * Setup hooks
 	 *
 	 * @since 1.7
@@ -307,6 +312,11 @@ class Passwords {
 			return $errors;
 		}
 
+		// Validate the password against the Have I Been Pwned API.
+		if ( ! $this->is_password_secure( $password ) && is_wp_error( $errors ) ) {
+			$errors->add( 'password_reset_error', __( '<strong>ERROR:</strong> The password entered may have been included in a data breach and is not considered safe to use. Please choose another.', 'tenup' ) );
+		}
+
 		// Should a strong password be enforced for this user?
 		if ( $user_id ) {
 
@@ -373,5 +383,45 @@ class Passwords {
 		}
 
 		return $enforce;
+	}
+
+	/**
+	 * Check if password is secure by querying the Have I Been Pwned API.
+	 *
+	 * @param string $password Password to validate.
+	 *
+	 * @return bool True if password is ok, false if it shows up in a breach.
+	 */
+	protected function is_password_secure( $password ): bool {
+		$hash   = strtoupper( sha1( $password ) );
+		$prefix = substr( $hash, 0, 5 );
+		$suffix = substr( $hash, 5 );
+
+		$response = wp_remote_get( self::API_URL . $prefix );
+
+		// Allow for a failed request to the HIPB API.
+		if ( is_wp_error( $response ) ) {
+			return true;
+		}
+
+		$body = wp_remote_retrieve_body( $response );
+
+		// Allow for a failed request to the HIPB API.
+		if ( is_wp_error( $body ) ) {
+			return true;
+		}
+
+		$lines = explode( "\r\n", $body );
+
+		foreach ( $lines as $line ) {
+			$parts = explode( ':', $line );
+
+			// If the suffix is found in the response, the password may be in a breach.
+			if ( $parts[0] === $suffix ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }

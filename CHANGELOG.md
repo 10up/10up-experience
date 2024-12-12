@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.13.0] - 2024-12-09
+
+* Turn on Fueled SSO by default
+* Convert users to @fueled.com emails
+
+
 ## [1.12.1] - 2024-09-24
 
 - Add filter for allowlisting specific API routes `tenup_experience_rest_api_allowlist`

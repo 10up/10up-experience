@@ -229,10 +229,20 @@ class SSO {
 			$user_id = false;
 			$user    = get_user_by( 'email', $email );
 
+			if ( ! $user ) {
+				$short_email = str_replace( '@get10up.com', '@10up.com', $email );
+				$user        = get_user_by( 'email', $short_email );
+			}
+
 			if ( ! $user && preg_match( '#@fueled\.com$#i', $email ) ) {
 				// Check if fueled person had a 10up email
 				$old_10up_email = str_replace( '@fueled.com', '@get10up.com', $email );
 				$tenup_user     = get_user_by( 'email', $old_10up_email );
+
+				if ( ! $tenup_user ) {
+					$old_10up_email = str_replace( '@fueled.com', '@10up.com', $email );
+					$tenup_user     = get_user_by( 'email', $old_10up_email );
+				}
 
 				if ( $tenup_user ) {
 					// Turn off email change notification

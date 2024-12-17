@@ -172,6 +172,18 @@ class Plugins {
 	 * constant it is not possible to update any plugin.
 	 */
 	public function set_plugin_update_actions() {
+
+		/**
+		 * VIP has it's own update notification system that performs this same logic.
+		 *
+		 * As such, if we're on a VIP environment, we should not run this logic.
+		 *
+		 * See: https://github.com/Automattic/vip-go-mu-plugins/blob/develop/codebase-manager/plugins/plugins-manager.php#L65-L77
+		 */
+		if ( defined( 'VIP_GO_APP_ENVIRONMENT' ) ) {
+			return;
+		}
+
 		$plugins = get_site_transient( 'update_plugins' );
 
 		if ( isset( $plugins->response ) && is_array( $plugins->response ) ) {

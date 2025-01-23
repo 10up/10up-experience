@@ -20,7 +20,8 @@ class Passwords {
 	/**
 	 * Stores the Have I Been Pwned API URL
 	 */
-	const API_URL = 'https://api.pwnedpasswords.com/range/';
+	const HIBP_API_URL   = 'https://api.pwnedpasswords.com/range/';
+	const HIBP_CACHE_KEY = 'tenup_experience_hibp';
 
 	/**
 	 * Setup hooks
@@ -393,20 +394,39 @@ class Passwords {
 	 * @return bool True if password is ok, false if it shows up in a breach.
 	 */
 	protected function is_password_secure( $password ): bool {
+		// Default
+		$is_password_secure = true;
+
+		// Allow opt-out of Have I Been Pwned check through a constant or filter.
+		if (
+			( defined( 'TENUP_EXPERIENCE_DISABLE_HIBP' ) && TENUP_EXPERIENCE_DISABLE_HIBP ) ||
+			apply_filters( 'tenup_experience_disable_hibp', false, $password )
+		) {
+			return true;
+		}
+
 		$hash   = strtoupper( sha1( $password ) );
 		$prefix = substr( $hash, 0, 5 );
 		$suffix = substr( $hash, 5 );
 
-		$response = wp_remote_get( self::API_URL . $prefix );
+		$cached_result = wp_cache_get( $prefix . $suffix, self::HIBP_CACHE_KEY );
+
+		if ( false !== $cached_result || false ) { // remove || false; only used for testing
+			return $cached_result;
+		}
+
+		$response = wp_remote_get( self::HIBP_API_URL . $prefix, [ 'user-agent' => '10up Experience WordPress Plugin' ] );
 
 		// Allow for a failed request to the HIPB API.
-		if ( is_wp_error( $response ) ) {
+		// Don't cache the result if the request failed.
+		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
 			return true;
 		}
 
 		$body = wp_remote_retrieve_body( $response );
 
 		// Allow for a failed request to the HIPB API.
+		// Don't cache the result if the request failed.
 		if ( is_wp_error( $body ) ) {
 			return true;
 		}
@@ -418,10 +438,13 @@ class Passwords {
 
 			// If the suffix is found in the response, the password may be in a breach.
 			if ( $parts[0] === $suffix ) {
-				return false;
+				$is_password_secure = false;
 			}
 		}
 
-		return true;
+		// Cache the result for 4 hours.
+		wp_cache_set( $prefix . $suffix, (int) $is_password_secure, self::HIBP_CACHE_KEY, 60 * 60 * 4 );
+
+		return $is_password_secure;
 	}
 }

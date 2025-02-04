@@ -1,6 +1,6 @@
 <?php
 /**
- * 10up support monitor debugger. This can be enabled by setting the following in wp-config.php:
+ * 10up monitor debugger. This can be enabled by setting the following in wp-config.php:
  * define( 'SUPPORT_MONITOR_DEBUG', true );
  *
  * @since  1.7
@@ -42,7 +42,7 @@ class Debug {
 
 
 	/**
-	 * Regisers the Support Monitor log link under the 'Tools' menu
+	 * Regisers the Monitor log link under the 'Tools' menu
 	 *
 	 * @since 1.7
 	 */
@@ -50,8 +50,8 @@ class Debug {
 
 		add_submenu_page(
 			'tools.php',
-			esc_html__( '10up Support Monitor Debug', 'tenup' ),
-			esc_html__( '10up Support Monitor Debug', 'tenup' ),
+			esc_html__( 'Monitor Debug', 'tenup' ),
+			esc_html__( 'Monitor Debug', 'tenup' ),
 			'manage_options',
 			'tenup_support_monitor',
 			[ $this, 'debug_screen' ]
@@ -59,7 +59,7 @@ class Debug {
 	}
 
 	/**
-	 * Regisers the Support Monitor log link under the network settings
+	 * Regisers the Monitor log link under the network settings
 	 *
 	 * @since 1.7
 	 */
@@ -67,8 +67,8 @@ class Debug {
 
 		add_submenu_page(
 			'settings.php',
-			esc_html__( '10up Support Monitor Debug', 'tenup' ),
-			esc_html__( '10up Support Monitor Debug', 'tenup' ),
+			esc_html__( 'Monitor Debug', 'tenup' ),
+			esc_html__( 'Monitor Debug', 'tenup' ),
 			'manage_network_options',
 			'tenup_support_monitor',
 			[ $this, 'debug_screen' ]
@@ -137,7 +137,7 @@ class Debug {
 		?>
 
 		<div class="wrap">
-			<h2><?php esc_html_e( 'Support Monitor Message Log', 'tenup' ); ?></h2>
+			<h2><?php esc_html_e( 'Monitor Message Log', 'tenup' ); ?></h2>
 
 			<p>
 				<a href="<?php echo esc_url( add_query_arg( 'tenup_support_monitor_nonce', wp_create_nonce( 'tenup_sm_empty_action' ) ) ); ?>" class="button"><?php esc_html_e( 'Empty Log', 'tenup' ); ?></a>
@@ -145,18 +145,13 @@ class Debug {
 			</p>
 
 			<?php if ( ! empty( $log ) ) : ?>
-				<?php foreach ( $log as $message_array ) : ?>
-					<?php foreach ( $message_array['messages'] as $message ) : ?>
-						<div>
-							<strong><?php echo esc_html( gmdate( 'F j, Y, g:i a', $message['time'] ) ); ?>:</strong><br>
-							<strong><?php esc_html_e( 'API URL:', 'tenup' ); ?></strong> <?php echo esc_html( $message_array['url'] ); ?><br>
-							<strong><?php esc_html_e( 'Response Code:', 'tenup' ); ?></strong> <?php echo esc_html( $message_array['messages_response'] ); ?><br>
-							<strong><?php esc_html_e( 'Type:', 'tenup' ); ?></strong> <?php echo esc_html( $message['type'] ); ?><br>
-							<strong><?php esc_html_e( 'Group:', 'tenup' ); ?></strong> <?php echo esc_html( $message['group'] ); ?><br>
-							<strong><?php esc_html_e( 'ID:', 'tenup' ); ?></strong> <?php echo esc_html( $message['message_id'] ); ?><br>
-							<pre><?php echo esc_html( wp_json_encode( $message['data'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
-						</div>
-					<?php endforeach; ?>
+				<?php foreach ( $log as $message ) : ?>
+					<div>
+						<strong><?php echo esc_html( gmdate( 'F j, Y, g:i a', $message['time'] ) ); ?>:</strong><br>
+						<strong><?php esc_html_e( 'API URL:', 'tenup' ); ?></strong> <?php echo esc_html( $message['url'] ); ?><br>
+						<strong><?php esc_html_e( 'Response Code:', 'tenup' ); ?></strong> <?php echo esc_html( $message['message_response'] ); ?><br>
+						<pre><?php echo esc_html( wp_json_encode( $message['message'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) ); ?></pre>
+					</div>
 				<?php endforeach; ?>
 			<?php else : ?>
 				<p><?php esc_html_e( 'No messages.', 'tenup' ); ?></p>
@@ -166,15 +161,15 @@ class Debug {
 	}
 
 	/**
-	 * Logs an entry if the support monitor debugger has been enabled
+	 * Logs an entry if the monitor debugger has been enabled
 	 *
 	 * @param string $url - Full URL message was sent to
-	 * @param array  $messages - Array of messages
+	 * @param array  $message - Single message
 	 * @param array  $response_code - Response code
 	 * @since 1.7
 	 * @return void
 	 */
-	public function maybe_add_log_entry( $url, $messages, $response_code ) {
+	public function maybe_add_log_entry( $url, $message, $response_code ) {
 
 		if ( ! $this->is_debug_enabled() ) {
 			return;
@@ -187,9 +182,10 @@ class Debug {
 		}
 
 		$prepared = [
-			'messages'          => $messages,
-			'messages_response' => $response_code,
-			'url'               => $url,
+			'message'          => $message,
+			'time'             => time(),
+			'message_response' => $response_code,
+			'url'              => $url,
 		];
 
 		array_unshift( $log, $prepared );

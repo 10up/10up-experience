@@ -68,7 +68,7 @@ Password protecting post functionality is removed both in Gutenberg and the clas
 
 *Configured in `Settings > Writing`.*
 
-### Support Monitor
+### Monitor
 
 Sends non-PII information about the website back to 10up including plugins installed, constants defined in `wp-config.php`, 10up user accounts, and more.
 
@@ -102,7 +102,7 @@ There are 2 filters available here:
 
 ### Activity Log
 
-The Activity Log tracks key actions taken by logged in users and stores them in Support Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
+The Activity Log tracks key actions taken by logged in users and stores them in Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
 
 #### Logged Actions
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Logs critical user activities inside Support Monitor
+ * Logs critical user activities inside Monitor
  *
  * @since  2.0
  * @package 10up-experience

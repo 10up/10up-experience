@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.14.0] - 2025-02-05
+* Configure Monitor to use new API.
+
 ## [1.13.1] - 2024-12-12
 * Fix SSO bug with @10up.com emails
 

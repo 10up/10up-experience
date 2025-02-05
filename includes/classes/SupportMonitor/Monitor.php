@@ -571,7 +571,7 @@ class Monitor {
 
 		$_themes = wp_get_themes();
 		foreach ( $_themes as $key => $theme ) {
-			$themes[] = [
+			$packages[] = [
 				'slug'    => $key,
 				'name'    => $theme['Name'],
 				'status'  => $theme['Status'],

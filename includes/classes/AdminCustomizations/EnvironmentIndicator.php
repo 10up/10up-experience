@@ -34,12 +34,17 @@ class EnvironmentIndicator {
 	public function add_toolbar_item( $admin_bar ) {
 		$environment = wp_get_environment_type();
 
+		// If the const isn't set, and we're on a local URL, assume we're in a development environment.
+		if ( ! defined( 'WP_ENVIRONMENT_TYPE' ) && $this->is_local_url() ) {
+			$environment = 'local';
+		}
+
 		$admin_bar->add_menu(
 			[
 				'id'     => 'tenup-experience-environment-indicator',
 				'parent' => 'top-secondary',
 				'title'  => '<span class="ab-icon" aria-hidden="true"></span><span class="ab-label">' . esc_html( $this->get_environment_label( $environment ) ) . '</span>',
-				'meta'    => [
+				'meta'   => [
 					'class' => esc_attr( "tenup-$environment" ),
 				],
 			]
@@ -50,6 +55,7 @@ class EnvironmentIndicator {
 	 * Get human readable label for environment
 	 *
 	 * @param string $environment Environment type
+	 *
 	 * @return string
 	 */
 	public function get_environment_label( $environment ) {
@@ -67,5 +73,33 @@ class EnvironmentIndicator {
 		}
 
 		return $label;
+	}
+
+	/**
+	 * Check if the current URL is a local URL
+	 *
+	 * @return bool
+	 */
+	protected function is_local_url() {
+		$home_url = untrailingslashit( home_url() );
+
+		return $this->str_ends_with( $home_url, '.test' ) || $this->str_ends_with( $home_url, '.local' );
+	}
+
+	/**
+	 * Check if a string ends with another string
+	 *
+	 * @param string $haystack Haystack string
+	 * @param string $needle   Needle string
+	 *
+	 * @return bool
+	 */
+	protected function str_ends_with( $haystack, $needle ) {
+		$length = strlen( $needle );
+		if ( ! $length ) {
+			return true;
+		}
+
+		return substr( $haystack, - $length ) === $needle;
 	}
 }

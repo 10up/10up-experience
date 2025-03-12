@@ -26,11 +26,9 @@ class Monitor {
 	public function setup() {
 
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
-			add_filter( 'site_option_tenup_support_monitor_settings', [ $this, 'handle_settings' ] );
 			add_action( 'wpmu_options', [ $this, 'ms_settings' ] );
 			add_action( 'admin_init', [ $this, 'ms_save_settings' ] );
 		} else {
-			add_filter( 'option_tenup_support_monitor_settings', [ $this, 'handle_settings' ] );
 			add_action( 'admin_init', [ $this, 'register_settings' ] );
 		}
 
@@ -139,8 +137,20 @@ class Monitor {
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
 		$settings = wp_parse_args( $settings, $defaults );
 
-		if ( ! Debug::instance()->is_debug_enabled() && ! defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
+		if ( ! Debug::instance()->is_debug_enabled() ) {
 			$settings['server_url'] = 'https://monitor.10up.com';
+		}
+
+		if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
+			$settings['server_url'] = SUPPORT_MONITOR_SERVER_URL;
+		}
+
+		if ( defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
+			$settings['api_key'] = SUPPORT_MONITOR_API_KEY;
+		}
+
+		if ( defined( 'SUPPORT_MONITOR_ENABLE' ) ) {
+			$settings['enable_support_monitor'] = SUPPORT_MONITOR_ENABLE;
 		}
 
 		if ( ! empty( $setting_key ) ) {
@@ -161,26 +171,6 @@ class Monitor {
 			<?php esc_html_e( '10up collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
 		</p>
 		<?php
-	}
-
-	/**
-	 * Handle settings.
-	 *
-	 * @param  array $settings Support Monitor Settings.
-	 * @since  1.11.3
-	 * @return array
-	 */
-	public function handle_settings( $settings ) {
-		if ( defined( 'SUPPORT_MONITOR_ENABLE' ) ) {
-			$settings['enable_support_monitor'] = SUPPORT_MONITOR_ENABLE;
-		}
-		if ( defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
-			$settings['api_key'] = SUPPORT_MONITOR_API_KEY;
-		}
-		if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
-			$settings['server_url'] = SUPPORT_MONITOR_SERVER_URL;
-		}
-		return $settings;
 	}
 
 	/**
@@ -239,21 +229,6 @@ class Monitor {
 	 * @return array
 	 */
 	public function sanitize_settings( $settings ) {
-		// Attempt to preserve value if using defined constants and if user value was already stored in the DB.
-		if ( defined( 'SUPPORT_MONITOR_ENABLE' ) || defined( 'SUPPORT_MONITOR_SERVER_URL' ) || defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
-			remove_filter( 'option_tenup_support_monitor_settings', [ $this, 'handle_settings' ] );
-			$original = get_option( 'tenup_support_monitor_settings' );
-			if ( defined( 'SUPPORT_MONITOR_ENABLE' ) ) {
-				$settings['enable_support_monitor'] = $original['enable_support_monitor'];
-			}
-			if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
-				$settings['server_url'] = $original['server_url'];
-			}
-			if ( defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
-				$settings['api_key'] = $original['api_key'];
-			}
-		}
-
 		foreach ( $settings as $key => $setting ) {
 			$settings[ $key ] = sanitize_text_field( $setting );
 		}

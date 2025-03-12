@@ -2,7 +2,28 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.14.0] - 2025-02-05
+* Configure Monitor to use new API.
+
+## [1.13.1] - 2024-12-12
+* Fix SSO bug with @10up.com emails
+
+## [1.13.0] - 2024-12-09
+
+* Turn on Fueled SSO by default
+* Convert users to @fueled.com emails
+
+
+## [1.12.1] - 2024-09-24
+
+- Add filter for allowlisting specific API routes `tenup_experience_rest_api_allowlist`
+
+## [1.12.0] - 2024-08-22
+
+- Add UI for disabling comments
+
 ## [1.11.2] - 2024-06-15
+
 - Remove production setting
 
 ## [1.11.1] - 2023-10-27
@@ -201,7 +222,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 - Initial release
 
-[Unreleased]: https://github.com/10up/10up-experience/compare/master...develop
+[unreleased]: https://github.com/10up/10up-experience/compare/master...develop
 [1.7.3]: https://github.com/10up/10up-experience/compare/1.7.2...1.7.3
 [1.7.2]: https://github.com/10up/10up-experience/compare/1.7.1...1.7.2
 [1.7.1]: https://github.com/10up/10up-experience/compare/1.7...1.7.1

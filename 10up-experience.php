@@ -3,7 +3,7 @@
  * Plugin Name:       10up Experience
  * Plugin URI:        https://github.com/10up/10up-experience
  * Description:       The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:           1.11.2
+ * Version:           1.14.0
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPLv2 or later
@@ -19,7 +19,7 @@ namespace TenUpExperience;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.11.2' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.14.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 
@@ -73,6 +73,7 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 API\API::instance();
 Authentication\Usernames::instance();
 Authors\Authors::instance();
+Comments\Comments::instance();
 Gutenberg\Gutenberg::instance();
 Headers\Headers::instance();
 Plugins\Plugins::instance();

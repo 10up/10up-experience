@@ -68,7 +68,7 @@ Password protecting post functionality is removed both in Gutenberg and the clas
 
 *Configured in `Settings > Writing`.*
 
-### Support Monitor
+### Monitor
 
 Sends non-PII information about the website back to 10up including plugins installed, constants defined in `wp-config.php`, 10up user accounts, and more.
 
@@ -105,7 +105,7 @@ There are 2 filters available here:
 
 ### Activity Log
 
-The Activity Log tracks key actions taken by logged in users and stores them in Support Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
+The Activity Log tracks key actions taken by logged in users and stores them in Monitor. Note that no PII is stored. This feature can be disabled by defining `TENUP_DISABLE_ACTIVITYLOG` as `true`.
 
 #### Logged Actions
 
@@ -145,6 +145,52 @@ Filters how many log items to store. Items are stored in array saved to the opti
 - `TENUP_DISABLE_ACTIVITYLOG`
 
 Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
+
+### Comments
+
+10up Experience includes a feature to disable comments across the site. This feature can be enabled or disabled in `Settings > General`. It is disabled by default.
+
+On top of disabling the comment form, this feature removes the following:
+
+- Comments from the admin menu.
+- Comment blocks from the post editor.
+- Comments from the admin bar.
+
+#### Constants
+
+- `TENUP_DISABLE_COMMENTS`
+
+Define this as `true` to force disable comments or `false` to enable comments from a config file.
+Setting this constant will disable the UI for enabling/disabling comments in the admin.
+
+#### Filters
+
+- `tenup_experience_disable_comments`
+
+Filters whether to disable comments. Default is `false`.
+Defining this filter will disable the UI for enabling/disabling comments in the admin.
+
+- `tenup_experience_disable_comments_disallowed_blocks`
+
+Filters the list of blocks that should be disallowed when comments are disabled. This is useful when core adds new blocks that aren't covered by the default list.
+
+The default list of disallowed blocks is:
+
+- `core/comment-author-name`
+- `core/comment-content`
+- `core/comment-date`
+- `core/comment-edit-link`
+- `core/comment-reply-link`
+- `core/comment-template`
+- `core/comments`
+- `core/comments-pagination`
+- `core/comments-pagination-next`
+- `core/comments-pagination-numbers`
+- `core/comments-pagination-previous`
+- `core/comments-title`
+- `core/post-comments`
+- `core/post-comments-form`
+- `core/latest-comments`
 
 ## Support Level
 

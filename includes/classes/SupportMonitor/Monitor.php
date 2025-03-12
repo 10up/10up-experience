@@ -1,6 +1,6 @@
 <?php
 /**
- * 10up support monitor code. This module lets us gather non-PII info from sites running
+ * 10up monitor code. This module lets us gather non-PII info from sites running
  * the plugin e.g. plugin versions, WP version, etc.
  *
  * @since  1.7
@@ -34,7 +34,6 @@ class Monitor {
 			add_action( 'admin_init', [ $this, 'register_settings' ] );
 		}
 
-		add_action( 'tenup_support_monitor_message_cron', [ $this, 'send_cron_messages' ] );
 		add_action( 'admin_init', [ $this, 'setup_report_cron' ] );
 		add_action( 'send_daily_report_cron', [ $this, 'send_daily_report' ] );
 	}
@@ -92,7 +91,7 @@ class Monitor {
 	 */
 	public function ms_settings() {
 		?>
-		<h2><?php esc_html_e( 'Support Monitor', 'tenup' ); ?></h2>
+		<h2><?php esc_html_e( 'Monitor', 'tenup' ); ?></h2>
 
 		<?php $this->setting_section_description(); ?>
 
@@ -134,14 +133,14 @@ class Monitor {
 		$defaults = [
 			'enable_support_monitor' => 'no',
 			'api_key'                => '',
-			'server_url'             => 'https://supportmonitor.10up.com',
+			'server_url'             => 'https://monitor.10up.com',
 		];
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
 		$settings = wp_parse_args( $settings, $defaults );
 
 		if ( ! Debug::instance()->is_debug_enabled() && ! defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
-			$settings['server_url'] = 'https://supportmonitor.10up.com';
+			$settings['server_url'] = 'https://monitor.10up.com';
 		}
 
 		if ( ! empty( $setting_key ) ) {
@@ -149,47 +148,6 @@ class Monitor {
 		}
 
 		return $settings;
-	}
-
-	/**
-	 * Get unsent messages
-	 *
-	 * @since  1.7
-	 * @return array
-	 */
-	public function get_queued_messages() {
-		return ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_messages', [] ) : get_option( 'tenup_support_monitor_messages', [] );
-	}
-
-	/**
-	 * Empty queued messages
-	 *
-	 * @since  1.7
-	 */
-	public function reset_queued_messages() {
-		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
-			update_site_option( 'tenup_support_monitor_messages', [], false );
-		} else {
-			update_option( 'tenup_support_monitor_messages', [], false );
-		}
-	}
-
-	/**
-	 * Queue a message to be sent
-	 *
-	 * @param  array $message Message to queue
-	 * @since  1.7
-	 */
-	public function queue_message( $message ) {
-		$messages = $this->get_queued_messages();
-
-		$messages[] = $this->format_message( $message );
-
-		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
-			update_site_option( 'tenup_support_monitor_messages', $messages, false );
-		} else {
-			update_option( 'tenup_support_monitor_messages', $messages, false );
-		}
 	}
 
 	/**
@@ -233,7 +191,7 @@ class Monitor {
 	public function register_settings() {
 		add_settings_section(
 			'tenup_support_monitor',
-			esc_html__( '10up Support Monitor', 'tenup' ),
+			esc_html__( 'Monitor', 'tenup' ),
 			[ $this, 'setting_section_description' ],
 			'general'
 		);
@@ -337,7 +295,7 @@ class Monitor {
 		$value = $this->get_setting( 'server_url' );
 
 		?>
-		<input placeholder="https://www.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ); ?> class="regular-text">
+		<input placeholder="https://monitor.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ); ?> class="regular-text">
 		<?php
 	}
 
@@ -367,34 +325,6 @@ class Monitor {
 	}
 
 	/**
-	 * Sends a message async one time
-	 *
-	 * @param  array  $data Arbitrary data
-	 * @param  string $type Message type. Can be notice, warning, or error.
-	 * @param  string $group Message group
-	 * @since 1.7
-	 * @return boolean
-	 */
-	public function send_message( $data, $type = 'notice', $group = 'message' ) {
-
-		$setting = $this->get_setting();
-
-		if ( empty( $setting['api_key'] ) || 'yes' !== $setting['enable_support_monitor'] ) {
-			wp_unschedule_hook( 'tenup_support_monitor_message_cron' );
-
-			return false;
-		}
-
-		if ( ! wp_next_scheduled( 'tenup_support_monitor_message_cron' ) ) {
-			$this->queue_message( $this->format_message( $data, $type ) );
-
-			return wp_schedule_single_event( time(), 'tenup_support_monitor_message_cron' );
-		}
-
-		return true;
-	}
-
-	/**
 	 * Check if logging is enabled
 	 *
 	 * @return boolean
@@ -407,9 +337,9 @@ class Monitor {
 	 * Create a log entry
 	 *
 	 * @param array  $data   Data related to the action..
-	 * @param string $subgroup Sub group
+	 * @param string $group Group
 	 */
-	public function log( $data = [], $subgroup = null ) {
+	public function log( $data = [], $group = null ) {
 		if ( ! $this->logging_enabled() ) {
 			return;
 		}
@@ -420,7 +350,7 @@ class Monitor {
 		 * @param string $data   Data related to the action.
 		 * @param string $subgroup Sub group.
 		 */
-		if ( ! apply_filters( 'tenup_support_monitor_log_item', $data, $subgroup ) ) {
+		if ( ! apply_filters( 'tenup_support_monitor_log_item', $data, $group ) ) {
 			return;
 		}
 
@@ -431,10 +361,11 @@ class Monitor {
 		}
 
 		$log_item = [
-			'date'     => time(),
-			'summary'  => $data['summary'],
-			'subgroup' => $subgroup,
-			'user_id'  => get_current_user_id(),
+			'group'     => $group,
+			'createdAt' => time(),
+			'log'       => $data['summary'],
+			'action'    => $data['action'],
+			'userId'    => get_current_user_id(),
 		];
 
 		$current_logs[] = $log_item;
@@ -496,60 +427,66 @@ class Monitor {
 		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		require_once ABSPATH . 'wp-admin/includes/update.php';
 
-		$messages = [
-			$this->format_message( $this->get_plugin_report(), 'notice', 'plugins' ),
-			$this->format_message( $this->get_theme_report(), 'notice', 'themes' ),
-			$this->format_message(
-				[
-					'wp_version'           => $this->get_wp_version(),
-					'wp_cache'             => ( defined( 'WP_CACHE' ) && WP_CACHE ),
-					'object_cache_enabled' => $this->get_is_using_object_cache(),
-					'db_version'           => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
-					'wp_debug'             => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
-					'disallow_file_mods'   => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
-					'xmlrpc_enabled'       => $this->xmlrpc_enabled(),
-				],
-				'notice',
-				'wp'
-			),
-			$this->format_message(
-				[
-					'php_version' => $this->get_php_version(),
-				],
-				'notice',
-				'system'
-			),
-			$this->format_message(
-				$this->get_users_report(),
-				'notice',
-				'users'
-			),
-		];
-
 		if ( $this->logging_enabled() ) {
 			$logs = get_option( 'tenup_support_monitor_activity_logs', [] );
 
 			if ( ! empty( $logs ) ) {
-				$messages[] = $this->format_message(
-					$logs,
-					'log',
-					'activity'
-				);
-
 				update_option( 'tenup_support_monitor_activity_logs', [], false );
 			}
 		}
 
-		$this->send_request( $messages );
+		$custom_data = [
+			[
+				'key'   => 'wp_cache',
+				'value' => ( defined( 'WP_CACHE' ) && WP_CACHE ),
+				'group' => 'system',
+			],
+			[
+				'key'   => 'object_cache_enabled',
+				'value' => $this->get_is_using_object_cache(),
+				'group' => 'system',
+			],
+			[
+				'key'   => 'db_version',
+				'value' => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
+				'group' => 'system',
+			],
+			[
+				'key'   => 'wp_debug',
+				'value' => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
+				'group' => 'system',
+			],
+			[
+				'key'   => 'disallow_file_mods',
+				'value' => ( defined( 'DISALLOW_FILE_MODS' ) && DISALLOW_FILE_MODS ),
+				'group' => 'system',
+			],
+			[
+				'key'   => 'xmlrpc_enabled',
+				'value' => $this->xmlrpc_enabled(),
+				'group' => 'system',
+			],
+		];
+
+		$body = [
+			'url'          => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'platform'     => 'wordpress',
+			'packages'     => $this->get_packages(),
+			'activityLogs' => $logs,
+			'customData'   => $custom_data,
+			'users'        => $this->get_users(),
+		];
+
+		$this->send_request( $body );
 	}
 
 	/**
-	 * Send messages to hub
+	 * Send request to hub
 	 *
-	 * @param  array $messages Array of messages
-	 * @since  1.7
+	 * @param array $request_body Body of request
+	 * @since 1.7
 	 */
-	public function send_request( $messages ) {
+	public function send_request( $request_body ) {
 
 		$setting = $this->get_setting();
 
@@ -557,52 +494,35 @@ class Monitor {
 			return false;
 		}
 
-		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( untrailingslashit( $setting['server_url'] ) . '/wp-json/tenup/support-monitor/v1/message' ), $messages );
+		$api_url = apply_filters( 'tenup_support_monitor_api_url', esc_url( untrailingslashit( $setting['server_url'] ) . '/api/reports/create' ), $request_body );
 		$api_key = $this->get_setting( 'api_key' );
 
-		if ( empty( $api_key ) || empty( $messages ) || empty( $api_url ) ) {
+		if ( empty( $api_key ) || empty( $request_body ) || empty( $api_url ) ) {
 			return;
 		}
 
-		$body = [
-			'message' => wp_json_encode( $messages ),
-			'url'     => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
-		];
-
-		$request_message = [
+		$request = [
 			'method'   => 'POST',
 			'timeout'  => 30,
-			'body'     => apply_filters( 'tenup_support_monitor_request_body', $body ),
+			'body'     => apply_filters( 'tenup_support_monitor_request_body', wp_json_encode( $request_body ) ),
 			'blocking' => Debug::instance()->is_debug_enabled(),
 			'headers'  => [
-				'X-Tenup-Support-Monitor-Key' => sanitize_text_field( $api_key ),
+				'Content-Type' => 'application/json',
+				'x-api-key'    => sanitize_text_field( $api_key ),
 			],
 		];
 
 		$response = wp_remote_request(
 			$api_url,
-			$request_message
+			$request
 		);
 
 		// Create entry in debug log if debugger enabled
 		Debug::instance()->maybe_add_log_entry(
 			$api_url,
-			$messages,
+			$request_body,
 			wp_remote_retrieve_response_code( $response )
 		);
-	}
-
-	/**
-	 * Send all the queued messages
-	 *
-	 * @since  1.7
-	 */
-	public function send_cron_messages() {
-		$messages = $this->get_queued_messages();
-
-		$this->send_request( $messages );
-
-		$this->reset_queued_messages();
 	}
 
 	/**
@@ -637,6 +557,65 @@ class Monitor {
 			];
 		}
 		return $plugins;
+	}
+
+	/**
+	 * Get all packages
+	 *
+	 * @return array
+	 */
+	public function get_packages() {
+		$packages = [
+			[
+				'name'    => 'WordPress',
+				'version' => $this->get_wp_version(),
+				'type'    => 'system',
+				'slug'    => 'wordpress',
+			],
+			[
+				'name'   => 'PHP',
+				'type'   => 'system',
+				'slug'   => 'php',
+				'version' => $this->get_php_version(),
+			],
+		];
+
+		$_plugins = get_mu_plugins();
+
+		foreach ( $_plugins as $file => $plugin ) {
+			$packages[] = [
+				'slug'    => $this->get_plugin_name( $file ),
+				'name'    => $plugin['Name'],
+				'status'  => 'must-use',
+				'type'    => 'wp-plugin',
+				'version' => $plugin['Version'],
+			];
+		}
+
+		$_plugins = get_plugins();
+
+		foreach ( $_plugins as $file => $plugin ) {
+			$packages[] = [
+				'slug'    => $this->get_plugin_name( $file ),
+				'name'    => $plugin['Name'],
+				'status'  => $this->get_status( $file ),
+				'type'    => 'wp-plugin',
+				'version' => $plugin['Version'],
+			];
+		}
+
+		$_themes = wp_get_themes();
+		foreach ( $_themes as $key => $theme ) {
+			$packages[] = [
+				'slug'    => $key,
+				'name'    => $theme['Name'],
+				'status'  => $theme['Status'],
+				'version' => $theme['Version'],
+				'type'    => 'wp-theme',
+			];
+		}
+
+		return $packages;
 	}
 
 	/**
@@ -724,13 +703,10 @@ class Monitor {
 	/**
 	 * Get users for site
 	 *
-	 * @since  1.7
 	 * @return array
 	 */
-	public function get_users_report() {
-		$report = [
-			'10up' => [],
-		];
+	public function get_users() {
+		$users = [];
 
 		$args = [
 			'search'         => '*@get10up.com',
@@ -746,10 +722,10 @@ class Monitor {
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
-			$report['10up'][] = [
-				'email'        => $user->user_email,
-				'display_name' => $user->display_name,
-				'role'         => $user->roles,
+			$users[] = [
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+				'role'  => $user->roles,
 			];
 		}
 
@@ -767,14 +743,35 @@ class Monitor {
 		$_users = get_users( $args );
 
 		foreach ( $_users as $user ) {
-			$report['10up'][] = [
-				'email'        => $user->user_email,
-				'display_name' => $user->display_name,
-				'role'         => $user->roles,
+			$users[] = [
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+				'role'  => $user->roles,
 			];
 		}
 
-		return $report;
+		$args = [
+			'search'         => '*@fueled.com',
+			'search_columns' => [ 'user_email' ],
+			'number'         => '1000',
+			'ep_integrate'   => false,
+		];
+
+		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
+			$args['blog_id'] = 0;
+		}
+
+		$_users = get_users( $args );
+
+		foreach ( $_users as $user ) {
+			$users[] = [
+				'email' => $user->user_email,
+				'name'  => $user->display_name,
+				'role'  => $user->roles,
+			];
+		}
+
+		return $users;
 	}
 
 	/**

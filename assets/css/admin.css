@@ -12,28 +12,22 @@
 }
 
 /* Environment Indicator Styling */
-#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator {
+.tenup-experience-environment-indicator {
 	color: #fff;
 	pointer-events: none;
 }
 
-#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-production {
-	background-color: #b92a2a;
-	color: #fff;
-	pointer-events: none;
+.tenup-experience-environment-indicator--production {
+	background-color: #b92a2a !important;
 }
 
-#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-staging {
-	background-color: #d79d00;
-	color: #fff;
-	pointer-events: none;
+.tenup-experience-environment-indicator--staging {
+	background-color: #d79d00 !important;
 }
 
-#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-local,
-#wpadminbar ul li#wp-admin-bar-tenup-experience-environment-indicator.tenup-development {
-	background-color: #34863b;
-	color: #fff;
-	pointer-events: none;
+.tenup-experience-environment-indicator--local,
+.tenup-experience-environment-indicator--development {
+	background-color: #34863b !important;
 }
 
 .tenup-experience-environment-indicator__icon {

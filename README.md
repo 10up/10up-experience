@@ -82,6 +82,14 @@ By default, all users must use a medium or greater strength password. This can b
 
  **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
 
+Additionally, the plugin checks passwords against the [Have I Been Pwned](https://haveibeenpwned.com/) database to ensure they haven't been compromised in a data breach. This can be disabled by defining the constant `TENUP_EXPERIENCE_DISABLE_HIBP` as `true`.
+
+#### Constants
+
+- `TENUP_EXPERIENCE_DISABLE_HIBP`
+
+Define `TENUP_EXPERIENCE_DISABLE_HIBP` as `true` to disable Have I Been Pwned password checking.
+
 
 ### Headers
 

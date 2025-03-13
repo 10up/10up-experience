@@ -154,6 +154,12 @@ Filters how many log items to store. Items are stored in array saved to the opti
 
 Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
 
+
+### Environment Indicator
+
+To enhance user awareness and minimize the risk of making unintended changes, 10up Experience includes a visual indicator integrated into the admin bar. This feature clearly displays which environment (e.g., development, staging, production) the user is currently working in.
+
+
 ### Comments
 
 10up Experience includes a feature to disable comments across the site. This feature can be enabled or disabled in `Settings > General`. It is disabled by default.

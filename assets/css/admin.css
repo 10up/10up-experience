@@ -10,3 +10,40 @@
 	height: 32px;
 	width: 20px;
 }
+
+/* Environment Indicator Styling */
+.tenup-experience-environment-indicator {
+	color: #fff;
+	pointer-events: none;
+}
+
+.tenup-experience-environment-indicator--production {
+	background-color: #b92a2a !important;
+}
+
+.tenup-experience-environment-indicator--staging {
+	background-color: #d79d00 !important;
+}
+
+.tenup-experience-environment-indicator--local,
+.tenup-experience-environment-indicator--development {
+	background-color: #34863b !important;
+}
+
+.tenup-experience-environment-indicator .ab-icon::before {
+	content: "\f174";
+	top: 3px;
+}
+
+.tenup-experience-environment-indicator--production .ab-icon::before {
+	content: "\f319";
+}
+
+.tenup-experience-environment-indicator--staging .ab-icon::before {
+	content: "\f111";
+}
+
+.tenup-experience-environment-indicator--local .ab-icon::before,
+.tenup-experience-environment-indicator--development .ab-icon::before {
+	content: "\f107";
+}

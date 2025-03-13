@@ -70,6 +70,7 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 	AdminCustomizations\Customizations::instance();
 }
 
+AdminCustomizations\EnvironmentIndicator::instance();
 API\API::instance();
 Authentication\Usernames::instance();
 Authors\Authors::instance();

@@ -107,6 +107,9 @@ There are 2 filters available here:
 
 - `TENUPSSO_DISABLE` - Define this as `true` to force disable SSO.
 - `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
+- `SUPPORT_MONITOR_ENABLE` - Overrides the settings to enable Support Monitor. Possible values `yes` and `no`.
+- `SUPPORT_MONITOR_API_KEY` - Overrides the settings to Support Monitor API key.
+- `SUPPORT_MONITOR_SERVER_URL` - Overrides the settings to Support Monitor server url.
 
 ### Activity Log
 

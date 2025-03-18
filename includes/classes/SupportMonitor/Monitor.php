@@ -759,6 +759,11 @@ class Monitor {
 			return true;
 		}
 
+		// If this is a VIP site, we can assume they are using an object cache.
+		if ( defined( 'VIP_GO_APP_ENVIRONMENT' ) && 'local' !== VIP_GO_APP_ENVIRONMENT ) {
+			return true;
+		}
+
 		return file_exists( WP_CONTENT_DIR . '/object-cache.php' );
 	}
 }

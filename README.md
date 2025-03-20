@@ -82,6 +82,14 @@ By default, all users must use a medium or greater strength password. This can b
 
  **Password strength functionality requires the PHP extension [mbstring](https://www.php.net/manual/en/mbstring.installation.php) to be installed on the web server. Functionality will be bypassed if extension not installed.*
 
+Additionally, the plugin checks passwords against the [Have I Been Pwned](https://haveibeenpwned.com/) database to ensure they haven't been compromised in a data breach. This can be disabled by defining the constant `TENUP_EXPERIENCE_DISABLE_HIBP` as `true`.
+
+#### Constants
+
+- `TENUP_EXPERIENCE_DISABLE_HIBP`
+
+Define `TENUP_EXPERIENCE_DISABLE_HIBP` as `true` to disable Have I Been Pwned password checking.
+
 
 ### Headers
 
@@ -99,6 +107,9 @@ There are 2 filters available here:
 
 - `TENUPSSO_DISABLE` - Define this as `true` to force disable SSO.
 - `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
+- `SUPPORT_MONITOR_ENABLE` - Overrides the settings to enable Support Monitor. Possible values `yes` and `no`.
+- `SUPPORT_MONITOR_API_KEY` - Overrides the settings to Support Monitor API key.
+- `SUPPORT_MONITOR_SERVER_URL` - Overrides the settings to Support Monitor server url.
 
 ### Activity Log
 
@@ -142,6 +153,12 @@ Filters how many log items to store. Items are stored in array saved to the opti
 - `TENUP_DISABLE_ACTIVITYLOG`
 
 Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
+
+
+### Environment Indicator
+
+To enhance user awareness and minimize the risk of making unintended changes, 10up Experience includes a visual indicator integrated into the admin bar. This feature clearly displays which environment (e.g., development, staging, production) the user is currently working in.
+
 
 ### Comments
 

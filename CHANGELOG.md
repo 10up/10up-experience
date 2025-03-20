@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.15.0] - 2025-03-20
+* Check haveibeenpwned API during password reset and account creation.
+* Don’t render the plugin update notices on VIP as they’re duplicated.
+* Allow defining support monitor constants to override settings.
+* Adds environment type indicator to admin bar.
+* Fix issue with VIP environment reporting in Monitor.
+
 ## [1.14.0] - 2025-02-05
 * Configure Monitor to use new API.
 

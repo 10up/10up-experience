@@ -72,7 +72,12 @@ class EnvironmentIndicator {
 				break;
 		}
 
-		return $label;
+		/**
+		 * Filter the environment label.
+		 *
+		 * @param string $label The environment label.
+		 */
+		return apply_filters( 'tenup_experience_environment_type_label', $label );
 	}
 
 	/**

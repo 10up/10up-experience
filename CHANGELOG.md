@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.16.2]- 2025-05-08
+* Button update
+
 ## [1.16.1]- 2025-05-08
 * Revert branding
 

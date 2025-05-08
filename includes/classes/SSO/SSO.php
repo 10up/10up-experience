@@ -398,97 +398,88 @@ class SSO {
 	public function render_login_form_styles() {
 		?>
 		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,500&display=swap');
 			.sso {
-				font-weight: normal;
-				overflow: hidden;
-
-				margin-top: 20px;
-				margin-left: 0;
-				padding: 26px 24px 26px;
-				font-weight: 400;
-				overflow: hidden;
 				background: #fff;
 				border: 1px solid #c3c4c7;
 				box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
+				font-weight: 400;
+				font-weight: normal;
+				margin-left: 0;
+				margin-top: 20px;
+				overflow: hidden;
+				overflow: hidden;
+				padding: 26px 24px 26px;
 			}
 
 			.sso .buttons {
+				align-items: center;
 				display: flex;
 				justify-content: center;
-				align-items: center;
 			}
 
 			.sso .button {
-				float: none;
-				display: block;
-				font-weight: 600;
-				color: #000;
-				display: flex;
 				align-items: center;
-				justify-content: center;
 				background-color: #fff;
-				padding: 10px;
-				border-radius: 20px;
-				min-height: initial;
-				line-height: 1.2;
-				border: 2px solid #6353f6;
+				border-radius: 999px;
+				border: 1px solid #6353f6;
+				color: #000;
+				display: inline-flex;
+				font-family: "Inter", sans-serif;
+				font-optical-sizing: auto;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 500;
+				gap: 8px;
+				justify-content: center;
+				line-height: 1;
+				padding-inline-end: 14px;
+				padding: 4px;
+				transition-duration: 0.2s;
+				transition-property: background-color, color;
+				transition-timing-function: ease-out;
 			}
 
 			.sso .button img {
-				width: 20px;
-				height: 20px;
-				margin-right: 8px;
+				height: 32px;
+				width: 32px;
 			}
 
-			.sso .button:hover {
+			.sso .button:is(:hover, :focus) {
 				background-color: #6353f6;
-
-				border: 2px solid #6353f6;
+				border-color: #6353f6;
+				box-shadow: none;
 				color: #fff;
 			}
 
-			.sso .button svg {
-				height: 30px;
-				margin-right: 10px;
-			}
-
-			.sso .fueled-button svg {
-				height: 28px;
-			}
-
-			.sso .fueled-button svg path {
-				fill: #950001;
-			}
-
-			.sso .sep {
-				margin: 0 1em;
-				border-right: 1px solid rgba(0,0,0,0.13);
-				height: 20px;
+			.sso .button:focus {
+				outline: 2px solid #6353f6;
+				outline-offset: 2px;
 			}
 
 			.sso .or {
-				margin: .8em 0 2em 0;
-				width: 100%;
-				display: block;
 				border-bottom: 1px solid rgba(0,0,0,0.13);
-				text-align: center;
+				display: block;
 				line-height: 1;
+				margin: .8em 0 2em 0;
+				text-align: center;
+				width: 100%;
 			}
 
 			.sso .or span {
+				background: white;
+				color: #72777c;
+				padding: 0 1em;
 				position: relative;
 				top: 0.5em;
-				background: white;
-				padding: 0 1em;
-				color: #72777c;
 			}
 
 			#loginform {
-				margin-top: 0;
 				border-top: 0;
+				margin-top: 0;
+				padding-top: 0;
 				position: relative;
 				top: -17px;
-				padding-top: 0;
 			}
 
 			<?php if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) : ?>

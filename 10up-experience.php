@@ -3,7 +3,7 @@
  * Plugin Name:       Fueled Experience
  * Plugin URI:        https://github.com/10up/10up-experience
  * Description:       The Fueled Experience plugin configures WordPress to better protect and inform clients, aligned to Fueled’s best practices.
- * Version:           1.15.0
+ * Version:           1.16.0
  * Author:            Fueled
  * Author URI:        https://fueled.com
  * License:           GPLv2 or later
@@ -19,7 +19,7 @@ namespace TenUpExperience;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.15.0' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.16.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 define( 'TENUP_EXPERIENCE_URL', plugin_dir_url( __FILE__ ) );

@@ -25,7 +25,10 @@ class Customizations {
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_filter( 'admin_footer_text', [ $this, 'filter_admin_footer_text' ] );
-		add_action( 'admin_bar_menu', [ $this, 'add_about_menu' ], 11 );
+
+		// Disable for now until we rebuild this page
+		// add_action( 'admin_bar_menu', [ $this, 'add_about_menu' ], 11 );
+
 		add_action( 'admin_menu', [ $this, 'register_admin_pages' ] );
 		add_filter( 'admin_title', [ $this, 'admin_title_fix' ], 10, 2 );
 	}
@@ -70,7 +73,7 @@ class Customizations {
 		?>
 		<div class="wrap about-wrap full-width-layout">
 
-			<h1><?php esc_html_e( 'About 10up', 'tenup' ); ?></h1>
+			<h1><?php esc_html_e( 'About Fueled', 'tenup' ); ?></h1>
 
 			<div class="about-text">
 				<?php
@@ -78,18 +81,18 @@ class Customizations {
 						sprintf(
 							// translators: %s is a link to 10up.com
 							__( 'We&#8217;re a full-service digital agency making a better web with finely crafted websites, apps, and tools that drive business results. <a href="%s" target="_blank">Learn more →</a>', 'tenup' ),
-							esc_url( 'https://10up.com' )
+							esc_url( 'https://fueled.com' )
 						)
 					);
 				?>
 				</div>
 
-			<a class="tenup-badge" href="https://10up.com" target="_blank"><span aria-label="<?php esc_attr_e( 'Link to 10up.com', 'tenup' ); ?>">10up.com</span></a>
+			<a class="tenup-badge" href="https://fueled.com" target="_blank"><span aria-label="<?php esc_attr_e( 'Link to Fueled.com', 'tenup' ); ?>">Fueled.com</span></a>
 
 			<div class="feature-section one-col">
-				<h2><?php esc_html_e( 'Thanks for working with team 10up!', 'tenup' ); ?></h2>
+				<h2><?php esc_html_e( 'Thanks for working with team Fueled!', 'tenup' ); ?></h2>
 
-				<p><?php esc_html_e( 'You have the 10up Experience plugin installed, which typically means 10up built or is supporting your site. The Experience plugin configures WordPress to better protect and inform our clients, including security precautions like blocking unauthenticated access to your content over the REST API, safety measures like preventing code-level changes from being made inside the admin, and some other resources, including a list of vetted plugins we recommend for common use cases and information about us.', 'tenup' ); ?></p>
+				<p><?php esc_html_e( 'You have the Fueled Experience plugin installed, which typically means Fueled built or is supporting your site. The Experience plugin configures WordPress to better protect and inform our clients, including security precautions like blocking unauthenticated access to your content over the REST API, safety measures like preventing code-level changes from being made inside the admin, and some other resources, including a list of vetted plugins we recommend for common use cases and information about us.', 'tenup' ); ?></p>
 			</div>
 
 			<div class="feature-section one-col">
@@ -191,7 +194,7 @@ class Customizations {
 	 * @return string
 	 */
 	public function filter_admin_footer_text() {
-		$new_text = sprintf( __( 'Thank you for creating with <a href="https://wordpress.org">WordPress</a> and <a href="https://10up.com">10up</a>.', 'tenup' ) );
+		$new_text = sprintf( __( 'Thank you for creating with <a href="https://wordpress.org">WordPress</a> and <a href="https://fueled.com">Fueled</a>.', 'tenup' ) );
 		return $new_text;
 	}
 }

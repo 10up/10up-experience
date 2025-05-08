@@ -415,7 +415,7 @@ class Passwords {
 			return $cached_result;
 		}
 
-		$response = wp_remote_get( self::HIBP_API_URL . $prefix, [ 'user-agent' => 'Fueled Experience WordPress Plugin' ] );
+		$response = wp_remote_get( self::HIBP_API_URL . $prefix, [ 'user-agent' => '10up Experience WordPress Plugin' ] );
 
 		// Allow for a failed request to the HIPB API.
 		// Don't cache the result if the request failed.

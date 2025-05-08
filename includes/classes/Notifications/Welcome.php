@@ -79,7 +79,7 @@ class Welcome {
 		?>
 		<div class="notice notice-info notice-10up-experience-welcome is-dismissible">
 			<p>
-				<?php esc_html_e( 'Thank you for installing the Fueled Experience plugin.', 'tenup' ); ?>
+				<?php esc_html_e( 'Thank you for installing the 10up Experience plugin.', 'tenup' ); ?>
 			</p>
 
 			<p>

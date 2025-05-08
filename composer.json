@@ -1,11 +1,11 @@
 {
   "name": "10up/10up-experience",
-  "description": "The Fueled Experience plugin configures WordPress to better protect and inform clients, aligned to Fueled's best practices",
+  "description": "The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up's best practices",
   "minimum-stability": "dev",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
-    "fueled"
+    "10up"
   ],
   "homepage": "https://github.com/10up/10up-experience",
   "license": [
@@ -13,8 +13,8 @@
   ],
   "authors": [
     {
-      "name": "Fueled",
-      "homepage": "https://fueled.com/"
+      "name": "10up",
+      "homepage": "https://10up.com/"
     }
   ],
   "autoload": {

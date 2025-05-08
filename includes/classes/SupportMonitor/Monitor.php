@@ -168,7 +168,7 @@ class Monitor {
 	public function setting_section_description() {
 		?>
 		<p>
-			<?php esc_html_e( 'Fueled collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
+			<?php esc_html_e( '10up collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
 		</p>
 		<?php
 	}

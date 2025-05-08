@@ -1,8 +1,8 @@
-# Fueled Experience Plugin
+# 10up Experience Plugin
 
-> The Fueled Experience plugin configures WordPress to better protect and inform our clients, aligned to Fueled’s best practices. It is not meant as a general-distribution plugin and does not have an open development process, but is available for public perusal.
+> The 10up Experience plugin configures WordPress to better protect and inform our clients, aligned to 10up’s best practices. It is not meant as a general-distribution plugin and does not have an open development process, but is available for public perusal.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/v/tag/10up/10up-experience?label=release)](https://github.com/10up/10up-experience/tags) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.9%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/10up-experience.svg)](https://github.com/10up/10up-experience/blob/develop/LICENSE.md)
+[![Build Status](https://travis-ci.org/10up/10up-experience.svg?branch=master)](https://travis-ci.org/10up/10up-experience) [![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/v/tag/10up/10up-experience?label=release)](https://github.com/10up/10up-experience/tags) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.9%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/10up-experience.svg)](https://github.com/10up/10up-experience/blob/develop/LICENSE.md)
 
 ## Requirements
 
@@ -50,7 +50,7 @@ Adds an option to general settings to restrict REST API access. The options are:
 
 ### Authors
 
-Removes Fueled user author archives so they aren't mistakenly indexed by search engines.
+Removes 10up user author archives so they aren't mistakenly indexed by search engines.
 
 ### Gutenberg
 
@@ -60,7 +60,7 @@ Adds an option in writing to switch back to Classic Editor.
 
 ### Plugins
 
- Adds a Fueled Suggested Plugins section to the plugins screen. Warns users who attempt to deactivate the Fueled Experience plugin. Outputs a notice on non-suggested plugins tabs warning users from installing non-approved plugins. If `DISALLOW_FILE_MODS` is on, update notices will be shown in the plugins table.
+ Adds a 10up Suggested Plugins section to the plugins screen. Warns users who attempt to deactivate the 10up Experience plugin. Outputs a notice on non-suggested plugins tabs warning users from installing non-approved plugins. If `DISALLOW_FILE_MODS` is on, update notices will be shown in the plugins table.
 
 ### Post Passwords
 
@@ -70,7 +70,7 @@ Password protecting post functionality is removed both in Gutenberg and the clas
 
 ### Monitor
 
-Sends non-PII information about the website back to Fueled including plugins installed, constants defined in `wp-config.php`, Fueled user accounts, and more.
+Sends non-PII information about the website back to 10up including plugins installed, constants defined in `wp-config.php`, 10up user accounts, and more.
 
 *Configured in `Settings > General` or `Settings > Network Settings` if network activated.*
 
@@ -95,7 +95,7 @@ Define `TENUP_EXPERIENCE_DISABLE_HIBP` as `true` to disable Have I Been Pwned pa
 
 `X-Frame-Origins` is set to `sameorigin` to prevent click jacking.
 
-*Note:* Fueled admin branding can be disabled by defining the constant `TENUP_DISABLE_BRANDING` as `true`.
+*Note:* 10up admin branding can be disabled by defining the constant `TENUP_DISABLE_BRANDING` as `true`.
 
 There are 2 filters available here:
 - `tenup_experience_x_frame_options` - (default value) `SAMEORIGIN` can be changed to `DENY`.
@@ -103,7 +103,7 @@ There are 2 filters available here:
 
 ### SSO
 
-Fueled Experience includes Fueled SSO functionality. This feature can be enabled or disabled in `Settings > General`. It is enabled by default. There are some useful constants related to this functionality:
+10up Experience includes 10up SSO functionality. This feature can be enabled or disabled in `Settings > General`. It is enabled by default. There are some useful constants related to this functionality:
 
 - `TENUPSSO_DISABLE` - Define this as `true` to force disable SSO.
 - `TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN` - Define this as `true` to disable username/password log ins completely.
@@ -157,12 +157,12 @@ Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
 
 ### Environment Indicator
 
-To enhance user awareness and minimize the risk of making unintended changes, Fueled Experience includes a visual indicator integrated into the admin bar. This feature clearly displays which environment (e.g., development, staging, production) the user is currently working in.
+To enhance user awareness and minimize the risk of making unintended changes, 10up Experience includes a visual indicator integrated into the admin bar. This feature clearly displays which environment (e.g., development, staging, production) the user is currently working in.
 
 
 ### Comments
 
-Fueled Experience includes a feature to disable comments across the site. This feature can be enabled or disabled in `Settings > General`. It is disabled by default.
+10up Experience includes a feature to disable comments across the site. This feature can be enabled or disabled in `Settings > General`. It is disabled by default.
 
 On top of disabling the comment form, this feature removes the following:
 
@@ -208,11 +208,11 @@ The default list of disallowed blocks is:
 
 ## Support Level
 
-**Active:** Fueled is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
+**Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
 
 ## Changelog
 
-A complete listing of all notable changes to the Fueled Experience Plugin are documented in [CHANGELOG.md](https://github.com/10up/10up-experience/blob/develop/CHANGELOG.md).
+A complete listing of all notable changes to the 10up Experience Plugin are documented in [CHANGELOG.md](https://github.com/10up/10up-experience/blob/develop/CHANGELOG.md).
 
 ## Like what you see?
 

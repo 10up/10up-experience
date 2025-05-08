@@ -61,7 +61,7 @@ class Plugins {
 	 */
 	public function tenup_plugin_install_link( $tabs ) {
 		$new_tabs = array(
-			'tenup' => esc_html__( 'Fueled Suggested', 'tenup' ),
+			'tenup' => esc_html__( '10up Suggested', 'tenup' ),
 		);
 
 		foreach ( $tabs as $key => $value ) {
@@ -112,7 +112,7 @@ class Plugins {
 					echo wp_kses_post(
 						sprintf(
 							// translators: %s is a link to the 10up Suggested plugins screen
-							__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>Fueled Suggestions</a> and consult your site team.", 'tenup' ),
+							__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ),
 							esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) )
 						)
 					);

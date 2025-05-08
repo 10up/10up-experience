@@ -22,6 +22,7 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 define( 'TENUP_EXPERIENCE_VERSION', '1.15.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
+define( 'TENUP_EXPERIENCE_URL', plugin_dir_url( __FILE__ ) );
 
 if ( ! defined( 'TENUPSSO_PROXY_URL' ) ) {
 	define( 'TENUPSSO_PROXY_URL', 'https://ssoproxy.10uplabs.com/wp-login.php' );

@@ -427,8 +427,10 @@ class SSO {
 				align-items: center;
 				justify-content: center;
 				background-color: #6353f6;
-				padding: 5px 10px;
+				padding: 10px;
 				border-radius: 20px;
+				min-height: initial;
+				line-height: 1.2;
 				border: 2px solid #6353f6;
 			}
 
@@ -441,7 +443,7 @@ class SSO {
 			.sso .button:hover {
 				background-color: transparent;
 				border: 2px solid #6353f6;
-				color: #000;
+				color: #3c434a;
 			}
 
 			.sso .button svg {

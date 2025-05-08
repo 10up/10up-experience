@@ -61,7 +61,7 @@ class Plugins {
 	 */
 	public function tenup_plugin_install_link( $tabs ) {
 		$new_tabs = array(
-			'tenup' => esc_html__( '10up Suggested', 'tenup' ),
+			'tenup' => esc_html__( 'Fueled Suggested', 'tenup' ),
 		);
 
 		foreach ( $tabs as $key => $value ) {
@@ -112,7 +112,7 @@ class Plugins {
 					echo wp_kses_post(
 						sprintf(
 							// translators: %s is a link to the 10up Suggested plugins screen
-							__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ),
+							__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>Fueled Suggestions</a> and consult your site team.", 'tenup' ),
 							esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) )
 						)
 					);
@@ -172,6 +172,18 @@ class Plugins {
 	 * constant it is not possible to update any plugin.
 	 */
 	public function set_plugin_update_actions() {
+
+		/**
+		 * VIP has it's own update notification system that performs this same logic.
+		 *
+		 * As such, if we're on a VIP environment, we should not run this logic.
+		 *
+		 * See: https://github.com/Automattic/vip-go-mu-plugins/blob/develop/codebase-manager/plugins/plugins-manager.php#L65-L77
+		 */
+		if ( defined( 'VIP_GO_APP_ENVIRONMENT' ) ) {
+			return;
+		}
+
 		$plugins = get_site_transient( 'update_plugins' );
 
 		if ( isset( $plugins->response ) && is_array( $plugins->response ) ) {

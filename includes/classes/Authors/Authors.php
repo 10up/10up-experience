@@ -68,7 +68,7 @@ class Authors {
 		}
 
 		if ( true === $is_author_disabled ) {
-			\wp_safe_redirect( home_url(), '301', '10up Experience' );
+			\wp_safe_redirect( home_url(), '301', 'Fueled Experience' );
 			exit();
 		}
 	}

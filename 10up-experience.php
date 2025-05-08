@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       10up Experience
+ * Plugin Name:       Fueled Experience
  * Plugin URI:        https://github.com/10up/10up-experience
- * Description:       The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:           1.14.0
- * Author:            10up
- * Author URI:        https://10up.com
+ * Description:       The Fueled Experience plugin configures WordPress to better protect and inform clients, aligned to Fueled’s best practices.
+ * Version:           1.15.0
+ * Author:            Fueled
+ * Author URI:        https://fueled.com
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       tenup
+ * Text Domain:       10up
  * Domain Path:       /languages/
  * Update URI:        https://github.com/10up/10up-experience
  *
@@ -19,9 +19,10 @@ namespace TenUpExperience;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.14.0' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.15.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
+define( 'TENUP_EXPERIENCE_URL', plugin_dir_url( __FILE__ ) );
 
 if ( ! defined( 'TENUPSSO_PROXY_URL' ) ) {
 	define( 'TENUPSSO_PROXY_URL', 'https://ssoproxy.10uplabs.com/wp-login.php' );
@@ -70,6 +71,7 @@ if ( ! defined( 'TENUP_DISABLE_BRANDING' ) || ! TENUP_DISABLE_BRANDING ) {
 	AdminCustomizations\Customizations::instance();
 }
 
+AdminCustomizations\EnvironmentIndicator::instance();
 API\API::instance();
 Authentication\Usernames::instance();
 Authors\Authors::instance();

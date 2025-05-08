@@ -88,7 +88,6 @@ class Monitor {
 	 * @since 1.7
 	 */
 	public function ms_settings() {
-		$setting = $this->get_setting();
 		?>
 		<h2><?php esc_html_e( 'Monitor', 'tenup' ); ?></h2>
 
@@ -99,21 +98,20 @@ class Monitor {
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Enable', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-						<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $setting['enable_support_monitor'] ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+						<?php $this->enable_field(); ?>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><?php esc_html_e( 'API Key', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $setting['api_key'] ); ?>" class="regular-text">
+						<?php $this->api_key_field(); ?>
 					</td>
 				</tr>
 				<?php if ( Debug::instance()->is_debug_enabled() ) : ?>
 					<tr>
 						<th scope="row"><?php esc_html_e( 'API Server', 'tenup' ); ?></th>
 						<td>
-							<input name="tenup_support_monitor_settings[server_url]" type="url" id="tenup_server_url" value="<?php echo esc_attr( $setting['server_url'] ); ?>" class="regular-text">
+							<?php $this->api_server_field(); ?>
 						</td>
 					</tr>
 				<?php endif; ?>
@@ -143,6 +141,18 @@ class Monitor {
 			$settings['server_url'] = 'https://monitor.10up.com';
 		}
 
+		if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
+			$settings['server_url'] = SUPPORT_MONITOR_SERVER_URL;
+		}
+
+		if ( defined( 'SUPPORT_MONITOR_API_KEY' ) ) {
+			$settings['api_key'] = SUPPORT_MONITOR_API_KEY;
+		}
+
+		if ( defined( 'SUPPORT_MONITOR_ENABLE' ) ) {
+			$settings['enable_support_monitor'] = SUPPORT_MONITOR_ENABLE;
+		}
+
 		if ( ! empty( $setting_key ) ) {
 			return $settings[ $setting_key ];
 		}
@@ -158,7 +168,7 @@ class Monitor {
 	public function setting_section_description() {
 		?>
 		<p>
-			<?php esc_html_e( '10up collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
+			<?php esc_html_e( 'Fueled collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
 		</p>
 		<?php
 	}
@@ -234,8 +244,8 @@ class Monitor {
 	public function enable_field() {
 		$value = $this->get_setting( 'enable_support_monitor' );
 		?>
-		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 		<?php
 	}
 
@@ -247,7 +257,7 @@ class Monitor {
 	public function api_key_field() {
 		$value = $this->get_setting( 'api_key' );
 		?>
-		<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
+		<input name="tenup_support_monitor_settings[api_key]" type="text" id="tenup_api_key" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_API_KEY' ) ); ?> class="regular-text">
 		<?php
 	}
 
@@ -260,7 +270,7 @@ class Monitor {
 		$value = $this->get_setting( 'server_url' );
 
 		?>
-		<input placeholder="https://monitor.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>" class="regular-text">
+		<input placeholder="https://monitor.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ); ?> class="regular-text">
 		<?php
 	}
 
@@ -746,6 +756,11 @@ class Monitor {
 	 */
 	public function get_is_using_object_cache() {
 		if ( wp_using_ext_object_cache() ) {
+			return true;
+		}
+
+		// If this is a VIP site, we can assume they are using an object cache.
+		if ( defined( 'VIP_GO_APP_ENVIRONMENT' ) && 'local' !== VIP_GO_APP_ENVIRONMENT ) {
 			return true;
 		}
 

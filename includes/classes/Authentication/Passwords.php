@@ -18,6 +18,12 @@ class Passwords {
 	use Singleton;
 
 	/**
+	 * Stores the Have I Been Pwned API URL
+	 */
+	const HIBP_API_URL   = 'https://api.pwnedpasswords.com/range/';
+	const HIBP_CACHE_KEY = 'tenup_experience_hibp';
+
+	/**
 	 * Setup hooks
 	 *
 	 * @since 1.7
@@ -307,6 +313,11 @@ class Passwords {
 			return $errors;
 		}
 
+		// Validate the password against the Have I Been Pwned API.
+		if ( ! $this->is_password_secure( $password ) && is_wp_error( $errors ) ) {
+			$errors->add( 'password_reset_error', __( '<strong>ERROR:</strong> The password entered may have been included in a data breach and is not considered safe to use. Please choose another.', 'tenup' ) );
+		}
+
 		// Should a strong password be enforced for this user?
 		if ( $user_id ) {
 
@@ -373,5 +384,67 @@ class Passwords {
 		}
 
 		return $enforce;
+	}
+
+	/**
+	 * Check if password is secure by querying the Have I Been Pwned API.
+	 *
+	 * @param string $password Password to validate.
+	 *
+	 * @return bool True if password is ok, false if it shows up in a breach.
+	 */
+	protected function is_password_secure( $password ): bool {
+		// Default
+		$is_password_secure = true;
+
+		// Allow opt-out of Have I Been Pwned check through a constant or filter.
+		if (
+			( defined( 'TENUP_EXPERIENCE_DISABLE_HIBP' ) && TENUP_EXPERIENCE_DISABLE_HIBP ) ||
+			apply_filters( 'tenup_experience_disable_hibp', false, $password )
+		) {
+			return true;
+		}
+
+		$hash   = strtoupper( sha1( $password ) );
+		$prefix = substr( $hash, 0, 5 );
+		$suffix = substr( $hash, 5 );
+
+		$cached_result = wp_cache_get( $prefix . $suffix, self::HIBP_CACHE_KEY );
+
+		if ( false !== $cached_result || false ) { // remove || false; only used for testing
+			return $cached_result;
+		}
+
+		$response = wp_remote_get( self::HIBP_API_URL . $prefix, [ 'user-agent' => 'Fueled Experience WordPress Plugin' ] );
+
+		// Allow for a failed request to the HIPB API.
+		// Don't cache the result if the request failed.
+		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+			return true;
+		}
+
+		$body = wp_remote_retrieve_body( $response );
+
+		// Allow for a failed request to the HIPB API.
+		// Don't cache the result if the request failed.
+		if ( is_wp_error( $body ) ) {
+			return true;
+		}
+
+		$lines = explode( "\r\n", $body );
+
+		foreach ( $lines as $line ) {
+			$parts = explode( ':', $line );
+
+			// If the suffix is found in the response, the password may be in a breach.
+			if ( $parts[0] === $suffix ) {
+				$is_password_secure = false;
+			}
+		}
+
+		// Cache the result for 4 hours.
+		wp_cache_set( $prefix . $suffix, (int) $is_password_secure, self::HIBP_CACHE_KEY, 60 * 60 * 4 );
+
+		return $is_password_secure;
 	}
 }

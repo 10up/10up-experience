@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.16.0] - 2025-05-08
+* Change to Fueled branding
+
 ## [1.15.0] - 2025-03-20
 * Check haveibeenpwned API during password reset and account creation.
 * Don’t render the plugin update notices on VIP as they’re duplicated.

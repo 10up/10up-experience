@@ -433,8 +433,7 @@ class SSO {
 				gap: 8px;
 				justify-content: center;
 				line-height: 1;
-				padding-inline-end: 14px;
-				padding: 4px;
+				padding: 4px 14px 4px 4px;
 				transition-duration: 0.2s;
 				transition-property: background-color, color;
 				transition-timing-function: ease-out;

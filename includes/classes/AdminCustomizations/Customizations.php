@@ -27,7 +27,7 @@ class Customizations {
 		add_filter( 'admin_footer_text', [ $this, 'filter_admin_footer_text' ] );
 		add_action( 'admin_bar_menu', [ $this, 'add_about_menu' ], 11 );
 		add_action( 'admin_menu', [ $this, 'register_admin_pages' ] );
-		add_filter( 'admin_title', [ $this, 'admin_title_fix' ], 10, 2 );
+		add_filter( 'admin_title', [ $this, 'admin_title_fix' ], 10, 1 );
 	}
 
 	/**

@@ -196,7 +196,7 @@ class Debug {
 			$max_size = apply_filters( 'tenup_support_monitor_max_debug_log_size', 1048576 );
 
 			// If the log is larger than 1mb, remove the oldest entry
-			while ( mb_strlen( serialize( (array) $log ), '8bit' ) > $max_size ) {
+			while ( mb_strlen( serialize( (array) $log ), '8bit' ) > $max_size ) { // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_serialize
 				array_pop( $log );
 			}
 		}

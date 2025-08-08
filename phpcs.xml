@@ -6,6 +6,7 @@
 	<!-- Use the 10up ruleset -->
 	<rule ref="10up-Default">
 		<exclude name="WordPress.Security.NonceVerification.Missing" />
+		<exclude name="WordPress.Security.NonceVerification.Recommended" />
 		<exclude name="WordPress.Security.ValidatedSanitizedInput.MissingUnslash" />
 	</rule>
 

@@ -43,10 +43,10 @@ class Customizations {
 	 * Because of the empty page parent, the title doesn't get output as expected.
 	 *
 	 * @param  string $admin_title The page title, with extra context added.
-	 * @param  string $title       The original page title.
+	 *
 	 * @return string              The altered page title.
 	 */
-	public function admin_title_fix( $admin_title, $title ) {
+	public function admin_title_fix( $admin_title ) {
 		$screen = get_current_screen();
 
 		wp_enqueue_style( '10up-admin', plugins_url( '/dist/css/admin.css', TENUP_EXPERIENCE_FILE ), array(), TENUP_EXPERIENCE_VERSION );

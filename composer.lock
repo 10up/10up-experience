@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21a9834ac35aa8bc5c983a4fda990fd8",
+    "content-hash": "5ea724793db5da55770281bd469e9314",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
@@ -196,16 +196,16 @@
     "packages-dev": [
         {
             "name": "10up/phpcs-composer",
-            "version": "dev-trunk",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/phpcs-composer.git",
-                "reference": "75fde1b62cbb551146159154b0d7135d1da0db1c"
+                "reference": "04fe5f0d61948f9e38e9cd037a5ee50dcdbf4688"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/10up/phpcs-composer/zipball/75fde1b62cbb551146159154b0d7135d1da0db1c",
-                "reference": "75fde1b62cbb551146159154b0d7135d1da0db1c",
+                "url": "https://api.github.com/repos/10up/phpcs-composer/zipball/04fe5f0d61948f9e38e9cd037a5ee50dcdbf4688",
+                "reference": "04fe5f0d61948f9e38e9cd037a5ee50dcdbf4688",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,6 @@
                 "dealerdirect/phpcodesniffer-composer-installer": "*",
                 "phpcompatibility/php-compatibility": "dev-develop as 9.99.99"
             },
-            "default-branch": true,
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -231,9 +230,9 @@
             "description": "10up's PHP CodeSniffer Ruleset",
             "support": {
                 "issues": "https://github.com/10up/phpcs-composer/issues",
-                "source": "https://github.com/10up/phpcs-composer/tree/trunk"
+                "source": "https://github.com/10up/phpcs-composer/tree/3.0.0"
             },
-            "time": "2023-12-14T21:42:57+00:00"
+            "time": "2023-12-14T15:37:22+00:00"
         },
         {
             "name": "automattic/vipwpcs",
@@ -948,12 +947,10 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "10up/phpcs-composer": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
-    "platform-dev": [],
+    "platform": {},
+    "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }

@@ -49,4 +49,4 @@ jobs:
       - name: composer install
         run: composer install
       - name: PHPCS check
-        run: ./vendor/bin/phpcs .
+        run: composer lint

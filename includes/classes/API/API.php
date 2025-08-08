@@ -143,7 +143,7 @@ class API {
 	 * @param  int $user_id User ID
 	 * @return bool         Whether the given user can access the REST API
 	 */
-	public function can_access_rest_api( $user_id = 0 ) {
+	public function can_access_rest_api( $user_id = 0 ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		global $wp;
 
 		$route = '';

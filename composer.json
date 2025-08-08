@@ -31,11 +31,11 @@
     "bjeavons/zxcvbn-php": "^1.0"
   },
   "require-dev": {
-    "10up/phpcs-composer": "dev-trunk"
+    "10up/phpcs-composer": "^3.0"
   },
   "scripts": {
-    "lint": "phpcs --extensions=php --warning-severity=8 -s .",
-    "lint-fix": "phpcbf ."
+    "lint": "./vendor/bin/phpcs --standard=phpcs.xml",
+    "lint-fix": "./vendor/bin/phpcbf --standard=phpcs.xml"
   },
   "config": {
     "allow-plugins": {

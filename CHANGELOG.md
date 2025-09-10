@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.16.5]- 2025-09-10
+* Change SSO logo
+
 ## [1.16.4]- 2025-05-08
 * Button style update
 

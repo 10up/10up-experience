@@ -91,6 +91,37 @@ class Comments {
 	}
 
 	/**
+	 * Get the list of comment types that should bypass disable comments filters.
+	 *
+	 * This allows certain comment types (like Block Notes introduced in WordPress 6.9)
+	 * to continue functioning even when traditional comments are disabled.
+	 *
+	 * Block Notes are stored as WP_Comments with a comment_type of 'note' and are used
+	 * for collaborative feedback within the block editor. They rely on edit_post capability
+	 * rather than comment capabilities.
+	 *
+	 * @since 1.12.0
+	 * @see https://make.wordpress.org/core/2025/11/15/notes-feature-in-wordpress-6-9/
+	 *
+	 * @return array Array of comment types that should be allowed.
+	 */
+	protected function get_allowed_comment_types() {
+		$allowed_types = array( 'note' );
+
+		/**
+		 * Filter the list of comment types that bypass the disable comments feature.
+		 *
+		 * This allows plugins to extend the list of comment types that should continue
+		 * to function when traditional comments are disabled.
+		 *
+		 * @since 1.12.0
+		 *
+		 * @param array $allowed_types Array of comment type strings.
+		 */
+		return apply_filters( 'tenup_experience_disable_comments_allowed_types', $allowed_types );
+	}
+
+	/**
 	 * Register restrict REST API setting.
 	 *
 	 * @return void
@@ -258,35 +289,85 @@ class Comments {
 	/**
 	 * Hide any existing comments on front end
 	 *
-	 * @return array
+	 * This filter preserves certain comment types (like Block Notes) while hiding
+	 * traditional comments from the frontend.
+	 *
+	 * @since 1.11.2
+	 *
+	 * @param array $comments Array of comments.
+	 * @param int   $post_id  Post ID.
+	 *
+	 * @return array Filtered array of comments.
 	 */
-	public function disable_comments_hide_existing_comments() {
-		return [];
+	public function disable_comments_hide_existing_comments( $comments, $post_id ) {
+		$allowed_types = $this->get_allowed_comment_types();
+
+		// If no allowed types, return empty array (original behavior).
+		if ( empty( $allowed_types ) ) {
+			return array();
+		}
+
+		// Filter to only include allowed comment types (e.g., Block Notes).
+		return array_filter(
+			$comments,
+			function ( $comment ) use ( $allowed_types ) {
+				return in_array( $comment->comment_type, $allowed_types, true );
+			}
+		);
 	}
 
 	/**
 	 * Disable commenting
 	 *
-	 * @return boolean
+	 * Block Notes do not rely on the comments_open or pings_open filters,
+	 * so this can safely return false for all contexts.
+	 *
+	 * @since 1.11.2
+	 *
+	 * @param bool $open    Whether comments are open.
+	 * @param int  $post_id Post ID.
+	 *
+	 * @return bool Always returns false to disable commenting.
 	 */
-	public function disable_comments_status() {
+	public function disable_comments_status( $open, $post_id ) {
 		return false;
 	}
 
 	/**
 	 * Short-circuit WP_Comment_Query
 	 *
-	 * @param array $comment_data Comment data.
-	 * @param array $query        Query data.
+	 * This filter prevents traditional comment queries from executing, but allows
+	 * certain comment types (like Block Notes) to pass through by checking the
+	 * query's 'type' parameter.
 	 *
-	 * @return array|int|null
+	 * Block Notes (WordPress 6.9+) are stored as WP_Comments with comment_type='note'
+	 * and must be able to query the database for the Notes feature to work.
+	 *
+	 * @since 1.11.2
+	 * @see https://make.wordpress.org/core/2025/11/15/notes-feature-in-wordpress-6-9/
+	 *
+	 * @param array|int|null   $comment_data Comment data (null to allow query to proceed).
+	 * @param \WP_Comment_Query $query        The WP_Comment_Query instance.
+	 *
+	 * @return array|int|null Returns null to allow query, or array/int to short-circuit.
 	 */
 	public function filter_comments_pre_query( $comment_data, $query ) {
 
-		if ( is_a( $query, '\WP_Comment_Query' ) && $query->query_vars['count'] ) {
-			return 0;
+		if ( is_a( $query, '\WP_Comment_Query' ) ) {
+			$comment_type = $query->query_vars['type'] ?? '';
+
+			// Allow certain comment types (like Block Notes) to pass through.
+			if ( in_array( $comment_type, $this->get_allowed_comment_types(), true ) ) {
+				return $comment_data; // Return null to allow the query to proceed.
+			}
+
+			// Short-circuit count queries for traditional comments.
+			if ( $query->query_vars['count'] ) {
+				return 0;
+			}
 		}
 
+		// Short-circuit all other comment queries.
 		return array();
 	}
 

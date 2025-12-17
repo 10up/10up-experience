@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+
+- WordPress 6.9+ Block Notes compatibility with disable comments feature.
+- New filter `tenup_experience_disable_comments_allowed_types` to allow specific comment types when comments are disabled.
+
+### Fixed
+
+- Block Notes now work correctly when traditional comments are disabled.
+- Comment query filters now properly check comment type before short-circuiting.
+
 ## [1.16.5]- 2025-09-10
 * Change SSO logo
 

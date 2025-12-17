@@ -170,6 +170,17 @@ On top of disabling the comment form, this feature removes the following:
 - Comment blocks from the post editor.
 - Comments from the admin bar.
 
+#### WordPress 6.9+ Block Notes Compatibility
+
+As of version 1.17.0, the disable comments feature is fully compatible with Block Notes introduced in WordPress 6.9. Block Notes are a collaborative feedback feature that allows teams to leave contextual comments on blocks within the editor.
+
+When comments are disabled, Block Notes will continue to function normally because they:
+- Use a different comment type (`note` instead of `comment`)
+- Rely on `edit_post` capability rather than comment capabilities
+- Are only visible within the block editor, not on the frontend
+
+This means you can safely disable traditional comments while still using Block Notes for editorial collaboration.
+
 #### Constants
 
 - `TENUP_DISABLE_COMMENTS`
@@ -183,6 +194,19 @@ Setting this constant will disable the UI for enabling/disabling comments in the
 
 Filters whether to disable comments. Default is `false`.
 Defining this filter will disable the UI for enabling/disabling comments in the admin.
+
+- `tenup_experience_disable_comments_allowed_types`
+
+Filters the list of comment types that should bypass the disable comments feature. By default, this includes `note` for WordPress 6.9+ Block Notes. This allows plugins to extend the list of comment types that should continue to function when traditional comments are disabled.
+
+Example:
+
+```php
+add_filter( 'tenup_experience_disable_comments_allowed_types', function( $allowed_types ) {
+    $allowed_types[] = 'custom_comment_type';
+    return $allowed_types;
+} );
+```
 
 - `tenup_experience_disable_comments_disallowed_blocks`
 

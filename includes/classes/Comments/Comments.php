@@ -346,7 +346,7 @@ class Comments {
 	 * @since 1.11.2
 	 * @see https://make.wordpress.org/core/2025/11/15/notes-feature-in-wordpress-6-9/
 	 *
-	 * @param array|int|null   $comment_data Comment data (null to allow query to proceed).
+	 * @param array|int|null    $comment_data Comment data (null to allow query to proceed).
 	 * @param \WP_Comment_Query $query        The WP_Comment_Query instance.
 	 *
 	 * @return array|int|null Returns null to allow query, or array/int to short-circuit.

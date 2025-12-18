@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e71df757862946befb8f2caee668b603",
+    "content-hash": "afbe7caa3aee8eac28a5bb5ef2c0e6ce",
     "packages": [
         {
             "name": "bjeavons/zxcvbn-php",
@@ -344,7 +344,7 @@
     "packages-dev": [
         {
             "name": "10up/phpcs-composer",
-            "version": "dev-trunk",
+            "version": "3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/phpcs-composer.git",
@@ -364,7 +364,6 @@
                 "dealerdirect/phpcodesniffer-composer-installer": "*",
                 "phpcompatibility/php-compatibility": "10.0.0-alpha2 as 9.99.99"
             },
-            "default-branch": true,
             "type": "phpcodesniffer-standard",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -379,7 +378,7 @@
             "description": "10up's PHP CodeSniffer Ruleset",
             "support": {
                 "issues": "https://github.com/10up/phpcs-composer/issues",
-                "source": "https://github.com/10up/phpcs-composer/tree/trunk"
+                "source": "https://github.com/10up/phpcs-composer/tree/3.0.1"
             },
             "time": "2025-12-09T17:31:17+00:00"
         },
@@ -1128,9 +1127,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "10up/phpcs-composer": 20
-    },
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

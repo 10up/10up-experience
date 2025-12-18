@@ -143,7 +143,7 @@ class API {
 	 * @param  int $user_id User ID
 	 * @return bool         Whether the given user can access the REST API
 	 */
-	public function can_access_rest_api( $user_id = 0 ) {
+	public function can_access_rest_api( $user_id = 0 ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
 		global $wp;
 
 		$route = '';
@@ -152,6 +152,17 @@ class API {
 			$route = $wp->query_vars['rest_route'];
 		}
 
+		/**
+		 * Filter the REST API routes that unauthenticated users can access.
+		 *
+		 * By default, for unauthenticated users, no routes are allowed.
+		 *
+		 * @link https://developer.wordpress.org/rest-api/reference/routes/
+		 *
+		 * @param array<string> $allowed_rest_routes_override The allowed REST API routes.
+		 *
+		 * @return array<string> The allowed REST API routes.
+		 */
 		$allowed_rest_routes_override = apply_filters( 'tenup_experience_rest_api_allowlist', [] );
 
 		return is_user_logged_in() || in_array( $route, $allowed_rest_routes_override, true );

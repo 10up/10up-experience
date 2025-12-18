@@ -141,6 +141,11 @@ class Monitor {
 			$settings['server_url'] = 'https://monitor.10up.com';
 		}
 
+		// Disable support monitor for local environments to prevent polluting monitor with .test/.local domains
+		if ( $this->is_local_environment() ) {
+			$settings['enable_support_monitor'] = 'no';
+		}
+
 		if ( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ) {
 			$settings['server_url'] = SUPPORT_MONITOR_SERVER_URL;
 		}
@@ -161,6 +166,16 @@ class Monitor {
 	}
 
 	/**
+	 * Check if we're in a local environment
+	 *
+	 * @since 2.1
+	 * @return bool
+	 */
+	public function is_local_environment() {
+		return function_exists( 'wp_get_environment_type' ) && 'local' === wp_get_environment_type();
+	}
+
+	/**
 	 * Output setting section description
 	 *
 	 * @since 1.7
@@ -170,6 +185,16 @@ class Monitor {
 		<p>
 			<?php esc_html_e( '10up collects data on site health including plugin, WordPress, and system versions as well as general site issues to provide proactive support to your website. No proprietary data or user information is sent back to us. Although recommended, this functionality is optional and can be disabled.', 'tenup' ); ?>
 		</p>
+		<?php if ( $this->is_local_environment() ) : ?>
+			<div class="notice notice-info inline">
+				<p>
+					<strong>
+						<?php esc_html_e( 'Local Environment Detected:', 'tenup' ); ?>
+					</strong>
+					<?php esc_html_e( 'Support monitoring is automatically disabled in local environments to prevent test/development data from being sent to the monitoring service.', 'tenup' ); ?>
+				</p>
+			</div>
+		<?php endif; ?>
 		<?php
 	}
 
@@ -557,9 +582,9 @@ class Monitor {
 				'slug'    => 'wordpress',
 			],
 			[
-				'name'   => 'PHP',
-				'type'   => 'system',
-				'slug'   => 'php',
+				'name'    => 'PHP',
+				'type'    => 'system',
+				'slug'    => 'php',
 				'version' => $this->get_php_version(),
 			],
 		];

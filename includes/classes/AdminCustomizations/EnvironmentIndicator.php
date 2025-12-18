@@ -60,8 +60,10 @@ class EnvironmentIndicator {
 	 */
 	public function get_environment_label( $environment ) {
 		switch ( $environment ) {
-			case 'development':
 			case 'local':
+				$label = __( 'Local', 'tenup' );
+				break;
+			case 'development':
 				$label = __( 'Development', 'tenup' );
 				break;
 			case 'staging':

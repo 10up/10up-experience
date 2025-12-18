@@ -2,6 +2,35 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.17.0] - 2025-12-18
+* Make sure user roles are unindexed arrays by @felipeelia in https://github.com/10up/10up-experience/pull/186
+* Bump express from 4.19.2 to 4.22.1 in the npm_and_yarn group across 1 directory by @dependabot[bot] in https://github.com/10up/10up-experience/pull/188
+* Fix typo in Comments by @szepeviktor in https://github.com/10up/10up-experience/pull/167
+* PHP Coding Standards Refresh by @claytoncollie in https://github.com/10up/10up-experience/pull/182
+* Disable Monitor when working on a local environment by @claytoncollie in https://github.com/10up/10up-experience/pull/183
+* Feature/clayton local env type by @claytoncollie in https://github.com/10up/10up-experience/pull/191
+* Document the REST API allowed route filter by @claytoncollie in https://github.com/10up/10up-experience/pull/192
+* Bump the npm_and_yarn group across 1 directory with 8 updates by @dependabot[bot] in https://github.com/10up/10up-experience/pull/196
+* Add composer installers to the required dependencies by @claytoncollie in https://github.com/10up/10up-experience/pull/194
+
+## [1.16.5]- 2025-09-10
+* Change SSO logo
+
+## [1.16.4]- 2025-05-08
+* Button style update
+
+## [1.16.3]- 2025-05-08
+* Button style update
+
+## [1.16.2]- 2025-05-08
+* Button update
+
+## [1.16.1]- 2025-05-08
+* Revert branding
+
+## [1.16.0] - 2025-05-08
+* Change to Fueled branding
+
 ## [1.15.0] - 2025-03-20
 * Check haveibeenpwned API during password reset and account creation.
 * Don’t render the plugin update notices on VIP as they’re duplicated.

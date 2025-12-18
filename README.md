@@ -48,6 +48,38 @@ Adds an option to general settings to restrict REST API access. The options are:
 
 *Configured in `Settings > Reading`.*
 
+#### Filters
+
+- `tenup_experience_rest_api_allowlist`
+
+Allows specific REST API routes to bypass authentication requirements. This is useful when you need certain endpoints to be publicly accessible while keeping the rest of the API restricted.
+
+**Parameters:**
+- `$allowed_routes` (array) - An array of REST API routes that should be publicly accessible. Default is an empty array.
+
+**Example: Allow a single route**
+
+```php
+add_filter( 'tenup_experience_rest_api_allowlist', function( $allowed_routes ) {
+    $allowed_routes[] = '/wp/v2/posts';
+    return $allowed_routes;
+} );
+```
+
+**Example: Allow multiple routes**
+
+```php
+add_filter( 'tenup_experience_rest_api_allowlist', function( $allowed_routes ) {
+    return array_merge( $allowed_routes, [
+        '/wp/v2/posts',
+        '/wp/v2/pages',
+        '/my-plugin/v1/public-endpoint',
+    ] );
+} );
+```
+
+**Note:** Routes must match exactly as they appear in the REST API. You can find the route for an endpoint by examining the `rest_route` query variable or by checking the REST API documentation.
+
 ### Authors
 
 Removes 10up user author archives so they aren't mistakenly indexed by search engines.

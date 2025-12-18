@@ -94,12 +94,12 @@ class SSO {
 	public function ms_settings() {
 		$setting = $this->get_setting();
 		?>
-		<h2><?php esc_html_e( '10up SSO', 'tenup' ); ?></h2>
-		<p><?php esc_html_e( 'This allows members of 10up on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
+		<h2><?php esc_html_e( 'Fueled SSO', 'tenup' ); ?></h2>
+		<p><?php esc_html_e( 'This allows members of Fueled on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
 		<table class="form-table" role="presentation">
 			<tbody>
 				<tr>
-					<th scope="row"><?php esc_html_e( 'Allow 10up SSO', 'tenup' ); ?></th>
+					<th scope="row"><?php esc_html_e( 'Allow Fueled SSO', 'tenup' ); ?></th>
 					<td>
 						<input name="tenup_allow_sso" <?php checked( 'yes', $setting ); ?> type="radio" id="tenup_allow_sso_yes" value="yes"> <label for="tenup_allow_sso_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
 						<input name="tenup_allow_sso" <?php checked( 'no', $setting ); ?> type="radio" id="tenup_allow_sso_no" value="no"> <label for="tenup_allow_sso_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
@@ -132,7 +132,7 @@ class SSO {
 		);
 
 		register_setting( 'general', 'tenup_allow_sso', $settings_args );
-		add_settings_field( 'tenup_allow_sso', esc_html__( 'Allow 10up SSO', 'tenup' ), [ $this, 'sso_setting_field_output' ], 'general' );
+		add_settings_field( 'tenup_allow_sso', esc_html__( 'Allow Fueled SSO', 'tenup' ), [ $this, 'sso_setting_field_output' ], 'general' );
 	}
 
 	/**
@@ -167,7 +167,7 @@ class SSO {
 		<label for="tenup-allow-sso-no">
 			<?php esc_html_e( 'No', 'tenup' ); ?>
 		</label>
-		<p class="description"><?php esc_html_e( 'This allows members of 10up on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
+		<p class="description"><?php esc_html_e( 'This allows members of Fueled on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
 		<?php
 	}
 
@@ -358,7 +358,7 @@ class SSO {
 				TENUPSSO_PROXY_URL
 			);
 
-			wp_redirect( $proxy_url );
+			wp_redirect( $proxy_url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
 			exit;
 		}
 	}
@@ -374,11 +374,8 @@ class SSO {
 
 		$buttons_html = '<div class="sso"><div class="buttons">';
 
-		$buttons_html .= '<a href="' . esc_url( add_query_arg( 'type', '10up', $google_login ) ) . '" class="tenup-button button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 235.84 269.94"><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><path d="M60.93,4.5,0,34.5,12.08,48.92V186.13l48.85-48.87Z" fill="#df2b26"></path><path d="M117.5,215.8c0,7.53-5.09,10.75-10.75,10.75-7.51,0-9.26-4.57-9.26-9.54V173.88h-.32L73,198v24.64c0,13.57,7.26,25.52,24,25.52A30.65,30.65,0,0,0,117.5,240v6.58H142V173.88H117.5Zm84.25-43.4a28.58,28.58,0,0,0-20.69,8.33v-6.85H156.48v96.06h24.58V240a29.6,29.6,0,0,0,20.69,8.19c20.29,0,32.93-16.25,32.93-37.88,0-21.36-12.64-37.89-32.93-37.89Zm-6.58,54.82c-9.4,0-14.11-7.8-14.11-17.06s4.58-16.93,14.11-16.93c9.28,0,13.57,7.78,13.57,16.93C208.74,219.16,204.45,227.22,195.17,227.22Z" fill="#000"></path><path d="M157.09,0A78.6,78.6,0,0,0,85.93,112.26l.82.86L135.4,64.47,120.1,49.18h66.56v66.56l-15.3-15.3-48.92,48.92A78.71,78.71,0,1,0,157.09,0Z" fill="#df2b26"></path></g></g></svg>' .
-		'<span>Login</span></a>';
-
-		$buttons_html .= '<span class="sep"></span><a href="' . esc_url( add_query_arg( 'type', 'fueled', $google_login ) ) . '" class="fueled-button button"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="30" viewBox="0 0 25 30" class="m-logo__svg"><path fill-rule="evenodd" d="M21 7v1h2v2l-1 1v3l1 1v9h-2V14l-1-1h-2V3l-3-3H5L2 3v25H0v2h20v-2h-2V14h2v10l1 1h2l1-1v-9l1-1V9l-2-2h-2zm-5 6H4V3l1-1h10l1 1v10z"></path></svg>' .
-		'<span>Login</span></a>';
+		$buttons_html .= '<a href="' . esc_url( add_query_arg( 'type', '10up', $google_login ) ) . '" class="tenup-button button"><img src="' . TENUP_EXPERIENCE_URL . 'assets/img/planet.png" alt="Fueled logo" width="20" height="20" />' .
+		'<span>Sign in with Fueled</span></a>';
 
 		$buttons_html .= '</div><span class="or"><span>or</span></span>';
 		$buttons_html .= '</div>';
@@ -401,85 +398,87 @@ class SSO {
 	public function render_login_form_styles() {
 		?>
 		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,500&display=swap');
 			.sso {
-				font-weight: normal;
-				overflow: hidden;
-
-				margin-top: 20px;
-				margin-left: 0;
-				padding: 26px 24px 26px;
-				font-weight: 400;
-				overflow: hidden;
 				background: #fff;
 				border: 1px solid #c3c4c7;
 				box-shadow: 0 1px 3px rgb(0 0 0 / 4%);
+				font-weight: 400;
+				font-weight: normal;
+				margin-left: 0;
+				margin-top: 20px;
+				overflow: hidden;
+				overflow: hidden;
+				padding: 26px 24px 26px;
 			}
 
 			.sso .buttons {
+				align-items: center;
 				display: flex;
 				justify-content: center;
-				align-items: center;
 			}
 
 			.sso .button {
-				float: none;
-				display: block;
-				border: 0;
-				color: #50575e;
-				display: flex;
 				align-items: center;
+				background-color: #fff;
+				border-radius: 999px;
+				border: 1px solid #6353f6;
+				color: #000;
+				display: inline-flex;
+				font-family: "Inter", sans-serif;
+				font-optical-sizing: auto;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 500;
+				gap: 8px;
 				justify-content: center;
-				background-color: transparent;
-				padding: 10px;
+				line-height: 1;
+				padding: 4px 14px 4px 4px;
+				transition-duration: 0.2s;
+				transition-property: background-color, color;
+				transition-timing-function: ease-out;
 			}
 
-			.sso .button:hover {
-				background-color: transparent;
-				color: #135e96;
+			.sso .button img {
+				height: 32px;
+				width: 32px;
 			}
 
-			.sso .button svg {
-				height: 30px;
-				margin-right: 10px;
+			.sso .button:is(:hover, :focus) {
+				background-color: #6353f6;
+				border-color: #6353f6;
+				box-shadow: none;
+				color: #fff;
 			}
 
-			.sso .fueled-button svg {
-				height: 28px;
-			}
-
-			.sso .fueled-button svg path {
-				fill: #950001;
-			}
-
-			.sso .sep {
-				margin: 0 1em;
-				border-right: 1px solid rgba(0,0,0,0.13);
-				height: 20px;
+			.sso .button:focus {
+				outline: 2px solid #6353f6;
+				outline-offset: 2px;
 			}
 
 			.sso .or {
-				margin: .8em 0 2em 0;
-				width: 100%;
-				display: block;
 				border-bottom: 1px solid rgba(0,0,0,0.13);
-				text-align: center;
+				display: block;
 				line-height: 1;
+				margin: .8em 0 2em 0;
+				text-align: center;
+				width: 100%;
 			}
 
 			.sso .or span {
+				background: white;
+				color: #72777c;
+				padding: 0 1em;
 				position: relative;
 				top: 0.5em;
-				background: white;
-				padding: 0 1em;
-				color: #72777c;
 			}
 
 			#loginform {
-				margin-top: 0;
 				border-top: 0;
+				margin-top: 0;
+				padding-top: 0;
 				position: relative;
 				top: -17px;
-				padding-top: 0;
 			}
 
 			<?php if ( defined( 'TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN' ) && TENUPSSO_DISALLOW_ALL_DIRECT_LOGIN ) : ?>
@@ -509,7 +508,7 @@ class SSO {
 		if ( ! is_wp_error( $user ) ) {
 			$is_10up_sso = get_user_meta( $user->ID, '10up-sso', true );
 			if ( filter_var( $is_10up_sso, FILTER_VALIDATE_BOOLEAN ) ) {
-				return new WP_Error( 'tenup-sso', esc_html__( 'This account can only be logged into using 10up SSO.', 'tenup' ) );
+				return new WP_Error( 'tenup-sso', esc_html__( 'This account can only be logged into using Fueled SSO.', 'tenup' ) );
 			}
 		}
 

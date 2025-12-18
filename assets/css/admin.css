@@ -25,9 +25,12 @@
 	background-color: #d79d00 !important;
 }
 
-.tenup-experience-environment-indicator--local,
 .tenup-experience-environment-indicator--development {
 	background-color: #34863b !important;
+}
+
+.tenup-experience-environment-indicator--local {
+	background-color: #0073aa !important;
 }
 
 .tenup-experience-environment-indicator .ab-icon::before {
@@ -43,7 +46,10 @@
 	content: "\f111";
 }
 
-.tenup-experience-environment-indicator--local .ab-icon::before,
 .tenup-experience-environment-indicator--development .ab-icon::before {
 	content: "\f107";
+}
+
+.tenup-experience-environment-indicator--local .ab-icon::before {
+	content: "\f102";
 }

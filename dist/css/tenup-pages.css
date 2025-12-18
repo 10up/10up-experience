@@ -1,1 +1,88 @@
-.tenup-badge{background:url(../img/logo.png) no-repeat 0 0;background-size:cover;display:inline-block;height:126px;overflow:hidden;position:absolute;right:0;text-indent:100%;top:0;white-space:nowrap;width:110px}@media only screen and (-webkit-min-device-pixel-ratio:192),only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min-resolution:192dppx),only screen and (min-resolution:2dppx){.tenup-badge{background:url(../img/logo@2x.png) no-repeat 0 0;background-size:110px 126px}}.about-wrap img{max-width:100%}.about-wrap .full-width-img img{display:block;margin:0 auto}.about-wrap .nav-tab-active{background-color:#f1f1f1;border-bottom-color:#f6f7fb}.about-wrap .section{margin:0 auto;overflow:hidden;padding-bottom:20px}.about-wrap .center{text-align:center}.about-wrap .section ul{list-style:disc;margin-left:25px}@media screen and (max-width:480px){.about-wrap h2.nav-tab-wrapper{padding-right:0}.about-wrap h2 .nav-tab{box-sizing:border-box;margin-right:0;margin-top:0;width:100%}.about-wrap h1{padding-right:55px}.tenup-badge{height:63px;width:55px}.section-wrapper{padding:20px 0}.about-wrap .section-about{padding:0 20px}}
+/*!********************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./assets/css/tenup-pages.css ***!
+  \********************************************************************************************************************************************************************************/
+.tenup-badge {
+	background: url("../img/logo.png") no-repeat top left;
+	background-size: cover;
+	display: inline-block;
+	height: 126px;
+	overflow: hidden;
+	position: absolute;
+	right: 0;
+	text-indent: 100%;
+	top: 0;
+	white-space: nowrap;
+	width: 110px;
+}
+
+@media
+	only screen and (                min-resolution: 192dppx), only screen and (                min-resolution: 2dppx) {
+
+	.tenup-badge {
+		background: url("../img/logo@2x.png") no-repeat top left;
+		background-size: 110px 126px;
+	}
+}
+
+.about-wrap img {
+	max-width: 100%;
+}
+
+.about-wrap .full-width-img img {
+	display: block;
+	margin: 0 auto;
+}
+
+.about-wrap .nav-tab-active {
+	background-color: #f1f1f1; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+	border-bottom-color: #f6f7fb; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+}
+
+.about-wrap .section {
+	margin: 0 auto;
+	overflow: hidden;
+	padding-bottom: 20px;
+}
+
+.about-wrap .center {
+	text-align: center;
+}
+
+.about-wrap .section ul {
+	list-style: disc;
+	margin-left: 25px;
+}
+
+@media screen and (max-width: 480px) {
+
+	.about-wrap h2.nav-tab-wrapper {
+		padding-right: 0;
+	}
+
+	.about-wrap h2 .nav-tab {
+		box-sizing: border-box;
+		margin-right: 0;
+		margin-top: 0;
+		width: 100%;
+	}
+
+	.about-wrap h1 {
+		padding-right: 55px;
+	}
+
+	.tenup-badge {
+		height: 63px;
+		width: 55px;
+	}
+
+	.section-wrapper {
+		padding: 20px 0;
+	}
+
+	.about-wrap .section-about {
+		padding: 0 20px;
+	}
+}
+
+
+/*# sourceMappingURL=tenup-pages.css.map*/

@@ -154,7 +154,7 @@ class API {
 
 		/**
 		 * Filter the REST API routes that unauthenticated users can access.
- 		 *
+		 *
 		 * By default, for unauthenticated users, no routes are allowed.
 		 *
 		 * @link https://developer.wordpress.org/rest-api/reference/routes/

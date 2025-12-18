@@ -27,6 +27,7 @@
     "source": "https://github.com/10up/10up-experience"
   },
   "require": {
+    "composer/installers": "^1.0 || ^2.0",
     "yahnis-elsts/plugin-update-checker": "5.1",
     "bjeavons/zxcvbn-php": "^1.0"
   },
@@ -39,7 +40,8 @@
   },
   "config": {
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "composer/installers": true
     }
   }
 }

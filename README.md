@@ -148,6 +148,10 @@ Filters whether to log a message.
 
 Filters how many log items to store. Items are stored in array saved to the options table. Default is 500.
 
+- `tenup_experience_environment_type_label`
+
+Filters the label showing the environment type in the admin bar.
+
 #### Constants
 
 - `TENUP_DISABLE_ACTIVITYLOG`

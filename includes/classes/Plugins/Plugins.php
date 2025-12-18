@@ -36,7 +36,7 @@ class Plugins {
 		add_action( 'install_plugins_pre_beta', [ $this, 'add_admin_notice' ] );
 		add_action( 'install_plugins_pre_search', [ $this, 'add_admin_notice' ] );
 		add_action( 'install_plugins_pre_dashboard', [ $this, 'add_admin_notice' ] );
-		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta' ], 100, 4 );
+		add_filter( 'plugin_row_meta', [ $this, 'plugin_meta' ], 100, 2 );
 		add_action( 'admin_head-plugins.php', [ $this, 'plugin_deactivation_warning' ] );
 
 		/**
@@ -129,12 +129,10 @@ class Plugins {
 	 *                            including the version, author,
 	 *                            author URI, and plugin URI.
 	 * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
-	 * @param array  $plugin_data An array of plugin data.
-	 * @param string $status      Status of the plugin. Defaults are 'All', 'Active',
-	 *                            'Inactive', 'Recently Activated', 'Upgrade', 'Must-Use',
-	 *                            'Drop-ins', 'Search'.
+	 *
+	 * @return array
 	 */
-	public function plugin_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
+	public function plugin_meta( $plugin_meta, $plugin_file ) {
 		if ( '10up-experience/10up-experience.php' !== $plugin_file ) {
 			return $plugin_meta;
 		}
@@ -221,7 +219,11 @@ class Plugins {
 			'strong'  => array(),
 		);
 
-		// @var WP_Plugins_List_Table $wp_list_table
+		/**
+		 * WP Plugins List Table
+		 *
+		 * @var WP_Plugins_List_Table $wp_list_table
+		 */
 		$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 
 		if ( is_network_admin() ) {
@@ -240,6 +242,7 @@ class Plugins {
 		);
 
 		printf(
+			// translators: %s is the plugin name
 			esc_html__( 'There is a new version of %s available. ' ),
 			wp_kses( $plugin_data['Name'], $plugins_allowedtags )
 		);
@@ -252,11 +255,13 @@ class Plugins {
 
 		if ( empty( $url ) ) {
 			printf(
+				// translators: %s is the new version number
 				esc_html__( 'Version number is %s.' ),
 				esc_html( $response->new_version )
 			);
 		} else {
 			printf(
+				// translators: %1$s is the plugin URL, %2$s is the new version number
 				'<a href="%1$s" target="_blank">' . esc_html__( 'View version %2$s details.' ) . '</a>',
 				esc_url( $url ),
 				esc_html( $response->new_version )
@@ -326,10 +331,11 @@ class Plugins {
 		if ( ! empty( $update_plugins->response ) ) {
 			$counts['plugins'] = count( $update_plugins->response );
 			$plugins_title     = sprintf(
+				// translators: %d is the number of plugin updates
 				_n( '%d Plugin Update', '%d Plugin Updates', intval( $counts['plugins'] ) ),
 				intval( $counts['plugins'] )
 			);
-			$titles            = ! empty( $titles ) ? $titles . ', ' . esc_attr( $plugins_title ) : esc_attr( $plugins_title );
+			$titles = ! empty( $titles ) ? $titles . ', ' . esc_attr( $plugins_title ) : esc_attr( $plugins_title );
 		}
 		$counts['total'] = $counts['total'] + $counts['plugins'];
 

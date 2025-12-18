@@ -548,9 +548,9 @@ class Monitor {
 				'slug'    => 'wordpress',
 			],
 			[
-				'name'   => 'PHP',
-				'type'   => 'system',
-				'slug'   => 'php',
+				'name'    => 'PHP',
+				'type'    => 'system',
+				'slug'    => 'php',
 				'version' => $this->get_php_version(),
 			],
 		];

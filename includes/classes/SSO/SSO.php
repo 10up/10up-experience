@@ -101,8 +101,17 @@ class SSO {
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Allow Fueled SSO', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_allow_sso" <?php checked( 'yes', $setting ); ?> type="radio" id="tenup_allow_sso_yes" value="yes"> <label for="tenup_allow_sso_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-						<input name="tenup_allow_sso" <?php checked( 'no', $setting ); ?> type="radio" id="tenup_allow_sso_no" value="no"> <label for="tenup_allow_sso_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+						<fieldset>
+							<legend class="screen-reader-text"><span><?php esc_html_e( 'Allow Fueled SSO', 'tenup' ); ?></span></legend>
+							<label for="tenup_allow_sso_yes">
+								<input name="tenup_allow_sso" <?php checked( 'yes', $setting ); ?> type="radio" id="tenup_allow_sso_yes" value="yes">
+								<?php esc_html_e( 'Yes', 'tenup' ); ?>
+							</label><br>
+							<label for="tenup_allow_sso_no">
+								<input name="tenup_allow_sso" <?php checked( 'no', $setting ); ?> type="radio" id="tenup_allow_sso_no" value="no">
+								<?php esc_html_e( 'No', 'tenup' ); ?>
+							</label>
+						</fieldset>
 					</td>
 				</tr>
 			</tbody>
@@ -157,17 +166,18 @@ class SSO {
 	public function sso_setting_field_output() {
 		$allow_sso = $this->get_setting();
 		?>
-
-		<input id="tenup-allow-sso-yes" name="tenup_allow_sso" type="radio" value="yes"<?php checked( $allow_sso, 'yes' ); ?> />
-		<label for="tenup-allow-sso-yes">
-			<?php esc_html_e( 'Yes', 'tenup' ); ?>
-		</label><br>
-
-		<input id="tenup-allow-sso-no" name="tenup_allow_sso" type="radio" value="no"<?php checked( $allow_sso, 'no' ); ?> />
-		<label for="tenup-allow-sso-no">
-			<?php esc_html_e( 'No', 'tenup' ); ?>
-		</label>
-		<p class="description"><?php esc_html_e( 'This allows members of Fueled on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
+		<fieldset>
+			<legend class="screen-reader-text"><span><?php esc_html_e( 'Allow Fueled SSO', 'tenup' ); ?></span></legend>
+			<label for="tenup-allow-sso-yes">
+				<input id="tenup-allow-sso-yes" name="tenup_allow_sso" type="radio" value="yes" <?php checked( $allow_sso, 'yes' ); ?>>
+				<?php esc_html_e( 'Yes', 'tenup' ); ?>
+			</label><br>
+			<label for="tenup-allow-sso-no">
+				<input id="tenup-allow-sso-no" name="tenup_allow_sso" type="radio" value="no" <?php checked( $allow_sso, 'no' ); ?>>
+				<?php esc_html_e( 'No', 'tenup' ); ?>
+			</label>
+			<p class="description"><?php esc_html_e( 'This allows members of Fueled on your project team to log in via SSO. This is extremely important to streamline maintenance of your website.', '10up' ); ?></p>
+		</fieldset>
 		<?php
 	}
 

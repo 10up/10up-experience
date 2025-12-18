@@ -700,7 +700,7 @@ class Monitor {
 			$users[] = [
 				'email' => $user->user_email,
 				'name'  => $user->display_name,
-				'role'  => $user->roles,
+				'role'  => array_values( $user->roles ),
 			];
 		}
 
@@ -721,7 +721,7 @@ class Monitor {
 			$users[] = [
 				'email' => $user->user_email,
 				'name'  => $user->display_name,
-				'role'  => $user->roles,
+				'role'  => array_values( $user->roles ),
 			];
 		}
 
@@ -742,7 +742,7 @@ class Monitor {
 			$users[] = [
 				'email' => $user->user_email,
 				'name'  => $user->display_name,
-				'role'  => $user->roles,
+				'role'  => array_values( $user->roles ),
 			];
 		}
 

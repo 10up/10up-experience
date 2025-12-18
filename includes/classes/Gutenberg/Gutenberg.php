@@ -43,10 +43,7 @@ class Gutenberg {
 			esc_html__( 'Use Classic Editor', 'tenup' ),
 			[ $this, 'gutenberg_settings_ui' ],
 			'writing',
-			'default',
-			array(
-				'label_for' => 'disable-gutenberg-editor',
-			)
+			'default'
 		);
 	}
 
@@ -61,10 +58,10 @@ class Gutenberg {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'Gutenberg Editor Settings', 'tenup' ); ?></legend>
-			<p>
+			<label for="disable-gutenberg-editor">
 				<input id="disable-gutenberg-editor" name="<?php echo esc_attr( $this->get_disable_gutenberg_key() ); ?>" type="checkbox" value="1" <?php checked( $disable_editor, 1 ); ?> />
-			</p>
-			<p class="description"><?php esc_html_e( 'Disables Gutenberg, the new editor introduced in WordPress 5.0, in favor of the prior writing experience.', 'tenup' ); ?></p>
+				<?php esc_html_e( 'Disables Gutenberg, the new editor introduced in WordPress 5.0, in favor of the prior writing experience.', 'tenup' ); ?>
+			</label>
 		</fieldset>
 		<?php
 	}

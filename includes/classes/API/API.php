@@ -152,6 +152,17 @@ class API {
 			$route = $wp->query_vars['rest_route'];
 		}
 
+		/**
+		 * Filter the allowed REST API routes.
+		 *
+		 * By default, no routes are allowed.
+		 *
+		 * @link https://developer.wordpress.org/rest-api/reference/routes/
+		 *
+		 * @param array<string> $allowed_rest_routes_override The allowed REST API routes.
+		 *
+		 * @return array<string> The allowed REST API routes.
+		 */
 		$allowed_rest_routes_override = apply_filters( 'tenup_experience_rest_api_allowlist', [] );
 
 		return is_user_logged_in() || in_array( $route, $allowed_rest_routes_override, true );

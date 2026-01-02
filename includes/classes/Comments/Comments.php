@@ -133,7 +133,7 @@ class Comments {
 		];
 
 		register_setting( 'general', 'tenup_disable_comments', $settings_args );
-		add_settings_field( 'tenup_disable_comments', esc_html__( 'Disable Comments', 'tenup' ), [ $this, 'diable_comments_setting_field_output' ], 'general' );
+		add_settings_field( 'tenup_disable_comments', esc_html__( 'Disable Comments', 'tenup' ), [ $this, 'disable_comments_setting_field_output' ], 'general' );
 	}
 
 	/**
@@ -141,7 +141,7 @@ class Comments {
 	 *
 	 * @return void
 	 */
-	public function diable_comments_setting_field_output() {
+	public function disable_comments_setting_field_output() {
 		$disable_comments = $this->comments_are_disabled();
 		?>
 
@@ -150,7 +150,7 @@ class Comments {
 		checked( $disable_comments, true );
 		disabled( $this->is_ui_disabled() );
 		?>
-		 />
+		/>
 		<label for="tenup-disable-comments-yes">
 			<?php esc_html_e( 'Yes', 'tenup' ); ?>
 		</label><br>
@@ -160,7 +160,7 @@ class Comments {
 		checked( $disable_comments, false );
 		disabled( $this->is_ui_disabled() );
 		?>
-		 />
+		/>
 		<label for="tenup-disable-comments-no">
 			<?php esc_html_e( 'No', 'tenup' ); ?>
 		</label>
@@ -188,13 +188,13 @@ class Comments {
 						checked( $disable_comments, true );
 						disabled( $this->is_ui_disabled() );
 						?>
-						 type="radio" id="tenup_disable_comments_yes" value="yes"> <label for="tenup_disable_comments_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
+						type="radio" id="tenup_disable_comments_yes" value="yes"> <label for="tenup_disable_comments_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
 						<input name="tenup_disable_comments"
 						<?php
 						checked( $disable_comments, false );
 						disabled( $this->is_ui_disabled() );
 						?>
-						 type="radio" id="tenup_disable_comments_no" value="no"> <label for="tenup_disable_comments_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+						type="radio" id="tenup_disable_comments_no" value="no"> <label for="tenup_disable_comments_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
 					</td>
 				</tr>
 			</tbody>

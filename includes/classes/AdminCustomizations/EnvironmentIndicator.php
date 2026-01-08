@@ -121,6 +121,10 @@ class EnvironmentIndicator {
 	 * @return void
 	 */
 	public function add_inline_styles() {
+		if ( ! is_admin_bar_showing() ) {
+			return;
+		}
+
 		$environments = $this->get_the_environments();
 		if ( empty( $environments ) ) {
 			return;
@@ -132,14 +136,14 @@ class EnvironmentIndicator {
 
 		foreach ( $environments as $type => $environment ) {
 			$css .= sprintf(
-				' .tenup-experience-environment-indicator--%s .ab-item { background-color: %s !important; color: %s; }',
+				' .tenup-experience-environment-indicator--%s .ab-item { background-color: %s !important; color: %s !important; }',
 				esc_attr( $type ),
 				esc_attr( $environment['background_color'] ),
 				esc_attr( $environment['text_color'] )
 			);
 		}
 
-		printf( '<style id="tenup-experience-environment-indicator">%s</style>', $css );
+		printf( '<style id="tenup-experience-environment-indicator">%s</style>', esc_attr( wp_strip_all_tags( $css ) ) );
 	}
 
 	/**

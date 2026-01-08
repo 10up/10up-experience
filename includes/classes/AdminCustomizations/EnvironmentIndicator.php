@@ -36,8 +36,8 @@ class EnvironmentIndicator {
 	 *
 	 * @return array Array of environments.
 	 */
-	public function get_the_environments() {
-		$environments = [
+	public function get_the_environments(): array {
+		$default_environments = [
 			'production' => [
 				'label'            => __( 'Production', 'tenup' ),
 				'icon'             => 'dashicons-admin-site',
@@ -77,7 +77,9 @@ class EnvironmentIndicator {
 		 *                       - background_color (string): Hex color code
 		 *                       - text_color (string): Hex color code
 		 */
-		return apply_filters( 'tenup_experience_environments', $environments );
+		$environments = apply_filters( 'tenup_experience_environments', $default_environments );
+
+		return is_array( $environments ) ? wp_parse_args( $environments, $default_environments ) : $default_environments;
 	}
 
 

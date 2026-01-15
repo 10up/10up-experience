@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [1.17.1] - 2026-01-15
+* Fix: Duplicate plugins menu item in admin by @ZacharyRener in https://github.com/10up/10up-experience/pull/204
+
 ## [1.17.0] - 2025-12-18
 * Make sure user roles are unindexed arrays by @felipeelia in https://github.com/10up/10up-experience/pull/186
 * Bump express from 4.19.2 to 4.22.1 in the npm_and_yarn group across 1 directory by @dependabot[bot] in https://github.com/10up/10up-experience/pull/188

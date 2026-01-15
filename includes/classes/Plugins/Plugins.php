@@ -302,8 +302,15 @@ class Plugins {
 			number_format_i18n( $update_data['counts']['plugins'] )
 		);
 
-		// Ensure the core Plugins menu item is set to the correct index.
-		if ( isset( $menu[ $menu_index ][0] ) && ! preg_match( '#^' . esc_html__( 'Plugins' ) . '#i', $menu[ $menu_index ][0] ) ) {
+		$menu_item_exists = isset( $menu[ $menu_index ][0] );
+
+		if ( ! $menu_item_exists ) {
+			return;
+		}
+
+		$is_plugins_menu = preg_match( '#^' . esc_html__( 'Plugins' ) . '#i', $menu[ $menu_index ][0] );
+
+		if ( ! $is_plugins_menu ) {
 			return;
 		}
 

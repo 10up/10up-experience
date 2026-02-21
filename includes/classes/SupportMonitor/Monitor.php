@@ -448,7 +448,7 @@ class Monitor {
 			],
 			[
 				'key'   => 'db_version',
-				'value' => $wpdb->db_version() ?: '',
+				'value' => $wpdb->db_version() ? $wpdb->db_version() : '',
 				'group' => 'system',
 			],
 			[
@@ -716,7 +716,7 @@ class Monitor {
 	 * @return array
 	 */
 	public function get_users() {
-		$users    = [];
+		$users     = [];
 		$users_url = is_multisite() ? network_admin_url( 'users.php' ) : admin_url( 'users.php' );
 
 		$args = [

@@ -448,7 +448,7 @@ class Monitor {
 			],
 			[
 				'key'   => 'db_version',
-				'value' => ( isset( $wpdb->db_version ) ) ? $wpdb->db_version : '',
+				'value' => $wpdb->db_version() ?: '',
 				'group' => 'system',
 			],
 			[
@@ -464,6 +464,16 @@ class Monitor {
 			[
 				'key'   => 'xmlrpc_enabled',
 				'value' => $this->xmlrpc_enabled(),
+				'group' => 'system',
+			],
+			[
+				'key'   => 'hosting_provider',
+				'value' => $this->get_hosting_provider(),
+				'group' => 'system',
+			],
+			[
+				'key'   => 'is_multisite',
+				'value' => is_multisite(),
 				'group' => 'system',
 			],
 		];
@@ -706,7 +716,8 @@ class Monitor {
 	 * @return array
 	 */
 	public function get_users() {
-		$users = [];
+		$users    = [];
+		$users_url = is_multisite() ? network_admin_url( 'users.php' ) : admin_url( 'users.php' );
 
 		$args = [
 			'search'         => '*@get10up.com',
@@ -723,9 +734,10 @@ class Monitor {
 
 		foreach ( $_users as $user ) {
 			$users[] = [
-				'email' => $user->user_email,
-				'name'  => $user->display_name,
-				'role'  => array_values( $user->roles ),
+				'email'      => $user->user_email,
+				'name'       => $user->display_name,
+				'role'       => array_values( $user->roles ),
+				'profileUrl' => add_query_arg( 's', $user->user_email, $users_url ),
 			];
 		}
 
@@ -744,9 +756,10 @@ class Monitor {
 
 		foreach ( $_users as $user ) {
 			$users[] = [
-				'email' => $user->user_email,
-				'name'  => $user->display_name,
-				'role'  => array_values( $user->roles ),
+				'email'      => $user->user_email,
+				'name'       => $user->display_name,
+				'role'       => array_values( $user->roles ),
+				'profileUrl' => add_query_arg( 's', $user->user_email, $users_url ),
 			];
 		}
 
@@ -765,13 +778,52 @@ class Monitor {
 
 		foreach ( $_users as $user ) {
 			$users[] = [
-				'email' => $user->user_email,
-				'name'  => $user->display_name,
-				'role'  => array_values( $user->roles ),
+				'email'      => $user->user_email,
+				'name'       => $user->display_name,
+				'role'       => array_values( $user->roles ),
+				'profileUrl' => add_query_arg( 's', $user->user_email, $users_url ),
 			];
 		}
 
 		return $users;
+	}
+
+	/**
+	 * Detect the hosting provider based on platform-specific PHP constants.
+	 *
+	 * @since 2.2
+	 * @return string Hosting provider slug (e.g. 'vip', 'kinsta') or 'unknown'.
+	 */
+	public function get_hosting_provider() {
+		if ( defined( 'WPCOM_IS_VIP_ENV' ) || defined( 'VIP_GO_APP_ENVIRONMENT' ) ) {
+			return 'vip';
+		}
+
+		if ( defined( 'KINSTA_DEV_ENV' ) || defined( 'KINSTA_CACHE_ZONE' ) ) {
+			return 'kinsta';
+		}
+
+		if ( defined( 'WPE_APIKEY' ) || defined( 'IS_WPE' ) ) {
+			return 'wpengine';
+		}
+
+		if ( defined( 'PANTHEON_ENVIRONMENT' ) ) {
+			return 'pantheon';
+		}
+
+		if ( defined( 'STARTER_STARTER' ) || defined( 'JEEVES_ENV' ) ) {
+			return 'pagely';
+		}
+
+		if ( defined( 'FLYWHEEL_CONFIG_DIR' ) ) {
+			return 'flywheel';
+		}
+
+		if ( defined( 'CLOUDWAYS_SERVER_ID' ) ) {
+			return 'cloudways';
+		}
+
+		return 'unknown';
 	}
 
 	/**
@@ -785,7 +837,7 @@ class Monitor {
 		}
 
 		// If this is a VIP site, we can assume they are using an object cache.
-		if ( defined( 'VIP_GO_APP_ENVIRONMENT' ) && 'local' !== VIP_GO_APP_ENVIRONMENT ) {
+		if ( 'vip' === $this->get_hosting_provider() ) {
 			return true;
 		}
 

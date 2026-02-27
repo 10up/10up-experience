@@ -466,25 +466,17 @@ class Monitor {
 				'value' => $this->xmlrpc_enabled(),
 				'group' => 'system',
 			],
-			[
-				'key'   => 'hosting_provider',
-				'value' => $this->get_hosting_provider(),
-				'group' => 'system',
-			],
-			[
-				'key'   => 'is_multisite',
-				'value' => is_multisite(),
-				'group' => 'system',
-			],
 		];
 
 		$body = [
-			'url'          => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
-			'platform'     => 'wordpress',
-			'packages'     => $this->get_packages(),
-			'activityLogs' => $logs,
-			'customData'   => $custom_data,
-			'users'        => $this->get_users(),
+			'url'             => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
+			'platform'        => 'wordpress',
+			'hostingProvider' => $this->get_hosting_provider(),
+			'isMultisite'     => is_multisite(),
+			'packages'        => $this->get_packages(),
+			'activityLogs'    => $logs,
+			'customData'      => $custom_data,
+			'users'           => $this->get_users(),
 		];
 
 		$this->send_request( $body );

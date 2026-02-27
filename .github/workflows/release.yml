@@ -1,0 +1,76 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g. v1.18.0). Must already exist.'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Determine tag
+        id: tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.tag.outputs.tag }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Create release directory
+        run: rsync -avr --exclude-from=.distignore ./ 10up-experience/ --delete
+
+      - name: Create ZIP
+        run: zip -r 10up-experience.zip 10up-experience/
+
+      - name: Strip v prefix for release title
+        id: version
+        run: echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: ${{ steps.version.outputs.version }}
+          generate_release_notes: true
+          files: 10up-experience.zip

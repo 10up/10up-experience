@@ -40,6 +40,22 @@ wp plugin activate 10up-experience
 
 Updates use the built-in WordPress update system to pull from GitHub releases.
 
+## Release Process
+
+Releases are automated via GitHub Actions. When a version tag is pushed, the workflow builds the plugin, creates a ZIP, and publishes a GitHub release with the ZIP attached. Since the plugin uses [Plugin Update Checker](https://github.com/YahnisElsts/plugin-update-checker), sites receive updates directly from these GitHub releases.
+
+### Steps to release
+
+1. **Prepare the release:** Ensure the version is bumped in `10up-experience.php` (both the plugin header and the `TENUP_EXPERIENCE_VERSION` constant) and `CHANGELOG.md` is updated.
+2. **Tag and push:**
+   ```
+   git tag v1.x.x
+   git push origin v1.x.x
+   ```
+3. **Automation handles the rest:** The GitHub Action installs dependencies, builds assets, packages a clean ZIP (excluding dev files via `.distignore`), and creates a GitHub release with auto-generated release notes.
+
+The workflow can also be triggered manually from the Actions tab using `workflow_dispatch` for dry runs or re-releases.
+
 ## Functionality
 
 ### REST API

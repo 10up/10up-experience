@@ -100,7 +100,7 @@ class Comments {
 	 * for collaborative feedback within the block editor. They rely on edit_post capability
 	 * rather than comment capabilities.
 	 *
-	 * @since 1.12.0
+	 * @since 1.18.0
 	 * @see https://make.wordpress.org/core/2025/11/15/notes-feature-in-wordpress-6-9/
 	 *
 	 * @return array Array of comment types that should be allowed.
@@ -114,12 +114,12 @@ class Comments {
 		 * This allows plugins to extend the list of comment types that should continue
 		 * to function when traditional comments are disabled.
 		 *
-		 * @since 1.12.0
+		 * @since 1.18.0
 		 *
 		 * @param array $allowed_types Array of comment type strings.
 		 */
 		$allowed_types = apply_filters( 'tenup_experience_disable_comments_allowed_types', $allowed_types );
-		
+
 		return is_array( $allowed_types ) ? $allowed_types : array();
 	}
 
@@ -338,12 +338,17 @@ class Comments {
 	/**
 	 * Short-circuit WP_Comment_Query
 	 *
-	 * This filter prevents traditional comment queries from executing, but allows
-	 * certain comment types (like Block Notes) to pass through by checking the
-	 * query's 'type' parameter.
+	 * This filter prevents the default (untyped) comment queries from executing,
+	 * but allows queries that explicitly request a specific comment type to run.
 	 *
 	 * Block Notes (WordPress 6.9+) are stored as WP_Comments with comment_type='note'
-	 * and must be able to query the database for the Notes feature to work.
+	 * and must be able to query the database for the Notes feature to work. We also
+	 * honour explicit queries for the standard 'comment' type: disabling comments
+	 * removes the UI and frontend display, but should not silently break code that
+	 * deliberately queries for comments.
+	 *
+	 * Both the 'type' and 'type__in' query vars are inspected, and either may be a
+	 * string or an array.
 	 *
 	 * @since 1.11.2
 	 * @see https://make.wordpress.org/core/2025/11/15/notes-feature-in-wordpress-6-9/
@@ -351,7 +356,7 @@ class Comments {
 	 * @param array|int|null    $comment_data Comment data (null to allow query to proceed).
 	 * @param \WP_Comment_Query $query        The WP_Comment_Query instance.
 	 *
-	 * @return array|int|null Returns null to allow query, or array/int to short-circuit.
+	 * @return array|int|null Returns $comment_data unchanged to allow the query, or array/int to short-circuit.
 	 */
 	public function filter_comments_pre_query( $comment_data, $query ) {
 
@@ -360,21 +365,33 @@ class Comments {
 			return array();
 		}
 
-		$allowed_types   = $this->get_allowed_comment_types();
-		$requested_types = $query->query_vars['type'] ?? '';
+		/*
+		 * Comment types that may be queried even when comments are disabled.
+		 *
+		 * In addition to the allowed types (e.g. Block Notes), the standard
+		 * 'comment' type is explicitly queryable so that code which deliberately
+		 * queries for comments still receives results. Note that 'comment' is
+		 * intentionally NOT part of get_allowed_comment_types(), so traditional
+		 * comments remain hidden from the frontend display.
+		 */
+		$queryable_types = array_merge( $this->get_allowed_comment_types(), array( 'comment' ) );
 
-		// Normalise "type" to an array.
-		if ( '' === $requested_types || null === $requested_types ) {
-			$requested_types = array();
-		} elseif ( ! is_array( $requested_types ) ) {
-			$requested_types = array( $requested_types );
+		// Collect the comment types explicitly requested by the query. Both the
+		// 'type' and 'type__in' query vars may hold a string or an array.
+		$requested_types = array();
+
+		foreach ( array( 'type', 'type__in' ) as $type_var ) {
+			$value = $query->query_vars[ $type_var ] ?? '';
+
+			if ( '' === $value || null === $value || array() === $value ) {
+				continue;
+			}
+
+			$requested_types = array_merge( $requested_types, (array) $value );
 		}
 
-		// Does this query include any allowed comment types?
-		$has_allowed_type = ! empty( array_intersect( $requested_types, $allowed_types ) );
-
-		// Allow queries that involve any of the allowed types to run as normal.
-		if ( $has_allowed_type ) {
+		// Allow queries that explicitly request a queryable comment type to run as normal.
+		if ( ! empty( array_intersect( $requested_types, $queryable_types ) ) ) {
 			return $comment_data;
 		}
 

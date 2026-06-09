@@ -213,6 +213,8 @@ When comments are disabled, Block Notes will continue to function normally becau
 
 This means you can safely disable traditional comments while still using Block Notes for editorial collaboration.
 
+Note that disabling comments removes the comment UI, frontend display, and the ability to submit new comments, but it does not break code that *explicitly* queries for a specific comment type. Queries that explicitly request the `comment` type (or any allowed type such as `note`) are still honoured; only the default, untyped comment queries are short-circuited.
+
 #### Constants
 
 - `TENUP_DISABLE_COMMENTS`

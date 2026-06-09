@@ -269,8 +269,17 @@ class Monitor {
 	public function enable_field() {
 		$value = $this->get_setting( 'enable_support_monitor' );
 		?>
-		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) || $this->is_local_environment() ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes"> <label for="tenup_enable_support_monitor_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-		<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) || $this->is_local_environment() ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no"> <label for="tenup_enable_support_monitor_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+		<fieldset>
+			<legend class="screen-reader-text"><span><?php esc_html_e( 'Enable Support Monitor', 'tenup' ); ?></span></legend>
+			<label for="tenup_enable_support_monitor_yes">
+				<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'yes', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) ); ?> type="radio" id="tenup_enable_support_monitor_yes" value="yes">
+				<?php esc_html_e( 'Yes', 'tenup' ); ?>
+			</label><br>
+			<label for="tenup_enable_support_monitor_no">
+				<input name="tenup_support_monitor_settings[enable_support_monitor]" <?php checked( 'no', $value ); ?><?php disabled( defined( 'SUPPORT_MONITOR_ENABLE' ) ); ?> type="radio" id="tenup_enable_support_monitor_no" value="no">
+				<?php esc_html_e( 'No', 'tenup' ); ?>
+			</label>
+		</fieldset>
 		<?php
 	}
 

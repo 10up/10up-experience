@@ -113,27 +113,18 @@ class Comments {
 	public function disable_comments_setting_field_output() {
 		$disable_comments = $this->comments_are_disabled();
 		?>
-
-		<input id="tenup-disable-comments-yes" name="tenup_disable_comments" type="radio" value="yes"
-		<?php
-		checked( $disable_comments, true );
-		disabled( $this->is_ui_disabled() );
-		?>
-		/>
-		<label for="tenup-disable-comments-yes">
-			<?php esc_html_e( 'Yes', 'tenup' ); ?>
-		</label><br>
-
-		<input id="tenup-disable-comments-no" name="tenup_disable_comments" type="radio" value="no"
-		<?php
-		checked( $disable_comments, false );
-		disabled( $this->is_ui_disabled() );
-		?>
-		/>
-		<label for="tenup-disable-comments-no">
-			<?php esc_html_e( 'No', 'tenup' ); ?>
-		</label>
-		<p class="description"><?php esc_html_e( 'This will remove all the comments related Ui from the admin and frontend.', 'tenup' ); ?></p>
+		<fieldset>
+			<legend class="screen-reader-text"><span><?php esc_html_e( 'Disable Comments', 'tenup' ); ?></span></legend>
+			<label for="tenup-disable-comments-yes">
+				<input id="tenup-disable-comments-yes" name="tenup_disable_comments" type="radio" value="yes" <?php checked( $disable_comments, true ); ?> <?php disabled( $this->is_ui_disabled() ); ?>>
+				<?php esc_html_e( 'Yes', 'tenup' ); ?>
+			</label><br>
+			<label for="tenup-disable-comments-no">
+				<input id="tenup-disable-comments-no" name="tenup_disable_comments" type="radio" value="no" <?php checked( $disable_comments, false ); ?> <?php disabled( $this->is_ui_disabled() ); ?>>
+				<?php esc_html_e( 'No', 'tenup' ); ?>
+			</label>
+			<p class="description"><?php esc_html_e( 'This will remove all the comments related Ui from the admin and frontend.', 'tenup' ); ?></p>
+		</fieldset>
 		<?php
 	}
 
@@ -152,18 +143,17 @@ class Comments {
 				<tr>
 					<th scope="row"><?php esc_html_e( 'Disable Comments', 'tenup' ); ?></th>
 					<td>
-						<input name="tenup_disable_comments"
-						<?php
-						checked( $disable_comments, true );
-						disabled( $this->is_ui_disabled() );
-						?>
-						type="radio" id="tenup_disable_comments_yes" value="yes"> <label for="tenup_disable_comments_yes"><?php esc_html_e( 'Yes', 'tenup' ); ?></label><br>
-						<input name="tenup_disable_comments"
-						<?php
-						checked( $disable_comments, false );
-						disabled( $this->is_ui_disabled() );
-						?>
-						type="radio" id="tenup_disable_comments_no" value="no"> <label for="tenup_disable_comments_no"><?php esc_html_e( 'No', 'tenup' ); ?></label>
+						<fieldset>
+							<legend class="screen-reader-text"><span><?php esc_html_e( 'Disable Comments', 'tenup' ); ?></span></legend>
+							<label for="tenup_disable_comments_yes">
+								<input name="tenup_disable_comments" <?php checked( $disable_comments, true ); ?> <?php disabled( $this->is_ui_disabled() ); ?> type="radio" id="tenup_disable_comments_yes" value="yes">
+								<?php esc_html_e( 'Yes', 'tenup' ); ?>
+							</label><br>
+							<label for="tenup_disable_comments_no">
+								<input name="tenup_disable_comments" <?php checked( $disable_comments, false ); ?> <?php disabled( $this->is_ui_disabled() ); ?> type="radio" id="tenup_disable_comments_no" value="no">
+								<?php esc_html_e( 'No', 'tenup' ); ?>
+							</label>
+						</fieldset>
 					</td>
 				</tr>
 			</tbody>

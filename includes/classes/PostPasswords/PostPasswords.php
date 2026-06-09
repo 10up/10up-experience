@@ -43,10 +43,7 @@ class PostPasswords {
 			esc_html__( 'Enable Password Protected Content', 'tenup' ),
 			[ $this, 'settings_ui' ],
 			'writing',
-			'default',
-			array(
-				'label_for' => 'password-protect',
-			)
+			'default'
 		);
 	}
 
@@ -61,10 +58,10 @@ class PostPasswords {
 		?>
 		<fieldset>
 			<legend class="screen-reader-text"><?php esc_html_e( 'Password Protected Content', 'tenup' ); ?></legend>
-			<p>
+			<label for="password-protect">
 				<input id="password-protect" name="tenup_password_protect" type="checkbox" value="1" <?php checked( $password_protect, 1 ); ?> />
-			</p>
-			<p class="description"><?php esc_html_e( 'Enables password protected content. WordPress default password protected post functionality is insecure and does not work with page caching.', 'tenup' ); ?></p>
+				<?php esc_html_e( 'Enables password protected content. WordPress default password protected post functionality is insecure and does not work with page caching.', 'tenup' ); ?>
+			</label>
 		</fieldset>
 		<?php
 	}

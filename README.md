@@ -191,6 +191,22 @@ Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
 
 To enhance user awareness and minimize the risk of making unintended changes, 10up Experience includes a visual indicator integrated into the admin bar. This feature clearly displays which environment (e.g., development, staging, production) the user is currently working in.
 
+#### Filters
+
+- `tenup_experience_environments`
+
+Allows customization of environment indicator labels, icons, and colors for the four supported WordPress environment types (production, staging, development, local).
+
+**Example:**
+
+```php
+add_filter( 'tenup_experience_environments', function( $environments ) {
+    $environments['staging']['icon'] = 'dashicons-star-filled';
+    $environments['staging']['background_color'] = '#ff6b00';
+    return $environments;
+} );
+```
+
 
 ### Comments
 

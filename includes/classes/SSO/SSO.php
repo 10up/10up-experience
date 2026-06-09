@@ -439,6 +439,10 @@ class SSO {
 				transition-timing-function: ease-out;
 			}
 
+			.rtl .sso .button {
+				padding-left: 16px;
+			}
+
 			.sso .button img {
 				height: 32px;
 				width: 32px;

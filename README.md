@@ -204,7 +204,7 @@ On top of disabling the comment form, this feature removes the following:
 
 #### WordPress 6.9+ Block Notes Compatibility
 
-As of version 1.17.0, the disable comments feature is fully compatible with Block Notes introduced in WordPress 6.9. Block Notes are a collaborative feedback feature that allows teams to leave contextual comments on blocks within the editor.
+As of version 1.18.0, the disable comments feature is fully compatible with Block Notes introduced in WordPress 6.9. Block Notes are a collaborative feedback feature that allows teams to leave contextual comments on blocks within the editor.
 
 When comments are disabled, Block Notes will continue to function normally because they:
 - Use a different comment type (`note` instead of `comment`)

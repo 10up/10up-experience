@@ -118,7 +118,9 @@ class Comments {
 		 *
 		 * @param array $allowed_types Array of comment type strings.
 		 */
-		return apply_filters( 'tenup_experience_disable_comments_allowed_types', $allowed_types );
+		$allowed_types = apply_filters( 'tenup_experience_disable_comments_allowed_types', $allowed_types );
+		
+		return is_array( $allowed_types ) ? $allowed_types : array();
 	}
 
 	/**
@@ -353,18 +355,32 @@ class Comments {
 	 */
 	public function filter_comments_pre_query( $comment_data, $query ) {
 
-		if ( is_a( $query, '\WP_Comment_Query' ) ) {
-			$comment_type = $query->query_vars['type'] ?? '';
+		// Only handle WP_Comment_Query instances.
+		if ( ! is_a( $query, '\WP_Comment_Query' ) ) {
+			return array();
+		}
 
-			// Allow certain comment types (like Block Notes) to pass through.
-			if ( in_array( $comment_type, $this->get_allowed_comment_types(), true ) ) {
-				return $comment_data; // Return null to allow the query to proceed.
-			}
+		$allowed_types   = $this->get_allowed_comment_types();
+		$requested_types = $query->query_vars['type'] ?? '';
 
-			// Short-circuit count queries for traditional comments.
-			if ( $query->query_vars['count'] ) {
-				return 0;
-			}
+		// Normalise "type" to an array.
+		if ( '' === $requested_types || null === $requested_types ) {
+			$requested_types = array();
+		} elseif ( ! is_array( $requested_types ) ) {
+			$requested_types = array( $requested_types );
+		}
+
+		// Does this query include any allowed comment types?
+		$has_allowed_type = ! empty( array_intersect( $requested_types, $allowed_types ) );
+
+		// Allow queries that involve any of the allowed types to run as normal.
+		if ( $has_allowed_type ) {
+			return $comment_data;
+		}
+
+		// If this is a count query, return 0 instead of letting WP run the full query.
+		if ( ! empty( $query->query_vars['count'] ) ) {
+			return 0;
 		}
 
 		// Short-circuit all other comment queries.

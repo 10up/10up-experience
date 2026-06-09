@@ -1,17 +1,1 @@
-/******/ (function() { // webpackBootstrap
-/*!********************************!*\
-  !*** ./assets/js/passwords.js ***!
-  \********************************/
-const {
-  tenupPasswords
-} = window;
-const passwordWrapper = document.querySelectorAll('#your-profile .wp-pwd, #resetpassform .wp-pwd');
-if (passwordWrapper.length) {
-  const passwordMessage = document.createElement('span');
-  passwordMessage.classList.add('pw-message');
-  passwordMessage.innerText = tenupPasswords.message;
-  passwordWrapper[0].appendChild(passwordMessage);
-}
-/******/ })()
-;
-//# sourceMappingURL=passwords.js.map
+!function(){const{tenupPasswords:e}=window,s=document.querySelectorAll("#your-profile .wp-pwd, #resetpassform .wp-pwd");if(s.length){const n=document.createElement("span");n.classList.add("pw-message"),n.innerText=e.message,s[0].appendChild(n)}}();

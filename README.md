@@ -191,6 +191,22 @@ Define `TENUP_DISABLE_ACTIVITYLOG` as `true` to disable Activity Log.
 
 To enhance user awareness and minimize the risk of making unintended changes, 10up Experience includes a visual indicator integrated into the admin bar. This feature clearly displays which environment (e.g., development, staging, production) the user is currently working in.
 
+#### Filters
+
+- `tenup_experience_environments`
+
+Allows customization of environment indicator labels, icons, and colors for the four supported WordPress environment types (production, staging, development, local).
+
+**Example:**
+
+```php
+add_filter( 'tenup_experience_environments', function( $environments ) {
+    $environments['staging']['icon'] = 'dashicons-star-filled';
+    $environments['staging']['background_color'] = '#ff6b00';
+    return $environments;
+} );
+```
+
 
 ### Comments
 
@@ -201,6 +217,19 @@ On top of disabling the comment form, this feature removes the following:
 - Comments from the admin menu.
 - Comment blocks from the post editor.
 - Comments from the admin bar.
+
+#### WordPress 6.9+ Block Notes Compatibility
+
+As of version 1.18.0, the disable comments feature is fully compatible with Block Notes introduced in WordPress 6.9. Block Notes are a collaborative feedback feature that allows teams to leave contextual comments on blocks within the editor.
+
+When comments are disabled, Block Notes will continue to function normally because they:
+- Use a different comment type (`note` instead of `comment`)
+- Rely on `edit_post` capability rather than comment capabilities
+- Are only visible within the block editor, not on the frontend
+
+This means you can safely disable traditional comments while still using Block Notes for editorial collaboration.
+
+Note that disabling comments removes the comment UI, frontend display, and the ability to submit new comments, but it does not break code that *explicitly* queries for a specific comment type. Queries that explicitly request the `comment` type (or any allowed type such as `note`) are still honoured; only the default, untyped comment queries are short-circuited.
 
 #### Constants
 
@@ -215,6 +244,19 @@ Setting this constant will disable the UI for enabling/disabling comments in the
 
 Filters whether to disable comments. Default is `false`.
 Defining this filter will disable the UI for enabling/disabling comments in the admin.
+
+- `tenup_experience_disable_comments_allowed_types`
+
+Filters the list of comment types that should bypass the disable comments feature. By default, this includes `note` for WordPress 6.9+ Block Notes. This allows plugins to extend the list of comment types that should continue to function when traditional comments are disabled.
+
+Example:
+
+```php
+add_filter( 'tenup_experience_disable_comments_allowed_types', function( $allowed_types ) {
+    $allowed_types[] = 'custom_comment_type';
+    return $allowed_types;
+} );
+```
 
 - `tenup_experience_disable_comments_disallowed_blocks`
 

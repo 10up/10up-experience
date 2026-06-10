@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file, per [the Keep a Changelog standard](http://keepachangelog.com/).
 
+## [Unreleased]
+
+## [1.18.0] - 2026-06-10
+
+### Added
+
+- WordPress 6.9+ Block Notes compatibility with disable comments feature.
+- New filter `tenup_experience_disable_comments_allowed_types` to allow specific comment types when comments are disabled.
+- Allow filtering of the environment labels and their meta data.
+- Add hosting provider detection, multisite flag, and user profile URLs to the Support Monitor data.
+
+### Fixed
+
+- Block Notes now work correctly when traditional comments are disabled.
+- Comment query filters now properly check comment type before short-circuiting.
+- Fix SSO button display in RTL
+- Refactor options pages markup to follow WordPress standards
+- Removed the `https_ssl_verify` filter from the codebase.
+
 ## [1.17.1] - 2026-01-15
 * Fix: Duplicate plugins menu item in admin by @ZacharyRener in https://github.com/10up/10up-experience/pull/204
 

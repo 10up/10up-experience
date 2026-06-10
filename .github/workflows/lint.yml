@@ -1,4 +1,9 @@
 name: Linting
+
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   pull_request:
     branches:
@@ -14,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
       - name: stylelint
         uses: reviewdog/action-stylelint@v1
         with:

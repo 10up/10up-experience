@@ -32,8 +32,6 @@ require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update
 
 require_once __DIR__ . '/includes/utils.php';
 
-add_filter( 'https_ssl_verify', '__return_false' );
-
 spl_autoload_register(
 	function ( $class_name ) {
 		$path_parts = explode( '\\', $class_name );

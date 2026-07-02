@@ -28,7 +28,7 @@
   },
   "require": {
     "composer/installers": "^1.0 || ^2.0",
-    "yahnis-elsts/plugin-update-checker": "5.1",
+    "yahnis-elsts/plugin-update-checker": "5.7",
     "bjeavons/zxcvbn-php": "^1.0"
   },
   "require-dev": {

@@ -56,6 +56,13 @@ class Welcome {
 			exit;
 		}
 
+		$required_capability = TENUP_EXPERIENCE_IS_NETWORK ? 'manage_network_options' : 'manage_options';
+
+		if ( ! current_user_can( $required_capability ) ) {
+			wp_send_json_error();
+			exit;
+		}
+
 		if ( TENUP_EXPERIENCE_IS_NETWORK ) {
 			update_site_option( 'tenup_welcome_dismiss', true, false );
 		} else {

@@ -229,7 +229,12 @@ class SSO {
 				TENUPSSO_PROXY_URL
 			);
 
-			$response = wp_remote_get( $verify );
+			$response = wp_remote_get(
+				$verify,
+				[
+					'timeout' => (int) apply_filters( 'tenup_experience_sso_proxy_request_timeout', 5 ),
+				]
+			);
 
 			if ( wp_remote_retrieve_response_code( $response ) !== 200 ) {
 				wp_safe_redirect( wp_login_url() );

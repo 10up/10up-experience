@@ -406,9 +406,9 @@ class Comments {
 	/**
 	 * Remove the comment blocks
 	 *
-	 * @param array $allowed_block_types Array of allowed block types.
+	 * @param bool|string[] $allowed_block_types Array of block type slugs, or boolean to enable/disable all.
 	 *
-	 * @return array
+	 * @return bool|string[] Filtered array of block type slugs, or false if all blocks are disabled.
 	 */
 	public function remove_comment_blocks( $allowed_block_types ) {
 		// A list of disallowed comment blocks.
@@ -437,8 +437,13 @@ class Comments {
 		 */
 		$disallowed_blocks = apply_filters( 'tenup_experience_disable_comments_disallowed_blocks', $disallowed_blocks );
 
-		// Get all registered blocks if $allowed_block_types is not already set.
-		if ( ! is_array( $allowed_block_types ) || empty( $allowed_block_types ) ) {
+		// Respect other filters that have disabled all blocks.
+		if ( false === $allowed_block_types ) {
+			return false;
+		}
+
+		// Get all registered blocks if all blocks are allowed or no explicit list is set.
+		if ( true === $allowed_block_types || ! is_array( $allowed_block_types ) || empty( $allowed_block_types ) ) {
 			$registered_blocks   = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 			$allowed_block_types = array_keys( $registered_blocks );
 

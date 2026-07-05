@@ -424,26 +424,44 @@ class Passwords {
 		$prefix = substr( $hash, 0, 5 );
 		$suffix = substr( $hash, 5 );
 
-		$cached_result = wp_cache_get( $prefix . $suffix, self::HIBP_CACHE_KEY );
+		$cache_key = 'prefix_' . $prefix;
+		$body      = wp_cache_get( $cache_key, self::HIBP_CACHE_KEY );
 
-		if ( false !== $cached_result || false ) { // remove || false; only used for testing
-			return $cached_result;
+		if ( false === $body ) {
+			$transient_key = self::HIBP_CACHE_KEY . '_' . strtolower( $cache_key );
+			$body          = get_transient( $transient_key );
+
+			// Warm the object cache from the transient so repeat lookups skip the DB read.
+			if ( false !== $body ) {
+				wp_cache_set( $cache_key, $body, self::HIBP_CACHE_KEY, 4 * HOUR_IN_SECONDS );
+			}
 		}
 
-		$response = wp_remote_get( self::HIBP_API_URL . $prefix, [ 'user-agent' => '10up Experience WordPress Plugin' ] );
+		if ( false === $body ) {
+			$response = wp_remote_get(
+				self::HIBP_API_URL . $prefix,
+				[
+					'timeout'    => (int) apply_filters( 'tenup_experience_hibp_request_timeout', 2 ),
+					'user-agent' => '10up Experience WordPress Plugin',
+				]
+			);
 
-		// Allow for a failed request to the HIPB API.
-		// Don't cache the result if the request failed.
-		if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
-			return true;
-		}
+			// If the request fails or times out, fail open: allow the password rather than
+			// blocking the user on an unreachable third-party API. The result is not cached,
+			// so the next attempt retries the check.
+			if ( is_wp_error( $response ) || wp_remote_retrieve_response_code( $response ) !== 200 ) {
+				return true;
+			}
 
-		$body = wp_remote_retrieve_body( $response );
+			$body = wp_remote_retrieve_body( $response );
 
-		// Allow for a failed request to the HIPB API.
-		// Don't cache the result if the request failed.
-		if ( is_wp_error( $body ) ) {
-			return true;
+			if ( empty( $body ) ) {
+				return true;
+			}
+
+			// Cache the prefix response only. Avoid storing full password hashes.
+			wp_cache_set( $cache_key, $body, self::HIBP_CACHE_KEY, 4 * HOUR_IN_SECONDS );
+			set_transient( $transient_key, $body, 4 * HOUR_IN_SECONDS );
 		}
 
 		$lines = explode( "\r\n", $body );
@@ -452,13 +470,11 @@ class Passwords {
 			$parts = explode( ':', $line );
 
 			// If the suffix is found in the response, the password may be in a breach.
-			if ( $parts[0] === $suffix ) {
+			if ( isset( $parts[0] ) && $parts[0] === $suffix ) {
 				$is_password_secure = false;
+				break;
 			}
 		}
-
-		// Cache the result for 4 hours.
-		wp_cache_set( $prefix . $suffix, (int) $is_password_secure, self::HIBP_CACHE_KEY, 60 * 60 * 4 );
 
 		return $is_password_secure;
 	}

@@ -317,7 +317,7 @@ class Passwords {
 		$enforce     = true;
 		// This is being sanitized later in the function, no need to sanitize for isset().
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$password = ( isset( $_POST['pass1'] ) && trim( $_POST['pass1'] ) ) ? sanitize_text_field( $_POST['pass1'] ) : false;
+		$password = ( isset( $_POST['pass1'] ) && '' !== $_POST['pass1'] ) ? sanitize_text_field( $_POST['pass1'] ) : false;
 		$role     = isset( $_POST['role'] ) ? sanitize_text_field( $_POST['role'] ) : false;
 		$user_id  = isset( $user_data->ID ) ? sanitize_text_field( $user_data->ID ) : false;
 		$username = isset( $_POST['user_login'] ) ? sanitize_text_field( $_POST['user_login'] ) : $user_data->user_login;

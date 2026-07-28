@@ -2,10 +2,16 @@
 	text-align: center;
 }
 
+/* Sizing the mask to the full icon matches the ~20px optical size of
+ * neighboring toolbar glyphs. */
 #wpadminbar .tenup-icon {
 	background-color: currentColor;
 	height: 32px;
-	-webkit-mask: url("../img/fueled-bolt.svg") center / 20px auto no-repeat;
-	mask: url("../img/fueled-bolt.svg") center / 20px auto no-repeat;
-	width: 20px;
+	-webkit-mask: url("../img/fueled-bolt.svg") center / 21px auto no-repeat;
+	mask: url("../img/fueled-bolt.svg") center / 21px auto no-repeat;
+	width: 21px;
+}
+
+#wpadminbar li#wp-admin-bar-10up > .ab-item {
+	padding-right: 4px;
 }

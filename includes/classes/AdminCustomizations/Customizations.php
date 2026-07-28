@@ -9,6 +9,8 @@ namespace TenUpExperience\AdminCustomizations;
 
 use TenUpExperience\API\API;
 use TenUpExperience\Authentication\Passwords;
+use TenUpExperience\BootPages\AboutPage;
+use TenUpExperience\BootPages\ExperiencePage;
 use TenUpExperience\Comments\Comments;
 use TenUpExperience\Gutenberg\Gutenberg;
 use TenUpExperience\Singleton;
@@ -28,6 +30,11 @@ class Customizations {
 	 * @since 1.7
 	 */
 	public function setup() {
+		// Boot-rendered (React) versions of the About and Experience pages,
+		// used by the render callbacks below when WP ships @wordpress/boot.
+		AboutPage::instance();
+		ExperiencePage::instance();
+
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_filter( 'admin_footer_text', [ $this, 'filter_admin_footer_text' ] );
@@ -82,6 +89,10 @@ class Customizations {
 	 * Output the About Fueled screen.
 	 */
 	public function about_screen() {
+		if ( AboutPage::instance()->is_boot_available() ) {
+			AboutPage::instance()->render_mount();
+			return;
+		}
 		?>
 		<div class="wrap about-wrap about-fueled-wrap full-width-layout">
 			<section class="about-hero" aria-labelledby="about-fueled-heading">
@@ -193,6 +204,11 @@ class Customizations {
 	 * Output the Fueled Experience Plugin screen.
 	 */
 	public function experience_screen() {
+		if ( ExperiencePage::instance()->is_boot_available() ) {
+			ExperiencePage::instance()->render_mount();
+			return;
+		}
+
 		$configuration = $this->get_experience_configuration();
 		$features      = $this->get_experience_features();
 		?>
@@ -309,88 +325,98 @@ class Customizations {
 	 *
 	 * @return array[] Configuration items.
 	 */
-	private function get_experience_configuration() {
+	public function get_experience_configuration() {
 		$rest_setting         = get_option( 'tenup_restrict_rest_api', API::instance()->option_default );
 		$rest_values          = array(
-			'all'   => esc_html__( 'Authenticated users only', 'tenup' ),
-			'users' => esc_html__( 'User endpoints protected', 'tenup' ),
-			'none'  => esc_html__( 'Publicly accessible', 'tenup' ),
+			'all'   => __( 'Authenticated users only', 'tenup' ),
+			'users' => __( 'User endpoints protected', 'tenup' ),
+			'none'  => __( 'Publicly accessible', 'tenup' ),
 		);
 		$network_settings_url = TENUP_EXPERIENCE_IS_NETWORK && current_user_can( 'manage_network_options' ) ? network_admin_url( 'settings.php' ) : '';
 		$general_settings_url = ! TENUP_EXPERIENCE_IS_NETWORK && current_user_can( 'manage_options' ) ? admin_url( 'options-general.php' ) : '';
 		$writing_settings_url = current_user_can( 'manage_options' ) ? admin_url( 'options-writing.php' ) : '';
 		$reading_settings_url = current_user_can( 'manage_options' ) ? admin_url( 'options-reading.php' ) : '';
 		$shared_settings_url  = TENUP_EXPERIENCE_IS_NETWORK ? $network_settings_url : $general_settings_url;
-		$strong_passwords     = (bool) Passwords::instance()->require_strong_passwords();
-		$sso_enabled          = ( ! defined( 'TENUPSSO_DISABLE' ) || ! TENUPSSO_DISABLE ) && 'yes' === SSO::instance()->get_setting();
-		$monitor              = Monitor::instance();
-		$monitor_enabled      = 'yes' === $monitor->get_setting( 'enable_support_monitor' );
-		$comments_disabled    = Comments::instance()->comments_are_disabled();
-		$classic_editor       = 1 === (int) get_option( Gutenberg::instance()->get_disable_gutenberg_key(), 0 );
-		$post_passwords       = (bool) get_option( 'tenup_password_protect', 0 );
+
+		// Prefer the consolidated React settings screen when it's available.
+		$settings_screen = \TenUpExperience\Settings\SettingsScreen::instance();
+		if ( ! TENUP_EXPERIENCE_IS_NETWORK && current_user_can( 'manage_options' ) && $settings_screen->is_boot_available() ) {
+			$boot_settings_url    = admin_url( 'options-general.php?page=' . \TenUpExperience\Settings\SettingsScreen::PAGE_SLUG );
+			$general_settings_url = $boot_settings_url;
+			$writing_settings_url = $boot_settings_url;
+			$reading_settings_url = $boot_settings_url;
+			$shared_settings_url  = $boot_settings_url;
+		}
+		$strong_passwords  = (bool) Passwords::instance()->require_strong_passwords();
+		$sso_enabled       = ( ! defined( 'TENUPSSO_DISABLE' ) || ! TENUPSSO_DISABLE ) && 'yes' === SSO::instance()->get_setting();
+		$monitor           = Monitor::instance();
+		$monitor_enabled   = 'yes' === $monitor->get_setting( 'enable_support_monitor' );
+		$comments_disabled = Comments::instance()->comments_are_disabled();
+		$classic_editor    = 1 === (int) get_option( Gutenberg::instance()->get_disable_gutenberg_key(), 0 );
+		$post_passwords    = (bool) get_option( 'tenup_password_protect', 0 );
 
 		if ( $monitor->is_local_environment() && ! $monitor_enabled ) {
-			$monitor_value = esc_html__( 'Disabled locally', 'tenup' );
+			$monitor_value = __( 'Disabled locally', 'tenup' );
 		} else {
-			$monitor_value = $monitor_enabled ? esc_html__( 'Enabled', 'tenup' ) : esc_html__( 'Disabled', 'tenup' );
+			$monitor_value = $monitor_enabled ? __( 'Enabled', 'tenup' ) : __( 'Disabled', 'tenup' );
 		}
 
 		return array(
 			array(
-				'label'        => esc_html__( 'Environment', 'tenup' ),
+				'label'        => __( 'Environment', 'tenup' ),
 				'value'        => ucfirst( wp_get_environment_type() ),
 				'class'        => 'is-informational',
-				'description'  => esc_html__( 'We identify this environment in the WordPress admin toolbar to help prevent accidental changes in the wrong place.', 'tenup' ),
+				'description'  => __( 'We identify this environment in the WordPress admin toolbar to help prevent accidental changes in the wrong place.', 'tenup' ),
 				'settings_url' => '',
 			),
 			array(
-				'label'        => esc_html__( 'REST API', 'tenup' ),
+				'label'        => __( 'REST API', 'tenup' ),
 				'value'        => $rest_values[ $rest_setting ] ?? $rest_values['users'],
 				'class'        => 'none' === $rest_setting ? 'is-muted' : 'is-active',
-				'description'  => esc_html__( 'We add a simple setting to restrict REST API access, helping prevent unintended exposure of potentially sensitive information.', 'tenup' ),
+				'description'  => __( 'We add a simple setting to restrict REST API access, helping prevent unintended exposure of potentially sensitive information.', 'tenup' ),
 				'settings_url' => $reading_settings_url,
 			),
 			array(
-				'label'        => esc_html__( 'Strong passwords', 'tenup' ),
-				'value'        => $strong_passwords ? esc_html__( 'Required', 'tenup' ) : esc_html__( 'Not required', 'tenup' ),
+				'label'        => __( 'Strong passwords', 'tenup' ),
+				'value'        => $strong_passwords ? __( 'Required', 'tenup' ) : __( 'Not required', 'tenup' ),
 				'class'        => $strong_passwords ? 'is-active' : 'is-muted',
-				'description'  => esc_html__( 'We can require stronger passwords and check them against breach data during sign-in or password changes.', 'tenup' ),
+				'description'  => __( 'We can require stronger passwords and check them against breach data during sign-in or password changes.', 'tenup' ),
 				'settings_url' => $shared_settings_url,
 			),
 			array(
-				'label'        => esc_html__( 'Fueled SSO', 'tenup' ),
-				'value'        => $sso_enabled ? esc_html__( 'Enabled', 'tenup' ) : esc_html__( 'Disabled', 'tenup' ),
+				'label'        => __( 'Fueled SSO', 'tenup' ),
+				'value'        => $sso_enabled ? __( 'Enabled', 'tenup' ) : __( 'Disabled', 'tenup' ),
 				'class'        => $sso_enabled ? 'is-active' : 'is-muted',
-				'description'  => esc_html__( 'Fueled SSO lets our experts jump in when needed and keeps out anyone who should no longer have the keys.', 'tenup' ),
+				'description'  => __( 'Fueled SSO lets our experts jump in when needed and keeps out anyone who should no longer have the keys.', 'tenup' ),
 				'settings_url' => $shared_settings_url,
 			),
 			array(
-				'label'          => esc_html__( 'Support Monitor', 'tenup' ),
+				'label'          => __( 'Support Monitor', 'tenup' ),
 				'value'          => $monitor_value,
 				'class'          => $monitor_enabled ? 'is-active' : 'is-muted',
-				'description'    => esc_html__( 'Support Monitor shares a daily technical snapshot so Fueled can spot maintenance and support issues sooner.', 'tenup' ),
+				'description'    => __( 'Support Monitor shares a daily technical snapshot so Fueled can spot maintenance and support issues sooner.', 'tenup' ),
 				'settings_url'   => $shared_settings_url,
 				'learn_more_url' => '#experience-monitor',
 			),
 			array(
-				'label'        => esc_html__( 'Traditional comments', 'tenup' ),
-				'value'        => $comments_disabled ? esc_html__( 'Disabled', 'tenup' ) : esc_html__( 'Available', 'tenup' ),
+				'label'        => __( 'Traditional comments', 'tenup' ),
+				'value'        => $comments_disabled ? __( 'Disabled', 'tenup' ) : __( 'Available', 'tenup' ),
 				'class'        => $comments_disabled ? 'is-active' : 'is-informational',
-				'description'  => esc_html__( 'When disabled, comment forms, displays, feeds, widgets, and admin controls are removed while Block Notes remain available.', 'tenup' ),
+				'description'  => __( 'When disabled, comment forms, displays, feeds, widgets, and admin controls are removed while Block Notes remain available.', 'tenup' ),
 				'settings_url' => $shared_settings_url,
 			),
 			array(
-				'label'        => esc_html__( 'Content editor', 'tenup' ),
-				'value'        => $classic_editor ? esc_html__( 'Classic Editor', 'tenup' ) : esc_html__( 'Block Editor', 'tenup' ),
+				'label'        => __( 'Content editor', 'tenup' ),
+				'value'        => $classic_editor ? __( 'Classic Editor', 'tenup' ) : __( 'Block Editor', 'tenup' ),
 				'class'        => 'is-informational',
-				'description'  => esc_html__( 'Sites that haven\'t upgraded to the Block Editor can retain the Classic Editor with one click.', 'tenup' ),
+				'description'  => __( 'Sites that haven\'t upgraded to the Block Editor can retain the Classic Editor with one click.', 'tenup' ),
 				'settings_url' => $writing_settings_url,
 			),
 			array(
-				'label'        => esc_html__( 'Password-protected content', 'tenup' ),
-				'value'        => $post_passwords ? esc_html__( 'Available', 'tenup' ) : esc_html__( 'Hidden by default', 'tenup' ),
+				'label'        => __( 'Password-protected content', 'tenup' ),
+				'value'        => $post_passwords ? __( 'Available', 'tenup' ) : __( 'Hidden by default', 'tenup' ),
 				'class'        => $post_passwords ? 'is-informational' : 'is-active',
-				'description'  => esc_html__( 'Controls whether editors can use WordPress post passwords, which are not compatible with common page-caching strategies.', 'tenup' ),
+				'description'  => __( 'Controls whether editors can use WordPress post passwords, which are not compatible with common page-caching strategies.', 'tenup' ),
 				'settings_url' => $writing_settings_url,
 			),
 		);
@@ -401,23 +427,23 @@ class Customizations {
 	 *
 	 * @return array[] Feature descriptions.
 	 */
-	private function get_experience_features() {
+	public function get_experience_features() {
 		return array(
 			array(
-				'label'       => esc_html__( 'Safer access defaults', 'tenup' ),
-				'description' => esc_html__( 'Checks for common high-risk usernames on public environments and disables dashboard file editing when WordPress has not already defined that behavior.', 'tenup' ),
+				'label'       => __( 'Safer access defaults', 'tenup' ),
+				'description' => __( 'Checks for common high-risk usernames on public environments and disables dashboard file editing when WordPress has not already defined that behavior.', 'tenup' ),
 			),
 			array(
-				'label'       => esc_html__( 'Clickjacking protection', 'tenup' ),
-				'description' => esc_html__( 'Adds a same-origin framing policy by default, helping prevent the site from being invisibly embedded inside a malicious interface.', 'tenup' ),
+				'label'       => __( 'Clickjacking protection', 'tenup' ),
+				'description' => __( 'Adds a same-origin framing policy by default, helping prevent the site from being invisibly embedded inside a malicious interface.', 'tenup' ),
 			),
 			array(
-				'label'       => esc_html__( 'Plugin change guidance', 'tenup' ),
-				'description' => esc_html__( 'Highlights Fueled-recommended plugins and adds clear warnings before changes that could affect performance, reliability, or support.', 'tenup' ),
+				'label'       => __( 'Plugin change guidance', 'tenup' ),
+				'description' => __( 'Highlights Fueled-recommended plugins and adds clear warnings before changes that could affect performance, reliability, or support.', 'tenup' ),
 			),
 			array(
-				'label'       => esc_html__( 'Update visibility and response', 'tenup' ),
-				'description' => esc_html__( 'Keeps important update notices visible on managed sites and gives Fueled a consistent path to ship targeted safeguards through normal plugin releases.', 'tenup' ),
+				'label'       => __( 'Update visibility and response', 'tenup' ),
+				'description' => __( 'Keeps important update notices visible on managed sites and gives Fueled a consistent path to ship targeted safeguards through normal plugin releases.', 'tenup' ),
 			),
 		);
 	}

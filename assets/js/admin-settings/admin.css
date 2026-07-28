@@ -1,0 +1,25 @@
+/* ── Cards grid ──
+ * Each top-level card becomes a grid cell. Two-up on wider viewports,
+ * single-column on narrower.
+ */
+.tenup-boot-cards {
+	align-items: start;
+	display: grid;
+	gap: 24px;
+	grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+}
+
+.tenup-boot-cards > .dataforms-layouts__wrapper {
+	min-width: 0;
+}
+
+/* ── DataForm field overrides ── */
+.dataforms-layouts-card__field-header-label {
+	white-space: nowrap;
+}
+
+.dataforms-layouts-card input[type="text"],
+.dataforms-layouts-card input[type="url"] {
+	max-width: 100%;
+	width: 100%;
+}

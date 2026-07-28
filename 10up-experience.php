@@ -82,6 +82,7 @@ SupportMonitor\Monitor::instance();
 SupportMonitor\Debug::instance();
 SupportMonitor\ActivityLog::instance();
 Notifications\Welcome::instance();
+Settings\SettingsScreen::instance();
 
 /**
  * We load this later to make sure there are no conflicts with other plugins.

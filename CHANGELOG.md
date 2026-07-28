@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ### Added
 
+- Add React-powered admin screens built on the `@wordpress/boot` script module (WordPress 6.9+): a consolidated Settings → Fueled Experience settings screen with a Site Editor-style review-and-save flow, plus boot-rendered About Fueled and Experience Plugin pages with DataViews-based configuration cards. Classic markup remains as the fallback on older WordPress versions.
+- Expose the plugin's settings on the core `/wp/v2/settings` REST endpoint (single-site installs).
 - Add redesigned About Fueled and Experience Plugin admin pages with current configuration, feature, and support information.
 - Add Fueled-branded imagery and client work assets for the new admin experiences.
 

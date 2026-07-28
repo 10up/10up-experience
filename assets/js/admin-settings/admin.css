@@ -1,0 +1,118 @@
+/* ── Page header ── */
+.tenup-boot-header {
+	align-items: center;
+	border-bottom: 1px solid #f0f0f0;
+	display: flex;
+	flex-shrink: 0;
+	gap: 12px;
+	padding: 16px 24px;
+}
+
+.tenup-boot-header h2 {
+	font-size: 20px;
+	font-weight: 500;
+	line-height: 1.2;
+	margin: 0;
+}
+
+.tenup-boot-header__logo {
+	display: block;
+	height: 20px;
+	width: auto;
+}
+
+/* ── Content area — scrollable region ── */
+.tenup-boot-content {
+	flex: 1;
+	overflow-y: auto;
+	padding: 24px;
+}
+
+/* ── Section titles ── */
+.tenup-boot-section-title {
+	color: #1d2327; /* stylelint-disable-line */
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	margin: 0 0 12px;
+	padding: 0;
+	text-transform: uppercase;
+}
+
+.tenup-boot-content section + section .tenup-boot-section-title {
+	margin-top: 32px;
+}
+
+/* ── Description text ── */
+.tenup-boot-section-description {
+	color: #757575; /* stylelint-disable-line */
+	margin: 0 0 24px;
+	max-width: 640px;
+}
+
+/* ── Footer — save bar ── */
+.tenup-boot-footer {
+	background: #fff;
+	border-top: 1px solid #ddd;
+	display: flex;
+	flex-shrink: 0;
+	justify-content: flex-end;
+	padding: 24px;
+}
+
+.tenup-boot-footer .components-button.is-primary {
+	justify-content: center;
+	min-width: 100px;
+}
+
+/* ── Cards grid ──
+ * Each top-level card becomes a grid cell. Two-up on wider viewports,
+ * single-column on narrower.
+ */
+.tenup-boot-cards {
+	align-items: start;
+	display: grid;
+	gap: 24px;
+	grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+}
+
+.tenup-boot-cards > .dataforms-layouts__wrapper {
+	min-width: 0;
+}
+
+/* ── Inline notices inside cards ── */
+.tenup-boot-note {
+	align-items: center;
+	border-radius: 4px;
+	display: flex;
+	gap: 12px;
+	margin-bottom: 16px;
+	padding: 14px 16px;
+}
+
+.tenup-boot-note.is-info {
+	background: #f0f6fc;
+	border: 1px solid #c5d9ed;
+	color: #2271b1;
+}
+
+.tenup-boot-note.is-warning {
+	background: #fef8ee;
+	border: 1px solid #f0c33c;
+	color: #6e4e00;
+}
+
+.tenup-boot-note p {
+	margin: 0;
+}
+
+/* ── DataForm field overrides ── */
+.dataforms-layouts-card__field-header-label {
+	white-space: nowrap;
+}
+
+.dataforms-layouts-card input[type="text"],
+.dataforms-layouts-card input[type="url"] {
+	max-width: 100%;
+	width: 100%;
+}

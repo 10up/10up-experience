@@ -1,2 +1,3 @@
 dist/css/*.css
+dist/modules/
 vendor/*

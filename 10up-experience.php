@@ -1,11 +1,11 @@
 <?php
 /**
- * Plugin Name:       10up Experience
+ * Plugin Name:       Fueled Experience
  * Plugin URI:        https://github.com/10up/10up-experience
- * Description:       The 10up Experience plugin configures WordPress to better protect and inform clients, aligned to 10up’s best practices.
- * Version:           1.18.0
- * Author:            10up
- * Author URI:        https://10up.com
+ * Description:       The Fueled Experience plugin configures WordPress to help protect and support client sites according to Fueled’s best practices.
+ * Version:           1.19.0
+ * Author:            Fueled
+ * Author URI:        https://fueled.com
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       tenup
@@ -19,7 +19,7 @@ namespace TenUpExperience;
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
-define( 'TENUP_EXPERIENCE_VERSION', '1.18.0' );
+define( 'TENUP_EXPERIENCE_VERSION', '1.19.0' );
 define( 'TENUP_EXPERIENCE_DIR', __DIR__ );
 define( 'TENUP_EXPERIENCE_FILE', __FILE__ );
 define( 'TENUP_EXPERIENCE_URL', plugin_dir_url( __FILE__ ) );

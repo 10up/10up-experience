@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-07-28
+
+### Added
+
+- Add redesigned About Fueled and Experience Plugin admin pages with current configuration, feature, and support information.
+- Add Fueled-branded imagery and client work assets for the new admin experiences.
+
+### Changed
+
+- Rebrand customer-facing plugin metadata, admin-bar navigation, footer attribution, welcome notice, and recommended-plugin messaging for Fueled.
+- Improve explanations of REST API protection, strong passwords, Fueled SSO, Support Monitor, editor selection, and other plugin features.
+- Clarify which technical information Support Monitor shares with Fueled and which content and customer data it never shares.
+- Point the standard plugin-row “View details” link to the Experience Plugin page.
+- Preserve existing plugin paths, namespaces, settings, hooks, updater configuration, and other compatibility identifiers.
+
 ## [1.18.0] - 2026-06-10
 
 ### Added

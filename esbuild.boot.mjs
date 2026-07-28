@@ -12,7 +12,7 @@
 
 import { build, context } from 'esbuild';
 import { createHash } from 'crypto';
-import { writeFileSync, readFileSync, mkdirSync } from 'fs';
+import { writeFileSync, readFileSync, mkdirSync, existsSync } from 'fs';
 import { join } from 'path';
 
 const isWatch = process.argv.includes('--watch');
@@ -105,8 +105,15 @@ function generateAssets(metafile, outdir) {
 			deps.add(handle);
 		}
 
+		// Hash the sibling CSS bundle too, so CSS-only changes bust the cache.
 		const content = readFileSync(outFile, 'utf8');
-		const hash = createHash('md5').update(content).digest('hex').slice(0, 20);
+		const cssFile = outFile.replace(/\.js$/, '.css');
+		const cssContent = existsSync(cssFile) ? readFileSync(cssFile, 'utf8') : '';
+		const hash = createHash('md5')
+			.update(content)
+			.update(cssContent)
+			.digest('hex')
+			.slice(0, 20);
 
 		const depsStr = [...deps]
 			.sort()

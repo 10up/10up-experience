@@ -31,6 +31,17 @@
 	margin: 8px 0 0;
 }
 
+/* Core's About-page stylesheet ships with the boot bundle and its
+ * `.about-wrap p { font-size: 16px; }` outranks the page's single-class
+ * selectors — restore the intended label/description scale. */
+.tenup-boot-page .about-eyebrow {
+	font-size: 12px;
+}
+
+.tenup-boot-page .about-hero__text {
+	font-size: 18px;
+}
+
 /* Balance multi-line display headings; keep descriptions from orphaning. */
 .tenup-boot-page .about-hero__headline,
 .tenup-boot-page .about-capabilities h2,

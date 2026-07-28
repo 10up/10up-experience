@@ -144,6 +144,41 @@
 	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+/* Core's About-page stylesheet ships with the boot bundle and its
+ * `.about-wrap p { font-size: 16px; }` outranks the page's single-class
+ * label selectors — restore the intended label/description scale. */
+.tenup-boot-page .about-eyebrow {
+	font-size: 12px;
+}
+
+.tenup-boot-page .experience-monitor__label,
+.tenup-boot-page .experience-group-label {
+	font-size: 11px;
+}
+
+/* The eyebrow belongs to its heading: keep it tight above the title, with a
+ * slightly larger gap before the description below. */
+.tenup-boot-page .experience-monitor__label {
+	margin-bottom: 6px;
+}
+
+.tenup-boot-page .experience-monitor__details article > p:last-child {
+	margin-top: 10px;
+}
+
+.tenup-boot-page .experience-monitor__intro .about-eyebrow,
+.tenup-boot-page .experience-source .about-eyebrow {
+	margin-bottom: 8px;
+}
+
+.tenup-boot-page .experience-monitor__note {
+	font-size: 13px;
+}
+
+.tenup-boot-page .experience-hero__text {
+	font-size: 17px;
+}
+
 @container (max-width: 960px) {
 
 	.tenup-boot-page .experience-hero {

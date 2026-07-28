@@ -1,0 +1,190 @@
+/* ── Boot refinements for the Fueled Experience Plugin page ──
+ * tenup-pages.css (enqueued by Customizations) provides the base design;
+ * these overrides align it with the boot chrome: centered max-width column,
+ * consistent 16px rhythm from a flex gap instead of legacy margins,
+ * auto-fit card grids, and container-query responsiveness (the admin menu
+ * changes the available width, so the content region — not the viewport —
+ * drives the layout). */
+
+.tenup-boot-page.experience-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	margin: 0 auto;
+	max-width: 1100px;
+}
+
+.tenup-boot-page .experience-hero,
+.tenup-boot-page .experience-configuration,
+.tenup-boot-page .experience-monitor,
+.tenup-boot-page .experience-source {
+	margin-top: 0;
+}
+
+/* The boot header owns the Fueled lockup, so the hero centers its headline
+ * instead of stacking the logo above it. */
+.tenup-boot-page .experience-hero {
+	min-height: 420px;
+}
+
+.tenup-boot-page .experience-hero__content {
+	align-self: center;
+}
+
+/* Balance multi-line display headings; keep descriptions from orphaning. */
+.tenup-boot-page .experience-hero__headline,
+.tenup-boot-page .experience-section-heading h2,
+.tenup-boot-page .experience-monitor h2,
+.tenup-boot-page .experience-source h2 {
+	text-wrap: balance;
+}
+
+.tenup-boot-page .experience-hero__text,
+.tenup-boot-page .experience-monitor__intro p,
+.tenup-boot-page .experience-source p {
+	text-wrap: pretty;
+}
+
+/* ── DataViews grids for the configuration/feature cards ── */
+
+/* The DataViews wrapper manages its own height for full-page lists; inside
+ * this card it should just flow with the content. */
+.tenup-boot-page .experience-configuration .dataviews-wrapper {
+	container-type: normal;
+	height: auto;
+	overflow: visible;
+}
+
+/* No search, no filters, single fixed layout — hide the empty toolbar and
+ * the footer pagination chrome. */
+.tenup-boot-page .experience-configuration .dataviews__view-actions,
+.tenup-boot-page .experience-configuration .dataviews-filters__container,
+.tenup-boot-page .experience-configuration .dataviews-footer {
+	display: none;
+}
+
+.tenup-boot-page .experience-configuration .dataviews-view-grid {
+	grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+	padding: 0;
+}
+
+/* No media field on these cards — hide the gray preview placeholder the
+ * grid layout renders unconditionally. */
+.tenup-boot-page .experience-configuration .dataviews-view-grid__media--placeholder {
+	display: none;
+}
+
+/* Give each grid item the card surface the rest of the page uses. */
+.tenup-boot-page .experience-configuration .dataviews-view-grid__card {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 8px;
+	box-sizing: border-box;
+	height: 100%;
+	padding: 20px;
+}
+
+/* The description renders as a regular field so it sits below the status
+ * badge — its repeated "Description" field label is noise on these cards. */
+.tenup-boot-page .experience-configuration .dataviews-view-grid__field-name {
+	display: none;
+}
+
+/* The grid's regular fields are styled as one-line key → value rows; these
+ * descriptions are prose, so let them take the full width and wrap. */
+.tenup-boot-page .experience-configuration .dataviews-view-grid__fields .dataviews-view-grid__field {
+	align-items: flex-start;
+}
+
+.tenup-boot-page .experience-configuration .dataviews-view-grid__fields .dataviews-view-grid__field .dataviews-view-grid__field-value {
+	color: #50575e;
+	overflow: visible;
+	text-overflow: clip;
+	text-wrap: pretty;
+	white-space: normal;
+	width: 100%;
+}
+
+/* Status colors move onto the DataViews Badge itself (via :has()) so the
+ * pill isn't a second box nested inside the badge chrome. */
+.tenup-boot-page .experience-configuration .dataviews-view-grid__badge-fields .experience-status__value {
+	background: none;
+	border-radius: 0;
+	color: inherit;
+	display: inline;
+	font-size: inherit;
+	font-weight: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+.tenup-boot-page .experience-configuration .dataviews-view-grid__badge-fields .dataviews-view-grid__field-value {
+	font-weight: 600;
+}
+
+.tenup-boot-page .experience-configuration .dataviews-view-grid__badge-fields .dataviews-view-grid__field-value:has(.is-active) {
+	background: #d5f2da;
+	color: #06350f;
+}
+
+.tenup-boot-page .experience-configuration .dataviews-view-grid__badge-fields .dataviews-view-grid__field-value:has(.is-informational) {
+	background: #d5ebfa;
+	color: #032c45;
+}
+
+.tenup-boot-page .experience-configuration .dataviews-view-grid__badge-fields .dataviews-view-grid__field-value:has(.is-muted) {
+	background: #dcdcde;
+	color: #1d2327;
+}
+
+/* Auto-fit grids track the available width instead of jumping between a
+ * fixed four-column desktop layout and a single column. */
+.tenup-boot-page .experience-monitor__details {
+	align-content: start;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+@container (max-width: 960px) {
+
+	.tenup-boot-page .experience-hero {
+		grid-template-columns: 1fr;
+		min-height: 0;
+	}
+
+	.tenup-boot-page .experience-hero__visual {
+		display: none;
+	}
+
+	.tenup-boot-page .experience-monitor {
+		grid-template-columns: 1fr;
+	}
+
+	.tenup-boot-page .experience-source {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+}
+
+@container (max-width: 700px) {
+
+	.tenup-boot-page .experience-hero__content {
+		padding: 24px;
+	}
+
+	.about-wrap.tenup-boot-page .experience-hero__headline {
+		font-size: 42px;
+	}
+
+	.about-wrap.tenup-boot-page .experience-section-heading h2,
+	.about-wrap.tenup-boot-page .experience-monitor h2,
+	.about-wrap.tenup-boot-page .experience-source h2 {
+		font-size: 36px;
+	}
+
+	.tenup-boot-page .experience-configuration,
+	.tenup-boot-page .experience-monitor__intro,
+	.tenup-boot-page .experience-monitor__details,
+	.tenup-boot-page .experience-source {
+		padding: 24px;
+	}
+}

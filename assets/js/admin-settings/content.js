@@ -5,6 +5,7 @@ import { EntitiesSavedStates } from '@wordpress/editor';
 import { __, sprintf } from '@wordpress/i18n';
 import { DataForm } from '@wordpress/dataviews';
 import '@wordpress/dataviews/build-style/style.css';
+import AdminPageLayout from '../admin-shared/AdminPageLayout';
 import './admin.css';
 
 const CONFIG = window.tenupExperienceSettingsData ?? {};
@@ -63,25 +64,6 @@ const SaveButton = () => {
 		</>
 	);
 };
-
-const AdminPageLayout = ({ title, children }) => (
-	<div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-		<header className="tenup-boot-header">
-			{CONFIG.logoUrl && (
-				<img
-					className="tenup-boot-header__logo"
-					src={CONFIG.logoUrl}
-					alt={__('Fueled', 'tenup')}
-				/>
-			)}
-			<h2>{title}</h2>
-		</header>
-		<div className="tenup-boot-content">{children}</div>
-		<footer className="tenup-boot-footer">
-			<SaveButton />
-		</footer>
-	</div>
-);
 
 // ── Card primitive ──────────────────────────────────────────────────────
 // Wraps content in @wordpress/components <Card> with the dataforms-layouts
@@ -424,14 +406,22 @@ const SettingsStage = () => {
 
 	if (!hasResolved) {
 		return (
-			<AdminPageLayout title={__('Fueled Experience', 'tenup')}>
+			<AdminPageLayout
+				title={__('Experience', 'tenup')}
+				logoUrl={CONFIG.logoUrl}
+				footer={<SaveButton />}
+			>
 				<Spinner />
 			</AdminPageLayout>
 		);
 	}
 
 	return (
-		<AdminPageLayout title={__('Fueled Experience', 'tenup')}>
+		<AdminPageLayout
+			title={__('Experience', 'tenup')}
+			logoUrl={CONFIG.logoUrl}
+			footer={<SaveButton />}
+		>
 			<section>
 				<h2 className="tenup-boot-section-title">{__('Plugin settings', 'tenup')}</h2>
 				<p className="tenup-boot-section-description">

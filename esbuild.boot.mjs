@@ -18,7 +18,11 @@ import { join } from 'path';
 const isWatch = process.argv.includes('--watch');
 
 // ── Pages config — add new boot pages here ──────────────────────────────
-const PAGES = [{ name: 'settings', src: 'assets/js/admin-settings' }];
+const PAGES = [
+	{ name: 'settings', src: 'assets/js/admin-settings' },
+	{ name: 'about', src: 'assets/js/admin-about' },
+	{ name: 'experience', src: 'assets/js/admin-experience' },
+];
 
 // Packages that remain as bare ESM imports (resolved by WP import map).
 const ESM_EXTERNALS = new Set(['@wordpress/boot', '@wordpress/route']);
@@ -128,6 +132,7 @@ async function buildPage(page) {
 		outdir,
 		format: 'esm',
 		bundle: true,
+		minify: true,
 		metafile: true,
 		jsx: 'automatic',
 		loader: { '.js': 'jsx', '.css': 'css' },

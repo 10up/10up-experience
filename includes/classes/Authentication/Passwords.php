@@ -424,25 +424,43 @@ class Passwords {
 		$prefix = substr( $hash, 0, 5 );
 		$suffix = substr( $hash, 5 );
 
-		$cache_key = 'prefix_' . $prefix;
-		$body      = wp_cache_get( $cache_key, self::HIBP_CACHE_KEY );
+		/**
+		 * Filter the largest range response accepted from the HIBP API, in bytes.
+		 *
+		 * A padded range response is roughly 30-50KB. The cap bounds what a hijacked
+		 * or proxied endpoint can stream into memory, and doubles as the truncation
+		 * boundary below.
+		 *
+		 * @param int $limit Maximum response size in bytes.
+		 */
+		$limit = max( 1024, (int) apply_filters( 'tenup_experience_hibp_max_response_bytes', 128 * 1024 ) );
 
-		if ( false === $body ) {
-			$transient_key = self::HIBP_CACHE_KEY . '_' . strtolower( $cache_key );
-			$body          = get_transient( $transient_key );
+		$cache_key     = 'prefix_' . $prefix;
+		$transient_key = self::HIBP_CACHE_KEY . '_' . strtolower( $cache_key );
+		$body          = wp_cache_get( $cache_key, self::HIBP_CACHE_KEY );
+		$cached        = false !== $body;
+
+		if ( ! $cached ) {
+			$body   = get_transient( $transient_key );
+			$cached = false !== $body;
 
 			// Warm the object cache from the transient so repeat lookups skip the DB read.
-			if ( false !== $body ) {
+			if ( $cached ) {
 				wp_cache_set( $cache_key, $body, self::HIBP_CACHE_KEY, 4 * HOUR_IN_SECONDS );
 			}
 		}
 
-		if ( false === $body ) {
+		if ( ! $cached ) {
 			$response = wp_remote_get(
 				self::HIBP_API_URL . $prefix,
 				[
-					'timeout'    => (int) apply_filters( 'tenup_experience_hibp_request_timeout', 2 ),
-					'user-agent' => '10up Experience WordPress Plugin',
+					'timeout'             => (int) apply_filters( 'tenup_experience_hibp_request_timeout', 2 ),
+					'limit_response_size' => $limit,
+					'user-agent'          => '10up Experience WordPress Plugin',
+					// Ask HIBP to pad the response so its size cannot reveal how many
+					// real matches the prefix held. Padded rows carry a count of 0 and
+					// are skipped when scanning for the suffix below.
+					'headers'             => [ 'Add-Padding' => 'true' ],
 				]
 			);
 
@@ -453,24 +471,45 @@ class Passwords {
 				return true;
 			}
 
-			$body = wp_remote_retrieve_body( $response );
+			$body = (string) wp_remote_retrieve_body( $response );
 
-			if ( empty( $body ) ) {
+			// Check the transport boundary before trimming. A capped response can end
+			// exactly on a CRLF, and trimming first would hide those bytes and make a
+			// truncated range look complete enough to validate and cache. A truncated
+			// range is the dangerous case: the missing tail is indistinguishable from
+			// "not breached", so a real match would read as clean.
+			if ( strlen( $body ) >= $limit ) {
 				return true;
 			}
+		}
 
-			// Cache the prefix response only. Avoid storing full password hashes.
+		$body = trim( (string) $body );
+
+		// Treat an empty or malformed range as unavailable rather than parsing it as
+		// "no match". Every line is a 35-character hash suffix, a colon, and a count;
+		// an HTML error page served with a 200, or a partial final line, is not a
+		// range response and must not be trusted or cached.
+		if ( '' === $body || ! preg_match( '/\A[0-9A-F]{35}:[0-9]+(?:\r?\n[0-9A-F]{35}:[0-9]+)*\z/i', $body ) ) {
+			return true;
+		}
+
+		if ( ! $cached ) {
+			// Cache the validated prefix response only. Avoid storing full password hashes.
 			wp_cache_set( $cache_key, $body, self::HIBP_CACHE_KEY, 4 * HOUR_IN_SECONDS );
 			set_transient( $transient_key, $body, 4 * HOUR_IN_SECONDS );
 		}
 
-		$lines = explode( "\r\n", $body );
+		foreach ( preg_split( '/\r\n|\n/', $body ) as $line ) {
+			$parts = explode( ':', trim( $line ), 2 );
 
-		foreach ( $lines as $line ) {
-			$parts = explode( ':', $line );
+			if ( 2 !== count( $parts ) ) {
+				continue;
+			}
 
-			// If the suffix is found in the response, the password may be in a breach.
-			if ( isset( $parts[0] ) && $parts[0] === $suffix ) {
+			// A row with a count of 0 is padding, not a breach match. Compare the
+			// suffix case-insensitively: the API returns upper-case hex, but the
+			// cached body is only guaranteed to match the validation pattern above.
+			if ( (int) $parts[1] > 0 && 0 === strcasecmp( $parts[0], $suffix ) ) {
 				$is_password_secure = false;
 				break;
 			}

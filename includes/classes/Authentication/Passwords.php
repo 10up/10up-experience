@@ -315,9 +315,14 @@ class Passwords {
 	public function validate_strong_password( $errors, $user_data ) {
 		$password_ok = true;
 		$enforce     = true;
-		// This is being sanitized later in the function, no need to sanitize for isset().
-		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$password = ( isset( $_POST['pass1'] ) && '' !== $_POST['pass1'] ) ? sanitize_text_field( $_POST['pass1'] ) : false;
+		// Validate the password WordPress will actually store, which means unslashing
+		// it and sanitizing nothing: edit_user() takes $_POST['pass1'] as-is (rejecting
+		// any password containing a backslash) and wp_insert_user() unslashes before
+		// hashing. Passing it through sanitize_text_field() strips tags, collapses
+		// whitespace, and removes octets, so the strength and breach checks below would
+		// judge a string the user never chose.
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Passwords must not be sanitized.
+		$password = ( isset( $_POST['pass1'] ) && '' !== $_POST['pass1'] ) ? (string) wp_unslash( $_POST['pass1'] ) : false;
 		$role     = isset( $_POST['role'] ) ? sanitize_text_field( $_POST['role'] ) : false;
 		$user_id  = isset( $user_data->ID ) ? sanitize_text_field( $user_data->ID ) : false;
 		$username = isset( $_POST['user_login'] ) ? sanitize_text_field( $_POST['user_login'] ) : $user_data->user_login;

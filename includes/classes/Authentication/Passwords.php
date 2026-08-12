@@ -322,7 +322,11 @@ class Passwords {
 		// whitespace, and removes octets, so the strength and breach checks below would
 		// judge a string the user never chose.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Passwords must not be sanitized.
-		$password = ( isset( $_POST['pass1'] ) && '' !== $_POST['pass1'] ) ? (string) wp_unslash( $_POST['pass1'] ) : false;
+		$raw_pass1 = isset( $_POST['pass1'] ) ? wp_unslash( $_POST['pass1'] ) : '';
+		// A crafted request can submit pass1 as an array ( pass1[]=... ); the '' !== check
+		// passed for an array and (string) coerced it to "Array" with a PHP warning. Treat
+		// any non-string as no password.
+		$password = ( is_string( $raw_pass1 ) && '' !== $raw_pass1 ) ? $raw_pass1 : false;
 		$role     = isset( $_POST['role'] ) ? sanitize_text_field( $_POST['role'] ) : false;
 		$user_id  = isset( $user_data->ID ) ? sanitize_text_field( $user_data->ID ) : false;
 		$username = isset( $_POST['user_login'] ) ? sanitize_text_field( $_POST['user_login'] ) : $user_data->user_login;

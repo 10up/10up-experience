@@ -451,10 +451,18 @@ class Passwords {
 		}
 
 		if ( ! $cached ) {
+			// wp_remote_get accepts a float timeout; casting to int truncates a fractional
+			// filter value, and 0 (from an invalid/empty return) means "no timeout" — a hang
+			// risk. Allow floats and floor invalid values.
+			$timeout = (float) apply_filters( 'tenup_experience_hibp_request_timeout', 2 );
+			if ( $timeout <= 0 ) {
+				$timeout = 2;
+			}
+
 			$response = wp_remote_get(
 				self::HIBP_API_URL . $prefix,
 				[
-					'timeout'             => (int) apply_filters( 'tenup_experience_hibp_request_timeout', 2 ),
+					'timeout'             => $timeout,
 					'limit_response_size' => $limit,
 					'user-agent'          => '10up Experience WordPress Plugin',
 					// Ask HIBP to pad the response so its size cannot reveal how many

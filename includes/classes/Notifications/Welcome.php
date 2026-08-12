@@ -36,6 +36,15 @@ class Welcome {
 	 * Enqueue scripts
 	 */
 	public function enqueue_scripts() {
+		$dismissed           = TENUP_EXPERIENCE_IS_NETWORK ? get_site_option( 'tenup_welcome_dismiss', false ) : get_option( 'tenup_welcome_dismiss', false );
+		$required_capability = TENUP_EXPERIENCE_IS_NETWORK ? 'manage_network_options' : 'manage_options';
+
+		// Match notice(): do not load the dismiss script for a user who cannot see or
+		// dismiss the notice, or when it is already dismissed.
+		if ( ! empty( $dismissed ) || ! current_user_can( $required_capability ) ) {
+			return;
+		}
+
 		wp_enqueue_script( '10up-notices', plugins_url( '/dist/js/notices.js', TENUP_EXPERIENCE_FILE ), [ 'jquery' ], TENUP_EXPERIENCE_VERSION, true );
 
 		wp_localize_script(
@@ -78,8 +87,13 @@ class Welcome {
 	 * @return void
 	 */
 	public function notice() {
-		$dismissed = TENUP_EXPERIENCE_IS_NETWORK ? get_site_option( 'tenup_welcome_dismiss', false ) : get_option( 'tenup_welcome_dismiss', false );
-		if ( ! empty( $dismissed ) ) {
+		$dismissed           = TENUP_EXPERIENCE_IS_NETWORK ? get_site_option( 'tenup_welcome_dismiss', false ) : get_option( 'tenup_welcome_dismiss', false );
+		$required_capability = TENUP_EXPERIENCE_IS_NETWORK ? 'manage_network_options' : 'manage_options';
+
+		// Only users who can actually dismiss the notice should see it. Otherwise the
+		// dismissible notice renders but the AJAX dismissal is rejected for lack of
+		// capability, so it reappears on every page load.
+		if ( ! empty( $dismissed ) || ! current_user_can( $required_capability ) ) {
 			return;
 		}
 

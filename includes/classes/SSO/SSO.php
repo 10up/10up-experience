@@ -229,10 +229,18 @@ class SSO {
 				TENUPSSO_PROXY_URL
 			);
 
+			// wp_remote_get accepts a float timeout; casting to int truncates a fractional
+			// filter value, and 0 (from an invalid/empty return) means "no timeout" — a hang
+			// risk. Allow floats and floor invalid values.
+			$timeout = (float) apply_filters( 'tenup_experience_sso_proxy_request_timeout', 5 );
+			if ( $timeout <= 0 ) {
+				$timeout = 5;
+			}
+
 			$response = wp_remote_get(
 				$verify,
 				[
-					'timeout' => (int) apply_filters( 'tenup_experience_sso_proxy_request_timeout', 5 ),
+					'timeout' => $timeout,
 				]
 			);
 

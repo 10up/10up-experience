@@ -442,11 +442,13 @@ class Comments {
 			return false;
 		}
 
-		// Get all registered blocks if all blocks are allowed or no explicit list is set.
-		if ( true === $allowed_block_types || ! is_array( $allowed_block_types ) || empty( $allowed_block_types ) ) {
+		// Expand to every registered block only when all blocks are allowed (true) or
+		// the value is not an explicit list. An empty array is NOT "no list set" — it
+		// is a deliberate deny-all (WordPress treats `[]` the same as `false`), so it
+		// must be left untouched rather than expanded to every block.
+		if ( true === $allowed_block_types || ! is_array( $allowed_block_types ) ) {
 			$registered_blocks   = \WP_Block_Type_Registry::get_instance()->get_all_registered();
 			$allowed_block_types = array_keys( $registered_blocks );
-
 		}
 
 		// Create a new array for the allowed blocks.

@@ -194,8 +194,20 @@ class Passwords {
 	 * @return \WP_User|\WP_Error
 	 */
 	public function prevent_weak_password_auth( $user, $username, $password ) {
-		$test_tlds = array( 'test', 'local', '' );
-		$tld       = preg_replace( '#^.*\.(.*)$#', '$1', wp_parse_url( site_url(), PHP_URL_HOST ) );
+		$host = (string) wp_parse_url( site_url(), PHP_URL_HOST );
+		$tld  = preg_replace( '#^.*\.(.*)$#', '$1', $host );
+
+		/**
+		 * Filters the top-level domains where weak passwords may still be used to log in.
+		 *
+		 * An empty string matches hosts without a dot, such as localhost.
+		 *
+		 * @since 1.19.0
+		 *
+		 * @param string[] $test_tlds Top-level domains, without the leading dot. Default 'test', 'local' and ''.
+		 * @param string   $host      Host of the site URL.
+		 */
+		$test_tlds = (array) apply_filters( 'tenup_experience_weak_password_allowed_tlds', [ 'test', 'local', '' ], $host );
 
 		if ( ! in_array( $tld, $test_tlds, true ) && in_array( strtolower( trim( $password ) ), $this->weak_passwords(), true ) ) {
 			return new \WP_Error(

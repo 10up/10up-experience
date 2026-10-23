@@ -131,14 +131,14 @@ class Monitor {
 		$defaults = [
 			'enable_support_monitor' => 'no',
 			'api_key'                => '',
-			'server_url'             => 'https://monitor.10up.com',
+			'server_url'             => 'https://monitor.fueled.dev',
 		];
 
 		$settings = ( TENUP_EXPERIENCE_IS_NETWORK ) ? get_site_option( 'tenup_support_monitor_settings', [] ) : get_option( 'tenup_support_monitor_settings', [] );
 		$settings = wp_parse_args( $settings, $defaults );
 
 		if ( ! Debug::instance()->is_debug_enabled() ) {
-			$settings['server_url'] = 'https://monitor.10up.com';
+			$settings['server_url'] = 'https://monitor.fueled.dev';
 		}
 
 		// Disable support monitor for local environments to prevent polluting monitor with .test/.local domains
@@ -304,7 +304,7 @@ class Monitor {
 		$value = $this->get_setting( 'server_url' );
 
 		?>
-		<input placeholder="https://monitor.10up.com" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ); ?> class="regular-text">
+		<input placeholder="https://monitor.fueled.dev" name="tenup_support_monitor_settings[server_url]" type="text" id="server_url" value="<?php echo esc_attr( $value ); ?>"<?php disabled( defined( 'SUPPORT_MONITOR_SERVER_URL' ) ); ?> class="regular-text">
 		<?php
 	}
 

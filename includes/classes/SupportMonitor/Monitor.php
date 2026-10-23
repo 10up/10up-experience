@@ -481,6 +481,7 @@ class Monitor {
 			'url'             => TENUP_EXPERIENCE_IS_NETWORK ? network_home_url() : home_url(),
 			'platform'        => 'wordpress',
 			'hostingProvider' => $this->get_hosting_provider(),
+			'environmentType' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
 			'isMultisite'     => is_multisite(),
 			'packages'        => $this->get_packages(),
 			'activityLogs'    => $logs,

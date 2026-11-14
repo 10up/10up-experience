@@ -84,6 +84,20 @@ add_filter( 'tenup_experience_rest_api_allowlist', function( $allowed_routes ) {
 
 Removes 10up user author archives so they aren't mistakenly indexed by search engines.
 
+### Random Content
+
+Disables the WordPress 7.2+ random content redirect (`/random/`). Core runs an `ORDER BY RAND()` query for each request, which is slow on large sites and can expose content that was not meant to be surfaced. The module returns `false` for the core `wp_enable_random_content_redirect` filter and sets `randomable` to `false` for every post type.
+
+#### Filters
+
+- `tenup_experience_disable_random_content`
+
+Filters whether to disable random content. Default is `true`. Return `false` to keep the core behavior:
+
+```php
+add_filter( 'tenup_experience_disable_random_content', '__return_false' );
+```
+
 ### Gutenberg
 
 Adds an option in writing to switch back to Classic Editor.

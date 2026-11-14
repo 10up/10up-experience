@@ -78,6 +78,7 @@ Gutenberg\Gutenberg::instance();
 Headers\Headers::instance();
 Plugins\Plugins::instance();
 PostPasswords\PostPasswords::instance();
+Random\Random::instance();
 SupportMonitor\Monitor::instance();
 SupportMonitor\Debug::instance();
 SupportMonitor\ActivityLog::instance();

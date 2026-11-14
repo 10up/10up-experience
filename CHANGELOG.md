@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased]
 
+### Added
+
+- Disable the WordPress 7.2 random content redirect (`/random/`) by default. New filter `tenup_experience_disable_random_content` to opt back in.
+
 ## [1.18.0] - 2026-06-10
 
 ### Added

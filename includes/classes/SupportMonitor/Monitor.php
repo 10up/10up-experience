@@ -461,6 +461,11 @@ class Monitor {
 				'group' => 'system',
 			],
 			[
+				'key'   => 'db_type',
+				'value' => false !== stripos( $wpdb->db_server_info(), 'mariadb' ) ? 'mariadb' : 'mysql',
+				'group' => 'system',
+			],
+			[
 				'key'   => 'wp_debug',
 				'value' => ( defined( 'WP_DEBUG' ) && WP_DEBUG ),
 				'group' => 'system',

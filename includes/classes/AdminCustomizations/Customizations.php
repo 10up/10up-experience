@@ -10,7 +10,6 @@ namespace TenUpExperience\AdminCustomizations;
 use TenUpExperience\API\API;
 use TenUpExperience\Authentication\Passwords;
 use TenUpExperience\Comments\Comments;
-use TenUpExperience\Gutenberg\Gutenberg;
 use TenUpExperience\Settings\SettingsScreen;
 use TenUpExperience\Singleton;
 use TenUpExperience\SSO\SSO;
@@ -349,7 +348,6 @@ class Customizations {
 		$monitor           = Monitor::instance();
 		$monitor_enabled   = 'yes' === $monitor->get_setting( 'enable_support_monitor' );
 		$comments_disabled = Comments::instance()->comments_are_disabled();
-		$classic_editor    = 1 === (int) get_option( Gutenberg::instance()->get_disable_gutenberg_key(), 0 );
 		$post_passwords    = (bool) get_option( 'tenup_password_protect', 0 );
 
 		if ( $monitor->is_local_environment() && ! $monitor_enabled ) {
@@ -400,13 +398,6 @@ class Customizations {
 				'class'        => $comments_disabled ? 'is-active' : 'is-informational',
 				'description'  => __( 'When disabled, comment forms, displays, feeds, widgets, and admin controls are removed while Block Notes remain available.', 'tenup' ),
 				'settings_url' => $shared_settings_url,
-			),
-			array(
-				'label'        => __( 'Content editor', 'tenup' ),
-				'value'        => $classic_editor ? __( 'Classic Editor', 'tenup' ) : __( 'Block Editor', 'tenup' ),
-				'class'        => 'is-informational',
-				'description'  => __( 'Sites that haven\'t upgraded to the Block Editor can retain the Classic Editor with one click.', 'tenup' ),
-				'settings_url' => $writing_settings_url,
 			),
 			array(
 				'label'        => __( 'Password-protected content', 'tenup' ),

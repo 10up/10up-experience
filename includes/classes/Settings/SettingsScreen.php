@@ -138,18 +138,6 @@ class SettingsScreen {
 
 		register_setting(
 			'tenup_experience',
-			'tenup_disable_gutenberg',
-			[
-				'type'              => 'integer',
-				'label'             => __( 'Use Classic Editor', 'tenup' ),
-				'default'           => 0,
-				'sanitize_callback' => 'intval',
-				'show_in_rest'      => true,
-			]
-		);
-
-		register_setting(
-			'tenup_experience',
 			'tenup_password_protect',
 			[
 				'type'              => 'integer',

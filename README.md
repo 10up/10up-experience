@@ -84,12 +84,6 @@ add_filter( 'tenup_experience_rest_api_allowlist', function( $allowed_routes ) {
 
 Removes 10up user author archives so they aren't mistakenly indexed by search engines.
 
-### Gutenberg
-
-Adds an option in writing to switch back to Classic Editor.
-
-*Configured in `Settings > Writing`.*
-
 ### Plugins
 
  Adds a 10up Suggested Plugins section to the plugins screen. Warns users who attempt to deactivate the 10up Experience plugin. Outputs a notice on non-suggested plugins tabs warning users from installing non-approved plugins. If `DISALLOW_FILE_MODS` is on, update notices will be shown in the plugins table.

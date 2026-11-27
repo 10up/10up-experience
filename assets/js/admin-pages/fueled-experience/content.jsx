@@ -16,7 +16,6 @@ const OPT_ALLOW_SSO = 'tenup_allow_sso';
 const OPT_STRONG_PASSWORDS = 'tenup_require_strong_passwords';
 const OPT_RESTRICT_REST_API = 'tenup_restrict_rest_api';
 const OPT_DISABLE_COMMENTS = 'tenup_disable_comments';
-const OPT_DISABLE_GUTENBERG = 'tenup_disable_gutenberg';
 const OPT_PASSWORD_PROTECT = 'tenup_password_protect';
 const OPT_MONITOR = 'tenup_support_monitor_settings';
 
@@ -142,16 +141,6 @@ const EDITORIAL_FIELDS = [
 		label: __('Disable comments', 'tenup'),
 		description: __(
 			'Removes all comment-related UI from the admin and front end. Block Notes remain available.',
-			'tenup',
-		),
-		type: 'boolean',
-		Edit: 'toggle',
-	},
-	{
-		id: 'disableGutenberg',
-		label: __('Use the Classic Editor', 'tenup'),
-		description: __(
-			'Disables the block editor in favor of the prior writing experience.',
 			'tenup',
 		),
 		type: 'boolean',
@@ -335,7 +324,6 @@ const SettingsStage = () => {
 			strongPasswords: Number(siteSettings?.[OPT_STRONG_PASSWORDS] ?? 1) === 1,
 			restrictRestApi: siteSettings?.[OPT_RESTRICT_REST_API] ?? 'users',
 			disableComments: siteSettings?.[OPT_DISABLE_COMMENTS] === 'yes',
-			disableGutenberg: Number(siteSettings?.[OPT_DISABLE_GUTENBERG] ?? 0) === 1,
 			passwordProtect: Number(siteSettings?.[OPT_PASSWORD_PROTECT] ?? 0) === 1,
 			monitorEnable: monitorSettings.enable_support_monitor === 'yes',
 			monitorApiKey: monitorSettings.api_key ?? '',
@@ -358,9 +346,6 @@ const SettingsStage = () => {
 			}
 			if ('disableComments' in edits) {
 				mapped[OPT_DISABLE_COMMENTS] = edits.disableComments ? 'yes' : 'no';
-			}
-			if ('disableGutenberg' in edits) {
-				mapped[OPT_DISABLE_GUTENBERG] = edits.disableGutenberg ? 1 : 0;
 			}
 			if ('passwordProtect' in edits) {
 				mapped[OPT_PASSWORD_PROTECT] = edits.passwordProtect ? 1 : 0;

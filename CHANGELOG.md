@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased]
 
+### Removed
+
+- Remove the "Use Classic Editor" setting. Sites that relied on it should install the [Classic Editor](https://wordpress.org/plugins/classic-editor/) plugin instead.
+
 ## [1.19.0] - 2026-07-28
 
 ### Added

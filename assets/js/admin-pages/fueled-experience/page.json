@@ -1,0 +1,5 @@
+{
+	"title": "Fueled Experience",
+	"capability": "manage_options",
+	"modes": ["wp-admin"]
+}

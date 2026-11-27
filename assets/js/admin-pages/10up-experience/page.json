@@ -1,0 +1,6 @@
+{
+	"title": "Fueled Experience Plugin",
+	"capability": "edit_posts",
+	"modes": ["wp-admin"],
+	"restPreload": []
+}

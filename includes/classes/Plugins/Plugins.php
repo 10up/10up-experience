@@ -61,7 +61,7 @@ class Plugins {
 	 */
 	public function tenup_plugin_install_link( $tabs ) {
 		$new_tabs = array(
-			'tenup' => esc_html__( '10up Suggested', 'tenup' ),
+			'tenup' => esc_html__( 'Fueled Recommended', 'tenup' ),
 		);
 
 		foreach ( $tabs as $key => $value ) {
@@ -111,8 +111,8 @@ class Plugins {
 				<?php
 					echo wp_kses_post(
 						sprintf(
-							// translators: %s is a link to the 10up Suggested plugins screen
-							__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>10up Suggestions</a> and consult your site team.", 'tenup' ),
+							// translators: %s is a link to the Fueled Recommended plugins screen
+							__( "Some plugins may affect display, performance, and reliability. Please consider <a href='%s'>Fueled recommendations</a> and consult your site team.", 'tenup' ),
 							esc_url( network_admin_url( 'plugin-install.php?tab=tenup' ) )
 						)
 					);
@@ -123,7 +123,7 @@ class Plugins {
 	}
 
 	/**
-	 * Add a "learn more" link to the plugin row that points to the admin page.
+	 * Point the plugin row's "View details" link to the Experience page.
 	 *
 	 * @param array  $plugin_meta An array of the plugin's metadata,
 	 *                            including the version, author,
@@ -137,8 +137,27 @@ class Plugins {
 			return $plugin_meta;
 		}
 
-		$plugin_meta[] = '<a href="' . esc_url( admin_url( 'admin.php?page=10up-about' ) ) . '">' . esc_html__( 'Learn more', 'tenup' ) . '</a>';
-		return $plugin_meta;
+		$view_details_link  = '<a href="' . esc_url( admin_url( 'admin.php?page=10up-experience' ) ) . '">' . esc_html__( 'View details', 'tenup' ) . '</a>';
+		$view_details_found = false;
+
+		foreach ( $plugin_meta as $key => $link ) {
+			if ( false === strpos( $link, 'open-plugin-details-modal' ) ) {
+				continue;
+			}
+
+			if ( ! $view_details_found ) {
+				$plugin_meta[ $key ] = $view_details_link;
+				$view_details_found  = true;
+			} else {
+				unset( $plugin_meta[ $key ] );
+			}
+		}
+
+		if ( ! $view_details_found ) {
+			$plugin_meta[] = $view_details_link;
+		}
+
+		return array_values( $plugin_meta );
 	}
 
 	/**

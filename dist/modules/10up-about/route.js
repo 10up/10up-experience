@@ -1,0 +1,1 @@
+var{__:e}=window.wp.i18n,t={title:()=>e(`About Fueled`,`tenup`)};export{t as route};

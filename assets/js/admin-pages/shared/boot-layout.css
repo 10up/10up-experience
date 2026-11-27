@@ -1,0 +1,86 @@
+/* ── Shared chrome for the plugin's @wordpress/boot admin pages ──
+ * Imported by every boot page so the header, content region and save footer
+ * look identical across screens. Colours and spacing are design tokens; each
+ * colour chains WP 7.0's older token name before its literal fallback, since
+ * 7.0 ships only the `fg-`/`bg-` names. */
+
+/* ── Page header: 16px block, 24px inline ── */
+.tenup-boot-header {
+	align-items: center;
+	border-block-end: 1px solid var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+	display: flex;
+	flex-shrink: 0;
+	gap: var(--wpds-dimension-gap-md, 12px);
+	padding: var(--wpds-dimension-padding-lg, 16px) var(--wpds-dimension-padding-2xl, 24px);
+}
+
+.tenup-boot-header h1 {
+	font-size: var(--wpds-typography-font-size-xl, 20px);
+	font-weight: 500;
+	line-height: 1.2;
+	margin: 0;
+	padding: 0;
+	white-space: nowrap;
+}
+
+/* Core's boot layout ships `.boot-layout-container .boot-layout img
+ * { height: auto; max-width: 100%; }`; the extra selectors here outrank it
+ * so the logo keeps its fixed height. */
+header.tenup-boot-header img.tenup-boot-header__logo {
+	display: block;
+	height: 20px;
+	width: auto;
+}
+
+/* ── Content: the scroll region, container-query root and 24px gutter ── */
+.tenup-boot-content {
+	container-type: inline-size;
+	flex: 1;
+	min-block-size: 0;
+	overflow-y: auto;
+	padding: var(--wpds-dimension-padding-2xl, 24px);
+}
+
+/* ── Description text ── */
+.tenup-boot-section-description {
+	color: var(--wpds-color-foreground-content-neutral-weak, var(--wpds-color-fg-content-neutral-weak, #757575));
+	margin: 0 0 var(--wpds-dimension-gap-2xl, 24px);
+	max-width: 640px;
+}
+
+/* ── Footer: save bar saying whether anything is unsaved ── */
+.tenup-boot-footer {
+	align-items: center;
+	background: var(--wpds-color-background-surface-neutral-strong, var(--wpds-color-bg-surface-neutral-strong, #fff));
+	border-block-start: 1px solid var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+	display: flex;
+	flex-shrink: 0;
+	gap: var(--wpds-dimension-gap-lg, 16px);
+	padding: var(--wpds-dimension-padding-lg, 16px) var(--wpds-dimension-padding-2xl, 24px);
+}
+
+.tenup-boot-footer__status {
+	color: var(--wpds-color-foreground-content-neutral-weak, var(--wpds-color-fg-content-neutral-weak, #757575));
+	margin: 0;
+}
+
+/* ── Modals portal out of the boot mount and lose wp-admin's 13px type
+ * scale (the Review changes panel among them): pin it. ── */
+.components-modal__frame {
+	font-size: var(--wpds-typography-font-size-md, 13px);
+	line-height: 1.4;
+}
+
+.components-modal__frame :is(p, li, label, .components-base-control__label) {
+	font-size: var(--wpds-typography-font-size-md, 13px);
+}
+
+/* ── A menu taller than the window scrolls the boot frame out of view
+ * (a core bug): keep #wpbody window-tall and sticky. ── */
+@media (min-width: 783px) {
+	body:has(.boot-layout-container) #wpbody {
+		block-size: calc(100vh - var(--wp-admin--admin-bar--height, 32px));
+		inset-block-start: var(--wp-admin--admin-bar--height, 32px);
+		position: sticky;
+	}
+}

@@ -1,0 +1,28 @@
+/* ── A settings page is narrow, so each control sits beside its label ── */
+.tenup-boot-settings {
+	max-inline-size: 44rem;
+}
+
+.tenup-boot-cards {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wpds-dimension-gap-2xl, 24px);
+}
+
+/* ── Card body: intro text, notices and the form share one rhythm ── */
+.tenup-boot-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wpds-dimension-gap-lg, 16px);
+}
+
+.tenup-boot-card__body > p {
+	margin: 0;
+}
+
+/* ── DataForm field overrides ── */
+.tenup-boot-card input[type="text"],
+.tenup-boot-card input[type="url"] {
+	max-width: 100%;
+	width: 100%;
+}

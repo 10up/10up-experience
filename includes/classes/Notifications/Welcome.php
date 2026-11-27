@@ -79,11 +79,11 @@ class Welcome {
 		?>
 		<div class="notice notice-info notice-10up-experience-welcome is-dismissible">
 			<p>
-				<?php esc_html_e( 'Thank you for installing the 10up Experience plugin.', 'tenup' ); ?>
+				<?php esc_html_e( 'Thank you for installing the Fueled Experience plugin.', 'tenup' ); ?>
 			</p>
 
 			<p>
-				<?php echo wp_kses_post( __( '<strong>This plugin changes some WordPress default functionality</strong> e.g. requiring authentication for the REST API users endpoint. Make sure to look at the <a href="https://github.com/10up/10up-experience">readme</a> to understand all the changes it makes.', 'tenup' ) ); ?>
+				<?php echo wp_kses_post( __( '<strong>This plugin changes some WordPress default functionality</strong>, such as requiring authentication for the REST API users endpoint. Review the <a href="https://github.com/10up/10up-experience">technical documentation</a> to understand the changes it makes.', 'tenup' ) ); ?>
 			</p>
 		</div>
 		<?php

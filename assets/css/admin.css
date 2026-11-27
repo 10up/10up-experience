@@ -21,3 +21,15 @@
 		height: 46px;
 	}
 }
+
+/* On 7.2 core gives toolbar icons a right margin for the label that follows
+ * (with three ids in the selector). The bolt has no label and is narrower than
+ * its 24px box, so drop the margin and trim the padding to sit evenly between
+ * the WordPress logo and the site name. */
+#wpadminbar #wp-admin-bar-10up > .ab-item {
+	padding-inline: 4px;
+}
+
+#wpadminbar > #wp-toolbar #wp-admin-bar-10up > .ab-item .tenup-icon.svg-icon {
+	margin-inline: 0;
+}

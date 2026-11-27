@@ -15,7 +15,6 @@
 @media
 	only screen and (                min-resolution: 192dppx),
 	only screen and (                min-resolution: 2dppx) {
-
 	.tenup-badge {
 		background: url("../img/logo@2x.png") no-repeat top left;
 		background-size: 110px 126px;
@@ -52,7 +51,6 @@
 }
 
 @media screen and (max-width: 480px) {
-
 	.about-wrap h2.nav-tab-wrapper {
 		padding-right: 0;
 	}

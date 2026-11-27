@@ -13,30 +13,28 @@
     "role": "developer"
   },
   "scripts": {
-    "build": "10up-toolkit build",
-    "lint-js": "10up-toolkit lint-js",
-    "lint-style": "10up-toolkit lint-style",
-    "prepare": "husky install",
-    "start": "10up-toolkit watch"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+    "build": "vp build",
+    "watch": "vp build --watch",
+    "start": "vp build --watch",
+    "dev": "vp dev",
+    "lint-js": "vp lint",
+    "lint-style": "stylelint \"assets/**/*.css\"",
+    "prepare": "vp config"
   },
   "license": "GPL-2.0-or-later",
   "devDependencies": {
-    "10up-toolkit": "^6.5.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^11.2.6"
+    "@10up/oxlint-config": "^0.1.0-alpha.1",
+    "@10up/stylelint-config": "^5.0.0-alpha.0",
+    "@10up/wp-vite-plugins": "^1.0.0-alpha.6",
+    "stylelint": "^18.1.0",
+    "vite-plus": "1.8.0"
   },
-  "10up-toolkit": {
-    "entry": {
-      "notices": "./assets/js/notices.js",
-      "passwords": "./assets/js/passwords.js",
-      "passwords-styles": "./assets/css/passwords.css",
-      "admin": "./assets/css/admin.css",
-      "tenup-pages": "./assets/css/tenup-pages.css"
-    }
+  "type": "module",
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26"
+  },
+  "overrides": {
+    "vite": "npm:@voidzero-dev/vite-plus-core@8.3.8001",
+    "vitest": "5.1.1"
   }
 }

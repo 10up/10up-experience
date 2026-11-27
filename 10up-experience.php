@@ -32,6 +32,11 @@ require_once __DIR__ . '/vendor/yahnis-elsts/plugin-update-checker/plugin-update
 
 require_once __DIR__ . '/includes/utils.php';
 
+// Points dist/ assets at `npm run dev` while it runs; inert otherwise.
+if ( file_exists( __DIR__ . '/dist/dev-server.php' ) ) {
+	require_once __DIR__ . '/dist/dev-server.php';
+}
+
 spl_autoload_register(
 	function ( $class_name ) {
 		$path_parts = explode( '\\', $class_name );

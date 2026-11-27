@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased]
 
+### Changed
+
+- Build with Vite+ and `@10up/wp-vite-plugins` instead of 10up-toolkit. Lint with oxlint and stylelint. Requires Node 24 for development.
+
 ## [1.18.0] - 2026-06-10
 
 ### Added

@@ -109,12 +109,46 @@ class EnvironmentIndicator {
 			[
 				'id'     => 'tenup-experience-environment-indicator',
 				'parent' => 'top-secondary',
-				'title'  => sprintf( '<span class="ab-icon dashicons %s" aria-hidden="true"></span><span class="ab-label">%s</span>', esc_attr( $environment['icon'] ), esc_html( $environment['label'] ) ),
+				'title'  => $this->get_icon_markup( $environment['icon'] ) . sprintf( '<span class="ab-label">%s</span>', esc_html( $environment['label'] ) ),
 				'meta'   => [
-					'class' => esc_attr( "tenup-experience-environment-indicator tenup-experience-environment-indicator--$type" ),
+					'class' => esc_attr( "tenup-experience-environment-indicator tenup-experience-environment-indicator--$type" . ( $this->has_svg_toolbar() ? ' tenup-experience-environment-indicator--pill' : '' ) ),
 				],
 			]
 		);
+	}
+
+	/**
+	 * Whether the toolbar draws its icons as SVGs (WordPress 7.2+).
+	 *
+	 * There the indicator is a pill; on older versions it fills the toolbar's height.
+	 *
+	 * @return bool
+	 */
+	private function has_svg_toolbar() {
+		return function_exists( '_wp_admin_bar_icon' );
+	}
+
+	/**
+	 * Markup for an environment's toolbar icon.
+	 *
+	 * Environments name a Dashicon. WordPress 7.2 replaced the toolbar's
+	 * Dashicons with outlined SVG icons, so where core maps the Dashicon to
+	 * one of those, use it; otherwise print the Dashicon.
+	 *
+	 * @param string $dashicon Dashicon class name, such as `dashicons-admin-home`.
+	 * @return string
+	 */
+	private function get_icon_markup( $dashicon ) {
+		if ( function_exists( 'wp_get_icon' ) && method_exists( 'WP_Icons_Registry', 'get_admin_icon_name_for_dashicon' ) ) {
+			$icon_name = \WP_Icons_Registry::get_instance()->get_admin_icon_name_for_dashicon( $dashicon );
+			$icon      = $icon_name ? wp_get_icon( $icon_name ) : '';
+
+			if ( $icon ) {
+				return '<span class="ab-icon svg-icon" aria-hidden="true">' . $icon . '</span>';
+			}
+		}
+
+		return sprintf( '<span class="ab-icon dashicons %s" aria-hidden="true"></span>', esc_attr( $dashicon ) );
 	}
 
 	/**
@@ -134,7 +168,14 @@ class EnvironmentIndicator {
 
 		$css = '';
 		$css .= '.tenup-experience-environment-indicator { pointer-events: none; }';
-		$css .= '.tenup-experience-environment-indicator .ab-icon { top: 3px; }';
+		$css .= '.tenup-experience-environment-indicator .ab-icon.dashicons { top: 3px; }';
+
+		if ( $this->has_svg_toolbar() ) {
+			$pill = '#wpadminbar .tenup-experience-environment-indicator--pill';
+			$css .= $pill . ' .ab-item { display: flex; align-items: center; gap: 4px; height: 24px; margin: 4px 6px; padding: 0 8px 0 6px; border-radius: 4px; line-height: 24px; }';
+			$css .= $pill . ' .ab-icon { float: none; margin: 0; padding: 0; top: 0; height: 20px; width: 20px; color: inherit; }';
+			$css .= $pill . ' .ab-icon svg { display: block; height: 20px; width: 20px; }';
+		}
 
 		foreach ( $environments as $type => $environment ) {
 			$css .= sprintf(

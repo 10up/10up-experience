@@ -1,0 +1,1 @@
+<?php return array( 'dependencies' => array( 'react-jsx-runtime', 'wp-element', 'wp-i18n' ), 'version' => 'ff05e2d7415375ed5e17', 'type' => 'module', 'source' => 'assets/js/admin-pages/10up-experience/content.jsx' );

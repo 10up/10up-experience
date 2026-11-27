@@ -2,11 +2,34 @@
 	text-align: center;
 }
 
-#wpadminbar .tenup-icon {
-	background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMzIgNTEyIDUxMiI+PHBhdGggZmlsbD0iIzlFQTNBOCIgZD0iTTI1NS45OTQgMzJDMTE0LjU4OSAzMi4wMTQgMCAxNDYuNjEgMCAyODcuOTkxIDAgMzI3LjAzMSA5LjAxMSAzNjMuOTE1IDI0LjYxMyAzOTdsMi42ODMgMi43NzIgMTU4LjE1LTE1OC4xNDctNDkuNzMxLTQ5LjczNWgyMTYuNDA4djIxNi4zOTNsLTQ5LjczMS00OS43MzgtMTU5LjA1NSAxNTkuMDY0YzM0LjAzMiAxNi43MTYgNzIuMTg5IDI2LjM5IDExMi42NzUgMjYuMzkgMTQxLjM3OSAwIDI1Ni4wMDMtMTE0LjYwNiAyNTYuMDAzLTI1Ni4wMDktLjAwMy0xNDEuMzgxLTExNC42MjUtMjU1Ljk5MS0yNTYuMDE5LTI1NS45OTF6Ii8+PC9zdmc+Cg==") !important;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 20px;
+/* The Fueled bolt in the toolbar. WordPress 7.2 sizes and colours inline
+ * SVG toolbar icons itself (`.ab-icon.svg-icon`); this is for older versions. */
+#wpadminbar .tenup-icon:not(.svg-icon) {
+	align-items: center;
+	display: flex;
 	height: 32px;
-	width: 20px;
+}
+
+#wpadminbar .tenup-icon:not(.svg-icon) svg {
+	fill: currentcolor;
+	height: 24px;
+	width: 24px;
+}
+
+@media screen and (max-width: 782px) {
+	#wpadminbar .tenup-icon:not(.svg-icon) {
+		height: 46px;
+	}
+}
+
+/* On 7.2 core gives toolbar icons a right margin for the label that follows
+ * (with three ids in the selector). The bolt has no label and is narrower than
+ * its 24px box, so drop the margin and trim the padding to sit evenly between
+ * the WordPress logo and the site name. */
+#wpadminbar #wp-admin-bar-10up > .ab-item {
+	padding-inline: 4px;
+}
+
+#wpadminbar > #wp-toolbar #wp-admin-bar-10up > .ab-item .tenup-icon.svg-icon {
+	margin-inline: 0;
 }

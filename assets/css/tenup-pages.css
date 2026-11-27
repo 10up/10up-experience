@@ -1,81 +1,645 @@
-.tenup-badge {
-	background: url("../img/logo.png") no-repeat top left;
-	background-size: cover;
-	display: inline-block;
-	height: 126px;
-	overflow: hidden;
-	position: absolute;
-	right: 0;
-	text-indent: 100%;
-	top: 0;
-	white-space: nowrap;
-	width: 110px;
+/* ── Fueled brand (Brand Guidelines 2026) for the About and Experience screens ──
+ *
+ * Black and white do most of the work, greys build hierarchy, and colour is a
+ * deliberate accent: one gradient element per page, and green only to mark a
+ * protection that's on. Shared by the boot-rendered pages and their classic
+ * PHP fallbacks; the wrapper is the container-query root, so one set of rules
+ * serves both (the admin menu changes the available width without a viewport
+ * change).
+ *
+ * Type is Host Grotesk Medium, the brand's approved fallback for Aeonik
+ * (licensed for internal use only, so it can't ship in a public plugin).
+ *
+ * Selectors carry `.about-wrap` so they outrank core's About-page stylesheet
+ * (`.about-wrap p`, `.about-wrap h2`), which ships in the boot bundle. */
+
+@font-face {
+	font-display: swap;
+	font-family: "Host Grotesk";
+	font-style: normal;
+	font-weight: 500;
+	src: url("../fonts/host-grotesk-latin-500-normal.woff2") format("woff2");
 }
 
-@media
-	only screen and (                min-resolution: 192dppx),
-	only screen and (                min-resolution: 2dppx) {
-	.tenup-badge {
-		background: url("../img/logo@2x.png") no-repeat top left;
-		background-size: 110px 126px;
+.about-wrap {
+	--fueled-black: #000;
+	--fueled-white: #fff;
+	--fueled-canvas: #f2f2f2;
+	--fueled-grey-80: #333;
+	--fueled-grey-70: #666;
+	--fueled-grey-60: #808080;
+	--fueled-grey-40: #b2b2b2;
+	--fueled-grey-20: #e5e5e5;
+	--fueled-purple: #6652ff;
+	--fueled-pink: #ff5cbf;
+	--fueled-green: #00a785;
+	--fueled-rule: rgb(0 0 0 / 8%);
+	--fueled-rule-inverse: rgb(255 255 255 / 16%);
+	--fueled-radius: 32px;
+	--fueled-space: 40px;
+	--fueled-font: "Host Grotesk", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, sans-serif;
+
+	color: var(--fueled-black);
+	container-type: inline-size;
+	display: flex;
+	flex-direction: column;
+	font-family: var(--fueled-font);
+	font-weight: 500;
+	gap: 16px;
+	letter-spacing: -0.024em;
+	margin-inline: auto;
+	max-width: 1100px;
+}
+
+/* Boot pages: the canvas grey behind the white cards. */
+.tenup-boot-content:has(> .about-wrap) {
+	background: #f2f2f2;
+}
+
+.about-wrap :is(h1, h2, h3) {
+	color: inherit;
+	font-family: inherit;
+	font-weight: 500;
+	letter-spacing: inherit;
+	line-height: 1.1;
+	margin: 0;
+	text-align: start;
+	text-wrap: balance;
+}
+
+.about-wrap :is(p, dd, li) {
+	font-size: 16px;
+	line-height: 1.5;
+	margin: 0;
+	text-wrap: pretty;
+}
+
+.about-wrap a:not(.button) {
+	color: inherit;
+	text-decoration-color: var(--fueled-grey-40);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.25em;
+	transition: text-decoration-color 150ms ease-out;
+}
+
+.about-wrap a:focus-visible {
+	border-radius: 4px;
+	box-shadow: none;
+	outline: 2px solid var(--fueled-purple);
+	outline-offset: 2px;
+}
+
+/* ── Buttons: black pill (primary) and grey pill (secondary) ── */
+.about-wrap .button {
+	align-items: center;
+	background: var(--fueled-canvas);
+	border: 0;
+	border-radius: var(--fueled-radius);
+	box-shadow: none;
+	color: var(--fueled-black);
+	display: inline-flex;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: inherit;
+	line-height: 1.5;
+	min-height: 50px;
+	padding: 0 32px;
+	text-decoration: none;
+	transition: background-color 150ms ease-out, transform 150ms ease-out;
+}
+
+.about-wrap .button-primary {
+	background: var(--fueled-black);
+	color: var(--fueled-white);
+}
+
+.about-wrap .button:active {
+	transform: scale(0.97);
+}
+
+.about-wrap .button:focus-visible {
+	box-shadow: none;
+	outline: 2px solid var(--fueled-purple);
+	outline-offset: 2px;
+}
+
+@media (hover: hover) {
+	.about-wrap a:not(.button):hover {
+		text-decoration-color: currentcolor;
+	}
+
+	.about-wrap .button:hover {
+		background: var(--fueled-grey-20);
+		color: var(--fueled-black);
+	}
+
+	.about-wrap .button-primary:hover {
+		background: var(--fueled-grey-80);
+		color: var(--fueled-white);
 	}
 }
 
-.about-wrap img {
-	max-width: 100%;
+@media (prefers-reduced-motion: reduce) {
+	.about-wrap .button:active {
+		transform: none;
+	}
 }
 
-.about-wrap .full-width-img img {
-	display: block;
-	margin: 0 auto;
+.about-wrap :is(.about-actions, .experience-actions, .experience-monitor__action) {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 32px;
 }
 
-.about-wrap .nav-tab-active {
-	background-color: #f1f1f1; /* stylelint-disable-line sh-waqar/declaration-use-variable */
-	border-bottom-color: #f6f7fb; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+/* ── Surfaces: white cards with 32px corners, one black card per page ── */
+.about-wrap :is(.about-hero, .experience-hero, .about-capabilities, .about-proof-card, .experience-configuration, .experience-monitor, .experience-source) {
+	background: var(--fueled-white);
+	border-radius: var(--fueled-radius);
+	box-sizing: border-box;
+	padding: var(--fueled-space);
 }
 
-.about-wrap .section {
-	margin: 0 auto;
-	overflow: hidden;
-	padding-bottom: 20px;
+.about-wrap :is(.about-proof-card--clients, .experience-monitor) {
+	background: var(--fueled-black);
+	color: var(--fueled-white);
 }
 
-.about-wrap .center {
+/* Section headings and the grey copy under them. */
+.about-wrap :is(.about-capabilities, .about-proof-card, .experience-configuration, .experience-monitor, .experience-source) h2 {
+	font-size: 40px;
+}
+
+.about-wrap :is(.about-capabilities__copy, .about-proof-card, .about-proof-card__content, .experience-monitor__intro, .experience-source > div) > p:not([class]) {
+	color: var(--fueled-grey-70);
+	max-width: 60ch;
+}
+
+.about-wrap :is(.about-proof-card--clients, .experience-monitor) p:not([class]) {
+	color: var(--fueled-grey-40);
+}
+
+.about-wrap :is(.about-capabilities__copy, .about-proof-card__content, .experience-monitor__intro, .experience-source > div) > h2 + p {
+	margin-top: 24px;
+}
+
+/* ── Heroes: the light brand background, the page's expressive moment ── */
+.about-wrap :is(.about-hero, .experience-hero) {
+	background-image: url("../img/fueled-hero-light.webp");
+	background-position: left top;
+	background-repeat: no-repeat;
+	background-size: cover;
+	min-height: 420px;
+	padding: 56px var(--fueled-space);
+}
+
+.about-wrap :is(.about-hero__headline, .experience-hero__headline) {
+	font-size: 60px;
+}
+
+.about-wrap :is(.about-hero__text, .experience-hero__text) {
+	color: var(--fueled-grey-70);
+	margin-top: 24px;
+	max-width: 58ch;
+}
+
+.about-wrap :is(.about-hero__text, .experience-hero__text) a {
+	color: var(--fueled-black);
+}
+
+.about-wrap .about-hero {
+	align-items: center;
+	display: flex;
+	justify-content: center;
 	text-align: center;
 }
 
-.about-wrap .section ul {
-	list-style: disc;
-	margin-left: 25px;
+.about-wrap .about-hero__content {
+	align-items: center;
+	display: flex;
+	flex-direction: column;
 }
 
-@media screen and (max-width: 480px) {
-	.about-wrap h2.nav-tab-wrapper {
-		padding-right: 0;
+.about-wrap .about-hero__headline {
+	text-align: center;
+}
+
+/* Experience: copy on clean white at the start, the same brand background
+ * mirrored to the far side, so text never sits on the colour. It is the
+ * page's one gradient element. */
+.about-wrap .experience-hero {
+	background-image: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 360px;
+	overflow: hidden;
+	position: relative;
+}
+
+.about-wrap .experience-hero::before {
+	background: url("../img/fueled-hero-light.webp") left top / cover no-repeat;
+	content: "";
+	inset: 0;
+	position: absolute;
+	transform: scaleX(-1);
+}
+
+.about-wrap .experience-hero__content {
+	max-width: 640px;
+	position: relative;
+}
+
+/* Title lockup of the classic screens; boot pages carry it in their header. */
+.about-wrap .fueled-page-title {
+	align-items: center;
+	display: flex;
+	font-size: 24px;
+	gap: 0.4em;
+	margin-bottom: 48px;
+}
+
+.about-wrap .about-hero .fueled-page-title {
+	justify-content: center;
+}
+
+.about-wrap .fueled-page-title__logo {
+	display: block;
+	height: 26px;
+	width: auto;
+}
+
+/* ── About: capabilities ── */
+.about-wrap .about-capabilities {
+	align-items: center;
+	display: grid;
+	gap: 48px;
+	grid-template-columns: minmax(0, 1.3fr) minmax(240px, 0.7fr);
+}
+
+.about-wrap .about-capability-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.about-wrap .about-capability-list li {
+	font-size: 24px;
+	line-height: 1.1;
+	padding-block: 16px;
+}
+
+.about-wrap .about-capability-list li + li {
+	border-top: 1px solid var(--fueled-rule);
+}
+
+/* ── About: proof cards ── */
+.about-wrap .about-proof-grid {
+	display: grid;
+	gap: 16px;
+	grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.about-wrap .about-proof-card {
+	display: flex;
+	flex-direction: column;
+	gap: 48px;
+	justify-content: space-between;
+	min-height: 280px;
+	position: relative;
+}
+
+/* The page's one gradient moment: a big number over a small black label. */
+.about-wrap .about-stat {
+	font-size: 24px;
+}
+
+.about-wrap .about-stat__number {
+	background: linear-gradient(90deg, var(--fueled-purple), var(--fueled-pink));
+	background-clip: text;
+	color: transparent;
+	display: block;
+	font-size: 100px;
+	font-variant-numeric: tabular-nums;
+	margin-bottom: 8px;
+	width: fit-content;
+}
+
+.about-wrap .about-proof-card--clients {
+	align-items: center;
+	display: grid;
+	grid-column: 1 / -1;
+	grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.about-wrap .about-client-logos {
+	display: grid;
+	gap: 8px;
+	grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.about-wrap .about-client-logos span {
+	aspect-ratio: 1;
+	background-image: url("../img/fueled-client-logos.png");
+	background-repeat: no-repeat;
+	background-size: 413.83% 775.2%;
+}
+
+.about-wrap .about-client-logos span:nth-child(3n + 1) {
+	background-position-x: 6.97%;
+}
+
+.about-wrap .about-client-logos span:nth-child(3n + 2) {
+	background-position-x: 50%;
+}
+
+.about-wrap .about-client-logos span:nth-child(3n) {
+	background-position-x: 93.03%;
+}
+
+.about-wrap .about-client-logos span:nth-child(-n + 3) {
+	background-position-y: 0;
+}
+
+.about-wrap .about-client-logos span:is(:nth-child(4), :nth-child(5), :nth-child(6)) {
+	background-position-y: 20%;
+}
+
+.about-wrap .about-client-logos span:is(:nth-child(7), :nth-child(8), :nth-child(9)) {
+	background-position-y: 40%;
+}
+
+.about-wrap .about-client-logos span:is(:nth-child(10), :nth-child(11), :nth-child(12)) {
+	background-position-y: 60%;
+}
+
+.about-wrap .about-client-logos span:is(:nth-child(13), :nth-child(14), :nth-child(15)) {
+	background-position-y: 80%;
+}
+
+.about-wrap .about-client-logos span:nth-child(n + 16) {
+	background-position-y: 100%;
+}
+
+.about-wrap .about-client-logos span:nth-child(1) {
+	background-image: url("../img/fueled-client-google.svg");
+	background-position: center;
+	background-size: 44% auto;
+}
+
+.about-wrap .about-client-logos span:nth-child(4) {
+	background-image: url("../img/fueled-client-campbells.svg");
+	background-position: center;
+	background-size: 82% auto;
+}
+
+.about-wrap .about-client-logos span:nth-child(12) {
+	background-image: url("../img/fueled-client-salesforce.svg");
+	background-position: center;
+	background-size: 84% auto;
+}
+
+/* "We don't just make WordPress sites." sets up the heading: grey sentence,
+ * black key words. */
+.about-wrap .about-eyebrow {
+	color: var(--fueled-grey-60);
+	font-size: 40px;
+	line-height: 1.1;
+}
+
+.about-wrap .about-proof-card--open {
+	align-items: center;
+	display: grid;
+	grid-column: 1 / -1;
+	grid-template-columns: minmax(0, 1fr) 200px;
+}
+
+.about-wrap .about-proof-card--open .about-proof-card__content {
+	grid-row: 1;
+}
+
+/* The mark in brand black, not WordPress blue: colour stays an accent. */
+.about-wrap .about-proof-card__wordpress-mark img {
+	display: block;
+	filter: brightness(0);
+	height: auto;
+	width: 100%;
+}
+
+/* ── Experience: the configuration list ──
+ * name and what it does | current state | its setting */
+.about-wrap .experience-list {
+	list-style: none;
+	margin: 24px 0 0;
+	padding: 0;
+}
+
+.about-wrap .experience-list__row {
+	align-items: center;
+	border-top: 1px solid var(--fueled-rule);
+	column-gap: 32px;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 13rem 4rem;
+	padding-block: 20px;
+	row-gap: 8px;
+}
+
+.about-wrap .experience-list__text h3 {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.about-wrap .experience-list__text p {
+	color: var(--fueled-grey-70);
+	font-size: 14px;
+	max-width: 62ch;
+}
+
+/* A green dot marks a protection that's on, a grey one that's off;
+ * informational values carry no dot and align with the others' text. */
+.about-wrap .experience-status__value {
+	align-items: center;
+	display: flex;
+	font-size: 14px;
+	gap: 8px;
+	padding-inline-start: 16px;
+}
+
+.about-wrap .experience-status__value:is(.is-active, .is-muted) {
+	padding-inline-start: 0;
+}
+
+.about-wrap .experience-status__value:is(.is-active, .is-muted)::before {
+	background: var(--fueled-green);
+	block-size: 8px;
+	border-radius: 50%;
+	content: "";
+	flex: none;
+	inline-size: 8px;
+}
+
+.about-wrap .experience-status__value.is-muted {
+	color: var(--fueled-grey-70);
+}
+
+.about-wrap .experience-status__value.is-muted::before {
+	background: var(--fueled-grey-40);
+}
+
+.about-wrap .experience-list__action {
+	font-size: 14px;
+	grid-column: 3;
+	justify-self: end;
+}
+
+/* Protections without a setting: a quieter two-column list. */
+.about-wrap .experience-features__heading {
+	border-top: 1px solid var(--fueled-rule);
+	font-size: 24px;
+	padding-top: 40px;
+}
+
+.about-wrap .experience-features {
+	display: grid;
+	gap: 24px 48px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	margin: 24px 0 0;
+}
+
+.about-wrap .experience-features dt {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.about-wrap .experience-features dd {
+	color: var(--fueled-grey-70);
+	font-size: 14px;
+}
+
+/* ── Experience: Support Monitor, the page's black card ── */
+.about-wrap .experience-monitor {
+	display: grid;
+	gap: 48px;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	scroll-margin-top: 48px;
+}
+
+.about-wrap .experience-monitor .button-primary {
+	background: var(--fueled-white);
+	color: var(--fueled-black);
+}
+
+.about-wrap .experience-monitor__details article + article {
+	border-top: 1px solid var(--fueled-rule-inverse);
+	margin-top: 24px;
+	padding-top: 24px;
+}
+
+.about-wrap .experience-monitor__label {
+	color: var(--fueled-grey-60);
+	font-size: 14px;
+}
+
+.about-wrap .experience-monitor__details h3 {
+	font-size: 24px;
+	margin-block: 4px 12px;
+}
+
+.about-wrap .experience-monitor__details article > p:last-child {
+	font-size: 14px;
+}
+
+.about-wrap .experience-monitor__note {
+	border-top: 1px solid var(--fueled-rule-inverse);
+	color: var(--fueled-grey-60);
+	font-size: 14px;
+	margin-top: 24px;
+	padding-top: 24px;
+}
+
+@media (hover: hover) {
+	.about-wrap .experience-monitor .button-primary:hover {
+		background: var(--fueled-grey-20);
+		color: var(--fueled-black);
+	}
+}
+
+/* ── Experience: source ── */
+.about-wrap .experience-source {
+	align-items: center;
+	display: flex;
+	gap: 40px;
+	justify-content: space-between;
+}
+
+.about-wrap .experience-source .experience-actions {
+	flex: none;
+	margin: 0;
+}
+
+/* ── Narrower containers ── */
+@container (max-width: 900px) {
+	.about-wrap :is(.about-capabilities, .about-proof-grid, .about-proof-card--clients, .experience-monitor) {
+		grid-template-columns: 1fr;
 	}
 
-	.about-wrap h2 .nav-tab {
-		box-sizing: border-box;
-		margin-right: 0;
-		margin-top: 0;
-		width: 100%;
+	.about-wrap .experience-source {
+		align-items: flex-start;
+		flex-direction: column;
 	}
 
-	.about-wrap h1 {
-		padding-right: 55px;
+	.about-wrap .experience-source .experience-actions {
+		margin-top: -8px;
+	}
+}
+
+@container (max-width: 680px) {
+	.about-wrap {
+		--fueled-space: 24px;
 	}
 
-	.tenup-badge {
-		height: 63px;
-		width: 55px;
+	.about-wrap :is(.about-hero, .experience-hero) {
+		min-height: 0;
+		padding-block: 40px;
 	}
 
-	.section-wrapper {
-		padding: 20px 0;
+	.about-wrap :is(.about-hero__headline, .experience-hero__headline),
+	.about-wrap :is(.about-capabilities, .about-proof-card, .experience-configuration, .experience-monitor, .experience-source) h2,
+	.about-wrap .about-eyebrow {
+		font-size: 32px;
 	}
 
-	.about-wrap .section-about {
-		padding: 0 20px;
+	.about-wrap .about-stat__number {
+		font-size: 80px;
+	}
+
+	.about-wrap :is(.about-proof-card--open, .experience-features) {
+		grid-template-columns: 1fr;
+	}
+
+	.about-wrap .about-proof-card__wordpress-mark {
+		display: none;
+	}
+
+	.about-wrap .about-client-logos {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	/* State and setting drop under the text, on one line. */
+	.about-wrap .experience-list__row {
+		grid-template-columns: minmax(0, 1fr) auto;
+	}
+
+	.about-wrap .experience-list__text {
+		grid-column: 1 / -1;
+	}
+
+	.about-wrap .experience-status__value {
+		padding-inline-start: 0;
+	}
+
+	.about-wrap .experience-list__action {
+		grid-column: 2;
 	}
 }

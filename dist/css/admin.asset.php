@@ -1,1 +1,1 @@
-<?php return array( 'dependencies' => array(), 'version' => '2ae564e47fcee02aad363a5c8f102c98', 'source' => 'assets/css/admin.css' );
+<?php return array( 'dependencies' => array(), 'version' => '77d6f11936779464386997db438fe73a', 'source' => 'assets/css/admin.css' );

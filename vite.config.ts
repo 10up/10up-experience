@@ -1,9 +1,13 @@
 /**
- * Vite+ config for the 10up Experience plugin.
+ * Vite+ config for the Fueled Experience plugin.
  *
- * One `vp build` writes the admin scripts and stylesheets
- * (`build.rollupOptions.input`) and the images under assets/img
- * (`copyAssetsDir`) into dist/.
+ * One `vp build` writes everything into dist/:
+ * - the classic admin scripts and stylesheets (`build.rollupOptions.input`),
+ * - the images under assets/img (`copyAssetsDir`),
+ * - the `@wordpress/boot` admin pages: every directory under
+ *   assets/js/admin-pages with a `content` entry is a page, built as Script
+ *   Modules into dist/modules/<page>/, plus the PHP that registers them
+ *   (dist/build.php).
  */
 import tenup, { i18nRules } from '@10up/oxlint-config';
 import { wp } from '@10up/wp-vite-plugins';
@@ -16,6 +20,14 @@ export default defineConfig({
 			// Lightning CSS, which keeps relative url()s as written: `../img/…`
 			// from dist/css/ points at the copies in dist/img/.
 			css: {},
+			adminPagesDir: './assets/js/admin-pages',
+			adminPages: {
+				php: {
+					// The package name starts with a digit, which isn't a valid PHP identifier.
+					prefix: 'tenup-experience',
+					textdomain: 'tenup',
+				},
+			},
 		}),
 	],
 	build: {
@@ -30,6 +42,8 @@ export default defineConfig({
 			},
 			output: {
 				entryFileNames: '[name].js',
+				// Code shared between admin pages (DataViews, the page layout).
+				chunkFileNames: 'modules/chunks/[name]-[hash].js',
 				assetFileNames: '[name][extname]',
 			},
 		},

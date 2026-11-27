@@ -4,9 +4,24 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-07-28
+
+### Added
+
+- Add React-powered admin screens built on the `@wordpress/boot` script module (WordPress 7.0+, PHP 8.1+): a consolidated Settings → Fueled Experience settings screen with a Site Editor-style review-and-save flow, plus boot-rendered About Fueled and Experience Plugin pages with DataViews-based configuration cards. Classic markup remains as the fallback on older WordPress or PHP versions.
+- Expose the plugin's settings on the core `/wp/v2/settings` REST endpoint (single-site installs).
+- Add redesigned About Fueled and Experience Plugin admin pages with current configuration, feature, and support information.
+- Add Fueled-branded imagery and client work assets for the new admin experiences.
+
 ### Changed
 
-- Build with Vite+ and `@10up/wp-vite-plugins` instead of 10up-toolkit. Lint with oxlint and stylelint. Requires Node 24 for development.
+- Adopt the 2026 Fueled brand on the About and Experience Plugin pages: new wordmark and Planet mark (admin bar), black and white surfaces with 32px cards, pill buttons, status pills, and Host Grotesk type.
+- Build with Vite+ and `@10up/wp-vite-plugins` instead of 10up-toolkit; the boot pages' PHP registration is generated into `dist/build.php`. Lint with oxlint and stylelint.
+- Rebrand customer-facing plugin metadata, admin-bar navigation, footer attribution, welcome notice, and recommended-plugin messaging for Fueled.
+- Improve explanations of REST API protection, strong passwords, Fueled SSO, Support Monitor, editor selection, and other plugin features.
+- Clarify which technical information Support Monitor shares with Fueled and which content and customer data it never shares.
+- Point the standard plugin-row “View details” link to the Experience Plugin page.
+- Preserve existing plugin paths, namespaces, settings, hooks, updater configuration, and other compatibility identifiers.
 
 ## [1.18.0] - 2026-06-10
 

@@ -111,10 +111,21 @@ class EnvironmentIndicator {
 				'parent' => 'top-secondary',
 				'title'  => $this->get_icon_markup( $environment['icon'] ) . sprintf( '<span class="ab-label">%s</span>', esc_html( $environment['label'] ) ),
 				'meta'   => [
-					'class' => esc_attr( "tenup-experience-environment-indicator tenup-experience-environment-indicator--$type" ),
+					'class' => esc_attr( "tenup-experience-environment-indicator tenup-experience-environment-indicator--$type" . ( $this->has_svg_toolbar() ? ' tenup-experience-environment-indicator--pill' : '' ) ),
 				],
 			]
 		);
+	}
+
+	/**
+	 * Whether the toolbar draws its icons as SVGs (WordPress 7.2+).
+	 *
+	 * There the indicator is a pill; on older versions it fills the toolbar's height.
+	 *
+	 * @return bool
+	 */
+	private function has_svg_toolbar() {
+		return function_exists( '_wp_admin_bar_icon' );
 	}
 
 	/**
@@ -158,6 +169,13 @@ class EnvironmentIndicator {
 		$css = '';
 		$css .= '.tenup-experience-environment-indicator { pointer-events: none; }';
 		$css .= '.tenup-experience-environment-indicator .ab-icon.dashicons { top: 3px; }';
+
+		if ( $this->has_svg_toolbar() ) {
+			$pill = '#wpadminbar .tenup-experience-environment-indicator--pill';
+			$css .= $pill . ' .ab-item { display: flex; align-items: center; gap: 4px; height: 24px; margin: 4px 6px; padding: 0 10px 0 6px; border-radius: 12px; line-height: 24px; }';
+			$css .= $pill . ' .ab-icon { float: none; margin: 0; padding: 0; top: 0; height: 20px; width: 20px; color: inherit; }';
+			$css .= $pill . ' .ab-icon svg { display: block; height: 20px; width: 20px; }';
+		}
 
 		foreach ( $environments as $type => $environment ) {
 			$css .= sprintf(

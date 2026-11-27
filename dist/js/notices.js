@@ -1,1 +1,3 @@
-!function(){"use strict";var e={n:function(n){var t=n&&n.__esModule?function(){return n.default}:function(){return n};return e.d(t,{a:t}),t},d:function(n,t){for(var o in t)e.o(t,o)&&!e.o(n,o)&&Object.defineProperty(n,o,{enumerable:!0,get:t[o]})},o:function(e,n){return Object.prototype.hasOwnProperty.call(e,n)}},n=window.jQuery,t=e.n(n);const{tenupWelcome:o,ajaxurl:r}=window,c=document.querySelector(".notice-10up-experience-welcome");if(c){const e={action:"tenup_dismiss_welcome",nonce:o.nonce};t()(c).on("click","button",(()=>{t().ajax({method:"post",data:e,url:r})}))}}();
+(()=>{
+var e=window.jQuery&&window.jQuery.default||window.jQuery,{tenupWelcome:t,ajaxurl:n}=window,r=document.querySelector(`.notice-10up-experience-welcome`);if(r){let i={action:`tenup_dismiss_welcome`,nonce:t.nonce};e(r).on(`click`,`button`,()=>{e.ajax({method:`post`,data:i,url:n})})}
+})();

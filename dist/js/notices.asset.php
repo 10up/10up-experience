@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('jquery'), 'version' => '4d01ee8c6266942b7267');
+<?php return array( 'dependencies' => array( 'jquery' ), 'version' => '509003b40f427982d998', 'source' => 'assets/js/notices.js' );

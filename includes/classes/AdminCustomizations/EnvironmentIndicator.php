@@ -109,12 +109,35 @@ class EnvironmentIndicator {
 			[
 				'id'     => 'tenup-experience-environment-indicator',
 				'parent' => 'top-secondary',
-				'title'  => sprintf( '<span class="ab-icon dashicons %s" aria-hidden="true"></span><span class="ab-label">%s</span>', esc_attr( $environment['icon'] ), esc_html( $environment['label'] ) ),
+				'title'  => $this->get_icon_markup( $environment['icon'] ) . sprintf( '<span class="ab-label">%s</span>', esc_html( $environment['label'] ) ),
 				'meta'   => [
 					'class' => esc_attr( "tenup-experience-environment-indicator tenup-experience-environment-indicator--$type" ),
 				],
 			]
 		);
+	}
+
+	/**
+	 * Markup for an environment's toolbar icon.
+	 *
+	 * Environments name a Dashicon. WordPress 7.2 replaced the toolbar's
+	 * Dashicons with outlined SVG icons, so where core maps the Dashicon to
+	 * one of those, use it; otherwise print the Dashicon.
+	 *
+	 * @param string $dashicon Dashicon class name, such as `dashicons-admin-home`.
+	 * @return string
+	 */
+	private function get_icon_markup( $dashicon ) {
+		if ( function_exists( 'wp_get_icon' ) && method_exists( 'WP_Icons_Registry', 'get_admin_icon_name_for_dashicon' ) ) {
+			$icon_name = \WP_Icons_Registry::get_instance()->get_admin_icon_name_for_dashicon( $dashicon );
+			$icon      = $icon_name ? wp_get_icon( $icon_name ) : '';
+
+			if ( $icon ) {
+				return '<span class="ab-icon svg-icon" aria-hidden="true">' . $icon . '</span>';
+			}
+		}
+
+		return sprintf( '<span class="ab-icon dashicons %s" aria-hidden="true"></span>', esc_attr( $dashicon ) );
 	}
 
 	/**
@@ -134,7 +157,7 @@ class EnvironmentIndicator {
 
 		$css = '';
 		$css .= '.tenup-experience-environment-indicator { pointer-events: none; }';
-		$css .= '.tenup-experience-environment-indicator .ab-icon { top: 3px; }';
+		$css .= '.tenup-experience-environment-indicator .ab-icon.dashicons { top: 3px; }';
 
 		foreach ( $environments as $type => $environment ) {
 			$css .= sprintf(

@@ -1,1 +1,1 @@
-.tenup-company-photo{text-align:center}#wpadminbar .tenup-icon{background:url(../img/fueled-planet-dark.png) 50%/20px 20px no-repeat;width:20px;height:32px}#wpadminbar li#wp-admin-bar-10up>.ab-item{padding-right:8px}
+.tenup-company-photo{text-align:center}#wpadminbar .tenup-icon:not(.svg-icon){align-items:center;height:32px;display:flex}#wpadminbar .tenup-icon:not(.svg-icon) svg{fill:currentColor;width:24px;height:24px}@media screen and (width<=782px){#wpadminbar .tenup-icon:not(.svg-icon){height:46px}}

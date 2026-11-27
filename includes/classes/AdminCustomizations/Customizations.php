@@ -483,6 +483,22 @@ class Customizations {
 
 
 	/**
+	 * The Fueled bolt for the toolbar: the brand's two-piece bolt as a
+	 * single-colour glyph on the 24px icon grid, so it takes the toolbar's
+	 * text and hover colours like the WordPress logo beside it.
+	 *
+	 * WordPress 7.2 draws toolbar icons as inline SVG and styles them through
+	 * `.ab-icon.svg-icon`; older versions get the sizing from admin.css.
+	 *
+	 * @return string
+	 */
+	private function get_toolbar_icon() {
+		$class = function_exists( '_wp_admin_bar_icon' ) ? 'ab-icon svg-icon tenup-icon' : 'tenup-icon';
+
+		return '<span class="' . esc_attr( $class ) . '" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" focusable="false"><path d="M6.91 5.09h7.5L11.5 12.01H4z"/><path d="M12.46 9.69H20L8.63 18.91z"/></svg></span>';
+	}
+
+	/**
 	 * Let's setup our agency menu in the toolbar
 	 *
 	 * @param object $wp_admin_bar Current WP Admin bar object
@@ -495,7 +511,7 @@ class Customizations {
 			$wp_admin_bar->add_menu(
 				array(
 					'id'    => '10up',
-					'title' => '<div class="tenup-icon"><span class="screen-reader-text">' . esc_html__( 'About Fueled', 'tenup' ) . '</span></div>',
+					'title' => $this->get_toolbar_icon() . '<span class="screen-reader-text">' . esc_html__( 'About Fueled', 'tenup' ) . '</span>',
 					'href'  => $about_url,
 					'meta'  => array(
 						'title' => 'Fueled',

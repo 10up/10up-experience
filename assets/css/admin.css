@@ -2,14 +2,22 @@
 	text-align: center;
 }
 
-/* The Planet mark (dark version, for the black toolbar). It's always a plain
- * circle; 20px matches the optical size of neighbouring toolbar icons. */
-#wpadminbar .tenup-icon {
-	background: url("../img/fueled-planet-dark.png") center / 20px 20px no-repeat;
+/* The Fueled bolt in the toolbar. WordPress 7.2 sizes and colours inline
+ * SVG toolbar icons itself (`.ab-icon.svg-icon`); this is for older versions. */
+#wpadminbar .tenup-icon:not(.svg-icon) {
+	align-items: center;
+	display: flex;
 	height: 32px;
-	width: 20px;
 }
 
-#wpadminbar li#wp-admin-bar-10up > .ab-item {
-	padding-right: 8px;
+#wpadminbar .tenup-icon:not(.svg-icon) svg {
+	fill: currentcolor;
+	height: 24px;
+	width: 24px;
+}
+
+@media screen and (max-width: 782px) {
+	#wpadminbar .tenup-icon:not(.svg-icon) {
+		height: 46px;
+	}
 }

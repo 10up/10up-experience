@@ -172,7 +172,7 @@ class EnvironmentIndicator {
 
 		if ( $this->has_svg_toolbar() ) {
 			$pill = '#wpadminbar .tenup-experience-environment-indicator--pill';
-			$css .= $pill . ' .ab-item { display: flex; align-items: center; gap: 4px; height: 24px; margin: 4px 6px; padding: 0 10px 0 6px; border-radius: 12px; line-height: 24px; }';
+			$css .= $pill . ' .ab-item { display: flex; align-items: center; gap: 4px; height: 24px; margin: 4px 6px; padding: 0 8px 0 6px; border-radius: 4px; line-height: 24px; }';
 			$css .= $pill . ' .ab-icon { float: none; margin: 0; padding: 0; top: 0; height: 20px; width: 20px; color: inherit; }';
 			$css .= $pill . ' .ab-icon svg { display: block; height: 20px; width: 20px; }';
 		}

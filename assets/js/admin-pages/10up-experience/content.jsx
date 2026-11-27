@@ -42,10 +42,6 @@ const ExperienceHero = () => (
 				)}
 			</p>
 		</div>
-
-		<div className="experience-hero__visual" aria-hidden="true">
-			<img src={CONFIG.planetUrl} alt="" width={220} height={220} />
-		</div>
 	</section>
 );
 

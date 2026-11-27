@@ -225,18 +225,30 @@
 	text-align: center;
 }
 
+/* Experience: copy on clean white at the start, the same brand background
+ * mirrored to the far side, so text never sits on the colour. It is the
+ * page's one gradient element. */
 .about-wrap .experience-hero {
-	align-items: center;
-	display: grid;
-	gap: 48px;
-	grid-template-columns: minmax(0, 1fr) 220px;
+	background-image: none;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 360px;
+	overflow: hidden;
+	position: relative;
 }
 
-/* The Planet is always a plain circle: no rotation, outline or shadow. */
-.about-wrap .experience-hero__visual img {
-	display: block;
-	height: auto;
-	width: 100%;
+.about-wrap .experience-hero::before {
+	background: url("../img/fueled-hero-light.webp") left top / cover no-repeat;
+	content: "";
+	inset: 0;
+	position: absolute;
+	transform: scaleX(-1);
+}
+
+.about-wrap .experience-hero__content {
+	max-width: 640px;
+	position: relative;
 }
 
 /* Title lockup of the classic screens; boot pages carry it in their header. */
@@ -602,11 +614,11 @@
 		font-size: 80px;
 	}
 
-	.about-wrap :is(.experience-hero, .about-proof-card--open, .experience-features) {
+	.about-wrap :is(.about-proof-card--open, .experience-features) {
 		grid-template-columns: 1fr;
 	}
 
-	.about-wrap :is(.experience-hero__visual, .about-proof-card__wordpress-mark) {
+	.about-wrap .about-proof-card__wordpress-mark {
 		display: none;
 	}
 

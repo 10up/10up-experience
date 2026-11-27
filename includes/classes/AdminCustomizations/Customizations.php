@@ -243,9 +243,6 @@ class Customizations {
 					</p>
 				</div>
 
-				<div class="experience-hero__visual" aria-hidden="true">
-					<img src="<?php echo esc_url( plugins_url( '/dist/img/fueled-planet-light.png', TENUP_EXPERIENCE_FILE ) ); ?>" alt="" width="220" height="220">
-				</div>
 			</section>
 
 			<section id="experience-configuration" class="experience-configuration" aria-labelledby="experience-configuration-heading">
@@ -441,7 +438,6 @@ class Customizations {
 	public function get_experience_page_data() {
 		return [
 			'logoUrl'       => plugins_url( '/dist/img/fueled-logo.svg', TENUP_EXPERIENCE_FILE ),
-			'planetUrl'     => plugins_url( '/dist/img/fueled-planet-light.png', TENUP_EXPERIENCE_FILE ),
 			'configuration' => $this->get_experience_configuration(),
 			'features'      => $this->get_experience_features(),
 		];
